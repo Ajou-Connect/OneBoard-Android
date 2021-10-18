@@ -53,7 +53,7 @@ jobs:
 #           file_type: 'apk'
 #           initial_comment: '${{ github.ref }} 앱 슬랙 배포 성공'
           
-      - run: 'echo ${{ fromJson(steps.message.outputs.response).file.permalink }}'
+#       - run: 'echo ${{ fromJson(steps.message.outputs.response).file.permalink }}'
 
       - name: Apk artifact 업로드
         uses: actions/upload-artifact@v2
