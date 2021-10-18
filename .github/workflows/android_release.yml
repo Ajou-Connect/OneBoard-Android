@@ -15,7 +15,7 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  post:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -34,8 +34,10 @@ jobs:
         run: bash ./gradlew assembleRelease --stacktrace
         
       - run: './gradlew assembleRelease'
-      
-      - uses: MeilCli/slack-upload-file@v1
+
+      - name: Slack file upload
+        uses: MeilCli/slack-upload-file@v1
+        id: message
         with:
           slack_token: ${{ secrets.SLACK_READ_WRITE_TOKEN }}
           channels: ${{ secrets.SLACK_CHANNEL_DEPLOY }}
@@ -45,7 +47,6 @@ jobs:
           initial_comment: '${{ github.ref }} 앱 슬랙 배포 성공'
           
       - run: 'echo ${{ fromJson(steps.message.outputs.response).file.permalink }}'
-
 
       - name: Apk artifact 업로드
         uses: actions/upload-artifact@v2
