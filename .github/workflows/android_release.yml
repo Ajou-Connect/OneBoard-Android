@@ -40,7 +40,11 @@ jobs:
         with:
           token: ${{ secrets.SLACK_READ_WRITE_TOKEN }}
           path: 'app/build/outputs/apk/release/app-release-unsigned.apk'
-          channel: ${{ secrets.SLACK_CHANNEL_DEPLOY }}
+          filename: 'app-release-unsigned.apk'
+          filetype: 'apk'
+          channel: sw캡스톤디자인
+          initial_comment: '${{ github.ref }} 앱 슬랙 배포 성공'
+          
 
 #       - name: Slack file upload
 #         uses: MeilCli/slack-upload-file@v1
