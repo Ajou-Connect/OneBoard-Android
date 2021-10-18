@@ -9,7 +9,6 @@ import dagger.hilt.components.SingletonComponent
 import kr.khs.oneboard.BuildConfig
 import kr.khs.oneboard.api.ApiService
 import kr.khs.oneboard.utils.API_URL
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

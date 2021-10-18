@@ -1,7 +1,7 @@
 package kr.khs.oneboard.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import kr.khs.oneboard.R
 
 class LoginActivity : AppCompatActivity() {

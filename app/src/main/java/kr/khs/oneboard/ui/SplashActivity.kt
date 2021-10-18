@@ -3,16 +3,17 @@ package kr.khs.oneboard.ui
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.widget.Toast
-import kr.khs.oneboard.R
+import androidx.appcompat.app.AppCompatActivity
 import kr.khs.oneboard.databinding.ActivitySplashBinding
 import kr.khs.oneboard.utils.DialogUtil
 
 class SplashActivity : AppCompatActivity() {
-    private val binding : ActivitySplashBinding by lazy { ActivitySplashBinding.inflate(layoutInflater) }
+    private val binding: ActivitySplashBinding by lazy {
+        ActivitySplashBinding.inflate(
+            layoutInflater
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +33,7 @@ class SplashActivity : AppCompatActivity() {
 
     private fun loginCheck() {
         // todo 로그인 체크
-        if(false) {
+        if (false) {
             startActivity(
                 Intent(applicationContext, LoginActivity::class.java)
             )
@@ -57,6 +58,7 @@ class SplashActivity : AppCompatActivity() {
             )
         }
     }
+
     private fun restart() {
         val packageManager: PackageManager = packageManager
         val intent = packageManager.getLaunchIntentForPackage(packageName) ?: return
