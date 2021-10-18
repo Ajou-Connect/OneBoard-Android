@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Android CI
+name: Android CI/CD
 
 # Controls when the workflow will run
 on:
@@ -15,7 +15,7 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  build:
+  post:
     runs-on: ubuntu-latest
 
     steps:
@@ -29,16 +29,7 @@ jobs:
       - name: Get current date
         id: date
         run: echo "::set-output name=date::$(date + '%Y-%m-%d')"
-          
-#       - name: Build debug APK
-#         run: bash ./gradlew assembleDebug --stacktrace
-        
-#       - name: Upload APK
-#         uses: actions/upload-artifact@v1
-#         with:
-#           name: app
-#           path: app/build/outputs/apk/debug
-      
+
       - name: Build Release APK
         run: bash ./gradlew assembleRelease --stacktrace
         
@@ -48,9 +39,9 @@ jobs:
         with:
           slack_token: ${{ secrets.SLACK_READ_WRITE_TOKEN }}
           channels: ${{ secrets.SLACK_CHANNEL_DEPLOY }}
-          file_path: app/build/outputs/apk/release/app-release-unsigned.apk
-          file_name: app-release-unsigned.apk
-          file_type: apk
+          file_path: 'app/build/outputs/apk/release/app-release-unsigned.apk'
+          file_name: 'app-release-unsigned.apk'
+          file_type: 'apk'
           initial_comment: '${{ github.ref }} 앱 슬랙 배포 성공'
 
 
@@ -64,6 +55,7 @@ jobs:
         uses: 8398a7/action-slack@v3.8.0
         with:
           status: ${{ job.status }}
-          author_name: 빌드 알림
+          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
+          author_name: 안드로이드 빌드 알림
         env:
            SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
