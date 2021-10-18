@@ -44,20 +44,6 @@ jobs:
           filetype: 'apk'
           channel: sw캡스톤디자인
           initial_comment: '${{ github.ref }} 앱 슬랙 배포 성공'
-          
-
-#       - name: Slack file upload
-#         uses: MeilCli/slack-upload-file@v1
-#         id: message
-#         with:
-#           slack_token: ${{ secrets.SLACK_READ_WRITE_TOKEN }}
-#           channels: ${{ secrets.SLACK_CHANNEL_DEPLOY }}
-#           file_path: 'app/build/outputs/apk/release/app-release-unsigned.apk'
-#           file_name: 'app-release-unsigned.apk'
-#           file_type: 'apk'
-#           initial_comment: '${{ github.ref }} 앱 슬랙 배포 성공'
-          
-#       - run: 'echo ${{ fromJson(steps.message.outputs.response).file.permalink }}'
 
       - name: Apk artifact 업로드
         uses: actions/upload-artifact@v2
