@@ -43,6 +43,8 @@ jobs:
           file_name: 'app-release-unsigned.apk'
           file_type: 'apk'
           initial_comment: '${{ github.ref }} 앱 슬랙 배포 성공'
+          
+      - run: 'echo ${{ fromJson(steps.message.outputs.response).file.permalink }}'
 
 
       - name: Apk artifact 업로드
