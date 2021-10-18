@@ -35,16 +35,23 @@ jobs:
         
       - run: './gradlew assembleRelease'
 
-      - name: Slack file upload
-        uses: MeilCli/slack-upload-file@v1
-        id: message
+      - name: Slack File Upload
+        uses: adrey/slack-file-upload-action@1.0.5
         with:
-          slack_token: ${{ secrets.SLACK_READ_WRITE_TOKEN }}
-          channels: ${{ secrets.SLACK_CHANNEL_DEPLOY }}
-          file_path: 'app/build/outputs/apk/release/app-release-unsigned.apk'
-          file_name: 'app-release-unsigned.apk'
-          file_type: 'apk'
-          initial_comment: '${{ github.ref }} 앱 슬랙 배포 성공'
+          token: ${{ secrets.SLACK_READ_WRITE_TOKEN }}
+          path: 'app/build/outputs/apk/release/app-release-unsigned.apk'
+          channel: ${{ secrets.SLACK_CHANNEL_DEPLOY }}
+
+#       - name: Slack file upload
+#         uses: MeilCli/slack-upload-file@v1
+#         id: message
+#         with:
+#           slack_token: ${{ secrets.SLACK_READ_WRITE_TOKEN }}
+#           channels: ${{ secrets.SLACK_CHANNEL_DEPLOY }}
+#           file_path: 'app/build/outputs/apk/release/app-release-unsigned.apk'
+#           file_name: 'app-release-unsigned.apk'
+#           file_type: 'apk'
+#           initial_comment: '${{ github.ref }} 앱 슬랙 배포 성공'
           
       - run: 'echo ${{ fromJson(steps.message.outputs.response).file.permalink }}'
 
