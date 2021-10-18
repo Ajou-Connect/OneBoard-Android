@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Android CI - debug mode
+name: Android CI
 
 # Controls when the workflow will run
 on:
@@ -44,7 +44,7 @@ jobs:
         
       - run: './gradlew assembleRelease'
       
-      - uses: MeilCli/slack-upload-file@v1.4.9
+      - uses: MeilCli/slack-upload-file@v1
         with:
           slack_token: ${{ secrets.SLACK_READ_WRITE_TOKEN }}
           channels: ${{ secrets.SLACK_CHANNEL_DEPLOY }}
