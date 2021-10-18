@@ -30,11 +30,39 @@ jobs:
         id: date
         run: echo "::set-output name=date::$(date + '%Y-%m-%d')"
           
-      - name: Build debug APK
-        run: bash ./gradlew assembleDebug --stacktrace
+#       - name: Build debug APK
+#         run: bash ./gradlew assembleDebug --stacktrace
         
-      - name: Upload APK
-        uses: actions/upload-artifact@v1
+#       - name: Upload APK
+#         uses: actions/upload-artifact@v1
+#         with:
+#           name: app
+#           path: app/build/outputs/apk/debug
+      
+      - name: Build Release APK
+        run: bash ./gradlew assembleRelease --stacktrace
+        
+      - run: './gradlew assembleRelease'
+      - uses: MeilCli/slack-upload-file@v1
         with:
-          name: app
-          path: app/build/outputs/apk/debug
+          slack_token: ${{ secrets.SLACK_READ_WRITE_TOKEN }}
+          channels: ${{ secrets.SLACK_CHANNEL_DEPLOY }}
+          file_path: 'app/build/outputs/apk/release/app-release-unsigned.apk'
+          file_name: 'app-release-unsigned.apk'
+          file_type: 'apk'
+          initial_comment: '${{ github.ref }} 앱 슬랙 배포 성공'
+
+
+      - name: Apk artifact 업로드
+        uses: actions/upload-artifact@v2
+        with:
+          name: app-release-unsigned.apk
+          path: app/build/outputs/apk/release/app-release-unsigned.apk
+      
+      - name: action-slack
+        uses: 8398a7/action-slack@v3.8.0
+        with:
+          status: ${{ job.status }}
+          author_name: 빌드 알림
+        env:
+           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
