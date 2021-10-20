@@ -6,4 +6,13 @@
     values-round/strings.xml for round devices.
     -->
     <string name="hello_world">Hello Square World!</string>
+
+    <!--Login Activity-->
+    <string name="login_error_input_email">이메일을 입력해주세요.</string>
+    <string name="login_error_not_email_pattern">이메일 형식에 맞게 입력해주세요.</string>
+    <string name="login_error_input_password">비밀번호를 입력해주세요.</string>
+    <string name="login_error_id_pw_error">아이디, 비밀번호가 잘못되었습니다.</string>
+    <string name="login_hint_password">Password</string>
+    <string name="login_hint_email">Email</string>
+    <string name="login_text_button">Login</string>
 </resources>
