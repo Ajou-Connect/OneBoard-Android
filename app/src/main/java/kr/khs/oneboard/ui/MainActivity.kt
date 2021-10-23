@@ -6,11 +6,15 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kr.khs.oneboard.R
+import kr.khs.oneboard.adapters.LectureListAdapter
+import kr.khs.oneboard.adapters.ListItemClickListener
+import kr.khs.oneboard.data.Lecture
 import kr.khs.oneboard.databinding.ActivityMainBinding
 import kr.khs.oneboard.databinding.DrawerHeaderBinding
-import kr.khs.oneboard.utils.UserInfoUtil
 import kr.khs.oneboard.viewmodels.MainViewModel
 
 @AndroidEntryPoint
@@ -22,6 +26,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var drawerHeaderBinding: DrawerHeaderBinding
     private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
+    private lateinit var lectureListAdapter: LectureListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +34,7 @@ class MainActivity : AppCompatActivity() {
 
         initDrawer()
         initNavigationView()
+        initRecyclerView()
     }
 
     private fun initDrawer() {
@@ -47,15 +53,26 @@ class MainActivity : AppCompatActivity() {
 
     private fun initDrawerHeader() {
         with(drawerHeaderBinding) {
-            drawerEmail.text = UserInfoUtil.email
-            drawerMajor.text = UserInfoUtil.major
-            drawerName.text = UserInfoUtil.name
+            // todo 유저 정보 저장 후, 수정
+//            drawerEmail.text = UserInfoUtil.email
+//            drawerMajor.text = UserInfoUtil.major
+//            drawerName.text = UserInfoUtil.name
+//            drawerStudentId.text = UserInfoUtil.studentId
+            drawerEmail.text = "ks96ks@ajou.ac.kr"
+            drawerMajor.text = "사이버 보안학과"
+            drawerName.text = "김희승"
+            drawerStudentId.text = "201520930"
         }
     }
 
     private fun initNavigationView() {
         // todo 교수, 학생일 경우 다른 메뉴 inflate
-        binding.navigationView.inflateMenu(R.menu.drawer_menu_professor)
+        binding.navigationView.inflateMenu(
+//            if(UserInfoUtil.type)
+            R.menu.drawer_menu_professor
+//            else
+//                R.menu.drawer_menu_student
+        )
 
         binding.navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
@@ -63,6 +80,27 @@ class MainActivity : AppCompatActivity() {
             }
             binding.drawerLayout.closeDrawer(GravityCompat.START)
             false
+        }
+    }
+
+    private fun initRecyclerView() {
+        with(binding.rvLectures) {
+            lectureListAdapter = LectureListAdapter().apply {
+                lectureClickListener = object : ListItemClickListener<Lecture> {
+                    override fun onItemClick(item: Lecture) {
+                        // todo : ClickListener 구현(화면 전환)
+                    }
+                }
+            }
+            adapter = lectureListAdapter
+            layoutManager =
+                LinearLayoutManager(this@MainActivity, LinearLayoutManager.VERTICAL, false)
+            addItemDecoration(
+                DividerItemDecoration(
+                    this@MainActivity,
+                    LinearLayoutManager.VERTICAL
+                )
+            )
         }
     }
 
