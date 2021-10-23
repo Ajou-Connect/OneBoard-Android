@@ -32,6 +32,12 @@ object UserInfoUtil {
                 throw Exception("Invalid Major")
             return field
         }
+    var studentId: String = ""
+        get() {
+            if (field == "")
+                throw Exception("Invalid Student Id")
+            return field
+        }
 
     private fun getSPF(context: Context): SharedPreferences =
         context.getSharedPreferences(SPF_NAME, Context.MODE_PRIVATE)
