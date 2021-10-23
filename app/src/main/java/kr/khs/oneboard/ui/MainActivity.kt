@@ -35,6 +35,10 @@ class MainActivity : AppCompatActivity() {
         initDrawer()
         initNavigationView()
         initRecyclerView()
+
+        viewModel.lectures.observe(this) { list ->
+            lectureListAdapter.submitList(list)
+        }
     }
 
     private fun initDrawer() {
