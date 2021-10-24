@@ -48,6 +48,6 @@ object UserInfoUtil {
         editor.apply()
     }
 
-    fun getToken(context: Context) = getSPF(context).getString(USER_TOKEN, "")
+    fun getToken(context: Context) = getSPF(context).getString(USER_TOKEN, "") ?: ""
 
 }

@@ -6,14 +6,15 @@ import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kr.khs.oneboard.R
-import kr.khs.oneboard.api.ApiService
 import kr.khs.oneboard.databinding.ActivitySplashBinding
 import kr.khs.oneboard.utils.DialogUtil
-import javax.inject.Inject
+import kr.khs.oneboard.utils.UserInfoUtil
+import kr.khs.oneboard.viewmodels.SplashViewModel
 
 @AndroidEntryPoint
 class SplashActivity : AppCompatActivity() {
@@ -22,9 +23,7 @@ class SplashActivity : AppCompatActivity() {
             layoutInflater
         )
     }
-
-    @Inject
-    lateinit var apiService: ApiService
+    private val viewModel: SplashViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,48 +40,52 @@ class SplashActivity : AppCompatActivity() {
 
             override fun onAnimationEnd(animation: Animation?) {
                 networkCheck()
-                serverCheck()
+                viewModel.checkHealth()
+                viewModel.checkValidToken(UserInfoUtil.getToken(applicationContext))
             }
 
             override fun onAnimationRepeat(animation: Animation?) {
             }
 
         })
+
+        viewModel.healthCheck.observe(this) { healthCheck ->
+            viewModel.loginCheck.value?.let { loginCheck ->
+                checkNextStep(healthCheck, loginCheck)
+            }
+        }
+        viewModel.loginCheck.observe(this) { loginCheck ->
+            viewModel.healthCheck.value?.let { healthCheck ->
+                checkNextStep(healthCheck, loginCheck)
+            }
+        }
     }
 
-    // health 체크 후 로그인 체크
-    private fun serverCheck() {
-        runBlocking {
-            val healthCheck: Deferred<Boolean> = async(Dispatchers.IO) {
-//                apiService.healthCheck()
-                // TODO: 2021/10/19 test data
-                true
-            }
-
-            if (healthCheck.await()) {
-                startActivity(
-                    Intent(
-                        applicationContext,
-//                    if (apiService.loginCheck())
-//                        MainActivity::class.java
-//                    else
+    private fun checkNextStep(healthCheck: Boolean, loginCheck: Boolean) {
+        if (healthCheck) {
+            startActivity(
+                Intent(
+                    applicationContext,
+                    if (loginCheck)
+                        MainActivity::class.java
+                    else
                         LoginActivity::class.java
-                    )
+
                 )
-                overridePendingTransition(
-                    R.anim.anim_activity_in_down,
-                    R.anim.anim_activity_out_top
-                )
-            } else {
-                DialogUtil.createDialog(
-                    context = this@SplashActivity,
-                    message = "서버의 상태가 불안정합니다.",
-                    positiveText = "앱 재시작",
-                    negativeText = "앱 종료",
-                    positiveAction = { restart() },
-                    negativeAction = { killMyApp() }
-                )
-            }
+            )
+            overridePendingTransition(
+                R.anim.anim_activity_in_down,
+                R.anim.anim_activity_out_top
+            )
+        } else {
+            DialogUtil.createDialog(
+                context = this@SplashActivity,
+                message = "서버의 상태가 불안정합니다.",
+                positiveText = "앱 재시작",
+                negativeText = "앱 종료",
+                positiveAction = { restart() },
+                negativeAction = { killMyApp() }
+            )
         }
     }
 
