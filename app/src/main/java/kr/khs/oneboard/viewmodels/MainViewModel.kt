@@ -13,7 +13,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(private val userRepository: UserRepository) : ViewModel() {
     private val _lectures = MutableLiveData<List<Lecture>>()
-    val lectures : LiveData<List<Lecture>>
+    val lectures: LiveData<List<Lecture>>
         get() = _lectures
 
     private fun getLectureList() {

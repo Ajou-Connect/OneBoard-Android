@@ -7,6 +7,10 @@
     -->
     <string name="hello_world">Hello Square World!</string>
 
+    <!--Splash Activity-->
+    <string name="splash_description_title">Splash App Name</string>
+    <string name="splash_description_line">Splash Line Image</string>
+
     <!--Login Activity-->
     <string name="login_error_input_email">이메일을 입력해주세요.</string>
     <string name="login_error_not_email_pattern">이메일 형식에 맞게 입력해주세요.</string>

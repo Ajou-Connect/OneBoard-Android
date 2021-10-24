@@ -1,13 +1,13 @@
 package kr.khs.oneboard.ui
 
+import android.animation.Animator
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.os.Bundle
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.motion.widget.MotionLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kr.khs.oneboard.R
@@ -15,6 +15,7 @@ import kr.khs.oneboard.databinding.ActivitySplashBinding
 import kr.khs.oneboard.utils.DialogUtil
 import kr.khs.oneboard.utils.UserInfoUtil
 import kr.khs.oneboard.viewmodels.SplashViewModel
+import timber.log.Timber
 
 @AndroidEntryPoint
 class SplashActivity : AppCompatActivity() {
@@ -29,39 +30,74 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        val text1Anim = AnimationUtils.loadAnimation(this, R.anim.anim_splash_textview)
-        binding.splashTitle1.startAnimation(text1Anim)
-        val text2Anim = AnimationUtils.loadAnimation(this, R.anim.anim_splash_textview)
-        binding.splashTitle2.startAnimation(text2Anim)
+        initMotionLayout()
 
-        text2Anim.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationStart(animation: Animation?) {
+        networkCheck()
+        viewModel.checkHealth()
+        viewModel.checkValidToken(UserInfoUtil.getToken(applicationContext))
+
+        viewModel.animationCheck.observe(this) { animationCheck ->
+            viewModel.loginCheck.value?.let { loginCheck ->
+                viewModel.healthCheck.value?.let { healthCheck ->
+                    checkNextStep(healthCheck, loginCheck, animationCheck)
+                }
             }
-
-            override fun onAnimationEnd(animation: Animation?) {
-                networkCheck()
-                viewModel.checkHealth()
-                viewModel.checkValidToken(UserInfoUtil.getToken(applicationContext))
-            }
-
-            override fun onAnimationRepeat(animation: Animation?) {
-            }
-
-        })
+        }
 
         viewModel.healthCheck.observe(this) { healthCheck ->
             viewModel.loginCheck.value?.let { loginCheck ->
-                checkNextStep(healthCheck, loginCheck)
+                viewModel.animationCheck.value?.let { animationCheck ->
+                    checkNextStep(healthCheck, loginCheck, animationCheck)
+                }
             }
         }
         viewModel.loginCheck.observe(this) { loginCheck ->
             viewModel.healthCheck.value?.let { healthCheck ->
-                checkNextStep(healthCheck, loginCheck)
+                viewModel.animationCheck.value?.let { animationCheck ->
+                    checkNextStep(healthCheck, loginCheck, animationCheck)
+                }
             }
         }
     }
 
-    private fun checkNextStep(healthCheck: Boolean, loginCheck: Boolean) {
+    private fun initMotionLayout() {
+        binding.splashMotionLayout.addTransitionListener(object : MotionLayout.TransitionListener {
+            override fun onTransitionStarted(
+                motionLayout: MotionLayout?,
+                startId: Int,
+                endId: Int
+            ) {
+            }
+
+            override fun onTransitionChange(
+                motionLayout: MotionLayout?,
+                startId: Int,
+                endId: Int,
+                progress: Float
+            ) {
+            }
+
+            override fun onTransitionCompleted(motionLayout: MotionLayout?, currentId: Int) {
+                if (motionLayout?.currentState == R.id.splashMotionEnd) {
+                    viewModel.checkAnimation()
+                }
+            }
+
+            override fun onTransitionTrigger(
+                motionLayout: MotionLayout?,
+                triggerId: Int,
+                positive: Boolean,
+                progress: Float
+            ) {
+            }
+
+        })
+    }
+
+    private fun checkNextStep(healthCheck: Boolean, loginCheck: Boolean, animationCheck: Boolean) {
+        if(animationCheck.not())
+            return
+
         if (healthCheck) {
             startActivity(
                 Intent(

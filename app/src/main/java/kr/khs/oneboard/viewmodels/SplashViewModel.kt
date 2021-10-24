@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kr.khs.oneboard.repository.UserRepository
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,6 +19,10 @@ class SplashViewModel @Inject constructor(private val repository: UserRepository
     private val _loginCheck = MutableLiveData<Boolean>()
     val loginCheck: LiveData<Boolean>
         get() = _loginCheck
+
+    private val _animationCheck = MutableLiveData(false)
+    val animationCheck : LiveData<Boolean>
+        get() = _animationCheck
 
     fun checkHealth() {
         viewModelScope.launch {
@@ -33,5 +38,9 @@ class SplashViewModel @Inject constructor(private val repository: UserRepository
                 _loginCheck.value = repository.loginCheck(token)
             }
         }
+    }
+
+    fun checkAnimation() {
+        _animationCheck.value = true
     }
 }
