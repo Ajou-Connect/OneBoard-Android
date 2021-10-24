@@ -17,7 +17,9 @@ class LectureListAdapter : ListAdapter<Lecture, RecyclerView.ViewHolder>(Lecture
     ) : RecyclerView.ViewHolder(binding.root) {
         init {
             binding.setClickListener {
-                itemClickListener.onItemClick(binding.item)
+                binding.item?.let { item ->
+                    itemClickListener.onItemClick(item)
+                }
             }
         }
 
