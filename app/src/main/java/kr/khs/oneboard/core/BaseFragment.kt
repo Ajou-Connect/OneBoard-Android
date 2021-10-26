@@ -52,4 +52,13 @@ abstract class BaseFragment<T : ViewBinding, VM : BaseViewModel> : Fragment() {
     fun inflateMenu(isDetail: Boolean = true) {
         (requireActivity() as MainActivity).inflateLectureMenu(isDetail)
     }
+
+    fun goBackWhenError() {
+        DialogUtil.createDialog(
+            context = requireActivity(),
+            message = "강의 정보를 불러오는데 실패했습니다.",
+            positiveText = "뒤로가기",
+            positiveAction = { requireActivity().onBackPressed() }
+        )
+    }
 }
