@@ -9,7 +9,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kr.khs.oneboard.core.BaseFragment
 import kr.khs.oneboard.data.Lecture
 import kr.khs.oneboard.databinding.FragmentLectureDetailBinding
-import kr.khs.oneboard.utils.DialogUtil
 import kr.khs.oneboard.viewmodels.LectureDetailViewModel
 import timber.log.Timber
 
@@ -30,7 +29,11 @@ class LectureDetailFragment : BaseFragment<FragmentLectureDetailBinding, Lecture
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.lectureInfo.observe(viewLifecycleOwner) {
-
+            // sample
+            binding.temp.text = """
+            ${it.title} - ${it.semester}
+            ${it.professor}
+        """.trimIndent()
         }
     }
 
@@ -43,6 +46,7 @@ class LectureDetailFragment : BaseFragment<FragmentLectureDetailBinding, Lecture
     override fun init() {
         getSafeArgs()
         inflateMenu(true)
+
     }
 
     private fun getSafeArgs() {
@@ -50,22 +54,8 @@ class LectureDetailFragment : BaseFragment<FragmentLectureDetailBinding, Lecture
             it.getParcelable<Lecture>("lectureInfo")?.let { lecture ->
                 Timber.tag("lectureInfo").d("$lecture")
                 viewModel.setLectureInfo(lecture)
-            } ?: run {
-                DialogUtil.createDialog(
-                    context = requireActivity(),
-                    message = "강의 정보를 불러오는데 실패했습니다.",
-                    positiveText = "뒤로가기",
-                    positiveAction = { requireActivity().onBackPressed() }
-                )
-            }
-        } ?: run {
-            DialogUtil.createDialog(
-                context = requireActivity(),
-                message = "강의 정보를 불러오는데 실패했습니다.",
-                positiveText = "뒤로가기",
-                positiveAction = { requireActivity().onBackPressed() }
-            )
-        }
+            } ?: run { goBackWhenError() }
+        } ?: run { goBackWhenError() }
     }
 
 }
