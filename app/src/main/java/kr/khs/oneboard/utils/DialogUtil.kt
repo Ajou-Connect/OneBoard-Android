@@ -17,20 +17,24 @@ object DialogUtil {
         context: Context,
         message: String,
         positiveText: String,
-        negativeText: String,
+        negativeText: String? = null,
         positiveAction: () -> Unit,
-        negativeAction: () -> Unit
+        negativeAction: (() -> Unit)? = null
     ) {
         val dialog = MaterialAlertDialogBuilder(context)
             .setMessage(message)
             .setPositiveButton(positiveText) { dialog, _ ->
                 positiveAction.invoke()
             }
-            .setNegativeButton(negativeText) { dialog, _ ->
-                negativeAction.invoke()
-                dialog.dismiss()
+        negativeText?.let {
+            negativeAction?.let {
+                dialog.setNegativeButton(negativeText) { dialog, _ ->
+                    negativeAction.invoke()
+                    dialog.dismiss()
+                }
             }
-            .show()
+        }
+        dialog.show()
     }
 
     fun onLoadingDialog(activity: Activity?) {
