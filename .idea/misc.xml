@@ -12,6 +12,7 @@
         <entry key="app/src/main/res/layout/list_item_lecutre.xml" value="0.5114583333333333" />
         <entry key="app/src/main/res/menu/drawer_header_student.xml" value="0.5114583333333333" />
         <entry key="app/src/main/res/menu/drawer_menu_professor.xml" value="0.5114583333333333" />
+        <entry key="app/src/main/res/menu/drawer_menu_student.xml" value="0.5114583333333333" />
       </map>
     </option>
   </component>

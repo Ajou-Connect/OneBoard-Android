@@ -69,5 +69,6 @@ class LectureListFragment : BaseFragment<FragmentLectureListBinding, LectureList
 
     override fun init() {
         initLectureListRecyclerView()
+        inflateMenu(false)
     }
 }
