@@ -43,10 +43,9 @@ class LectureListFragment : BaseFragment<FragmentLectureListBinding, LectureList
             lectureListAdapter = LectureListAdapter().apply {
                 lectureClickListener = { item ->
                     ToastUtil.shortToast(requireContext(), "${item.title} - ${item.semester}")
+                    parentViewModel.setLecture(item)
                     findNavController().navigate(
-                        LectureListFragmentDirections.actionLectureListFragmentToLectureDetailFragment(
-                            item
-                        )
+                        LectureListFragmentDirections.actionLectureListFragmentToLectureDetailFragment()
                     )
                 }
             }

@@ -7,10 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import kr.khs.oneboard.core.BaseFragment
-import kr.khs.oneboard.data.Lecture
 import kr.khs.oneboard.databinding.FragmentLectureDetailBinding
 import kr.khs.oneboard.viewmodels.LectureDetailViewModel
-import timber.log.Timber
 
 @AndroidEntryPoint
 class LectureDetailFragment : BaseFragment<FragmentLectureDetailBinding, LectureDetailViewModel>() {
@@ -50,12 +48,7 @@ class LectureDetailFragment : BaseFragment<FragmentLectureDetailBinding, Lecture
     }
 
     private fun getSafeArgs() {
-        arguments?.let {
-            it.getParcelable<Lecture>("lectureInfo")?.let { lecture ->
-                Timber.tag("lectureInfo").d("$lecture")
-                viewModel.setLectureInfo(lecture)
-            } ?: run { goBackWhenError() }
-        } ?: run { goBackWhenError() }
+        viewModel.setLectureInfo(parentViewModel.getLecture())
     }
 
 }

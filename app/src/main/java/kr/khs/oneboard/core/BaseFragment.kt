@@ -8,12 +8,15 @@ import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import kr.khs.oneboard.ui.MainActivity
 import kr.khs.oneboard.utils.DialogUtil
+import kr.khs.oneboard.viewmodels.MainViewModel
 
 abstract class BaseFragment<T : ViewBinding, VM : BaseViewModel> : Fragment() {
     private var _binding: T? = null
     protected val binding: T
         get() = _binding!!
 
+    protected val parentViewModel: MainViewModel
+        get() = (requireActivity() as MainActivity).getViewModel()
     abstract val viewModel: VM
 
     override fun onCreateView(
