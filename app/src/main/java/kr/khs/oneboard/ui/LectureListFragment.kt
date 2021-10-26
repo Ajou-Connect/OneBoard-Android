@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,6 +43,11 @@ class LectureListFragment : BaseFragment<FragmentLectureListBinding, LectureList
             lectureListAdapter = LectureListAdapter().apply {
                 lectureClickListener = { item ->
                     ToastUtil.shortToast(requireContext(), "${item.title} - ${item.semester}")
+                    findNavController().navigate(
+                        LectureListFragmentDirections.actionLectureListFragmentToLectureDetailFragment(
+                            item
+                        )
+                    )
                 }
             }
             adapter = lectureListAdapter
