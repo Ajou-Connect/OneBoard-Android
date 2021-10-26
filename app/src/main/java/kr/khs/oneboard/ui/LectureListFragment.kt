@@ -4,23 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kr.khs.oneboard.adapters.LectureListAdapter
+import kr.khs.oneboard.core.BaseFragment
 import kr.khs.oneboard.databinding.FragmentLectureListBinding
 import kr.khs.oneboard.utils.ToastUtil
 import kr.khs.oneboard.viewmodels.LectureListViewModel
 
-// todo BaseFragment 생성
 @AndroidEntryPoint
-class LectureListFragment : Fragment() {
-    private var _binding: FragmentLectureListBinding? = null
-    private val binding: FragmentLectureListBinding
-        get() = _binding!!
-    private val viewModel: LectureListViewModel by viewModels()
+class LectureListFragment : BaseFragment<FragmentLectureListBinding, LectureListViewModel>() {
+    override val viewModel: LectureListViewModel by viewModels()
 
     private lateinit var lectureListAdapter: LectureListAdapter
 
@@ -28,15 +24,13 @@ class LectureListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentLectureListBinding.inflate(inflater, container, false)
+        super.onCreateView(inflater, container, savedInstanceState)
 
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        initLectureListRecyclerView()
 
         viewModel.lectures.observe(viewLifecycleOwner) { list ->
             lectureListAdapter.submitList(list)
@@ -62,8 +56,12 @@ class LectureListFragment : Fragment() {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    override fun getFragmentViewBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentLectureListBinding = FragmentLectureListBinding.inflate(inflater, container, false)
+
+    override fun init() {
+        initLectureListRecyclerView()
     }
 }

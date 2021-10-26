@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kr.khs.oneboard.R
 import kr.khs.oneboard.databinding.ActivityLoginBinding
+import kr.khs.oneboard.utils.DialogUtil
 import kr.khs.oneboard.utils.PatternUtil
 import kr.khs.oneboard.utils.ToastUtil
 import kr.khs.oneboard.viewmodels.LoginViewModel
@@ -47,6 +48,14 @@ class LoginActivity : AppCompatActivity() {
 
         viewModel.isPassword.observe(this) {
             binding.buttonLogin.isEnabled = it && viewModel.isEmail.value!!
+        }
+
+        viewModel.isLoading.observe(this) {
+            if (it) {
+                DialogUtil.onLoadingDialog(this)
+            } else {
+                DialogUtil.offLoadingDialog()
+            }
         }
     }
 
