@@ -6,14 +6,10 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kr.khs.oneboard.R
-import kr.khs.oneboard.adapters.LectureListAdapter
 import kr.khs.oneboard.databinding.ActivityMainBinding
 import kr.khs.oneboard.databinding.DrawerHeaderBinding
-import kr.khs.oneboard.utils.ToastUtil
 import kr.khs.oneboard.viewmodels.MainViewModel
 
 @AndroidEntryPoint
@@ -25,7 +21,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var drawerHeaderBinding: DrawerHeaderBinding
     private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
-    private lateinit var lectureListAdapter: LectureListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,11 +28,7 @@ class MainActivity : AppCompatActivity() {
 
         initDrawer()
         initNavigationView()
-        initRecyclerView()
 
-        viewModel.lectures.observe(this) { list ->
-            lectureListAdapter.submitList(list)
-        }
     }
 
     private fun initDrawer() {
@@ -83,25 +74,6 @@ class MainActivity : AppCompatActivity() {
             }
             binding.drawerLayout.closeDrawer(GravityCompat.START)
             false
-        }
-    }
-
-    private fun initRecyclerView() {
-        with(binding.rvLectures) {
-            lectureListAdapter = LectureListAdapter().apply {
-                lectureClickListener = { item ->
-                    ToastUtil.shortToast(this@MainActivity, "${item.title} - ${item.semester}")
-                }
-            }
-            adapter = lectureListAdapter
-            layoutManager =
-                LinearLayoutManager(this@MainActivity, LinearLayoutManager.VERTICAL, false)
-            addItemDecoration(
-                DividerItemDecoration(
-                    this@MainActivity,
-                    LinearLayoutManager.VERTICAL
-                )
-            )
         }
     }
 
