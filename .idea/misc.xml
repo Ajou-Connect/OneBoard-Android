@@ -4,6 +4,12 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.5114583333333333" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.5114583333333333" />
+        <entry key="app/src/main/res/layout/activity_splash.xml" value="0.11481481481481481" />
+        <entry key="app/src/main/res/layout/drawer_header.xml" value="0.5114583333333333" />
+        <entry key="app/src/main/res/layout/list_item_lecutre.xml" value="0.5114583333333333" />
+        <entry key="app/src/main/res/menu/drawer_header_student.xml" value="0.5114583333333333" />
+        <entry key="app/src/main/res/menu/drawer_menu_professor.xml" value="0.5114583333333333" />
       </map>
     </option>
   </component>

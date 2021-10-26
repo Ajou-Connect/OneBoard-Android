@@ -1,6 +1,5 @@
 package kr.khs.oneboard.ui
 
-import android.animation.Animator
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
@@ -15,7 +14,6 @@ import kr.khs.oneboard.databinding.ActivitySplashBinding
 import kr.khs.oneboard.utils.DialogUtil
 import kr.khs.oneboard.utils.UserInfoUtil
 import kr.khs.oneboard.viewmodels.SplashViewModel
-import timber.log.Timber
 
 @AndroidEntryPoint
 class SplashActivity : AppCompatActivity() {
@@ -95,7 +93,7 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun checkNextStep(healthCheck: Boolean, loginCheck: Boolean, animationCheck: Boolean) {
-        if(animationCheck.not())
+        if (animationCheck.not())
             return
 
         if (healthCheck) {
