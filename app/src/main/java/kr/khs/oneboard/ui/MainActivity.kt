@@ -11,10 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kr.khs.oneboard.R
 import kr.khs.oneboard.adapters.LectureListAdapter
-import kr.khs.oneboard.adapters.ListItemClickListener
-import kr.khs.oneboard.data.Lecture
 import kr.khs.oneboard.databinding.ActivityMainBinding
 import kr.khs.oneboard.databinding.DrawerHeaderBinding
+import kr.khs.oneboard.utils.ToastUtil
 import kr.khs.oneboard.viewmodels.MainViewModel
 
 @AndroidEntryPoint
@@ -90,10 +89,8 @@ class MainActivity : AppCompatActivity() {
     private fun initRecyclerView() {
         with(binding.rvLectures) {
             lectureListAdapter = LectureListAdapter().apply {
-                lectureClickListener = object : ListItemClickListener<Lecture> {
-                    override fun onItemClick(item: Lecture) {
-                        // todo : ClickListener 구현(화면 전환)
-                    }
+                lectureClickListener = { item ->
+                    ToastUtil.shortToast(this@MainActivity, "${item.title} - ${item.semester}")
                 }
             }
             adapter = lectureListAdapter

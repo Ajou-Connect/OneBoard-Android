@@ -9,16 +9,16 @@ import kr.khs.oneboard.data.Lecture
 import kr.khs.oneboard.databinding.ListItemLectureBinding
 
 class LectureListAdapter : ListAdapter<Lecture, RecyclerView.ViewHolder>(LectureDiffUtil()) {
-    lateinit var lectureClickListener: ListItemClickListener<Lecture>
+    lateinit var lectureClickListener: (Lecture) -> Unit
 
     class LectureViewHolder(
         private val binding: ListItemLectureBinding,
-        private val itemClickListener: ListItemClickListener<Lecture>
+        private val itemClickListener: (Lecture) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         init {
             binding.setClickListener {
                 binding.item?.let { item ->
-                    itemClickListener.onItemClick(item)
+                    itemClickListener.invoke(item)
                 }
             }
         }
@@ -31,7 +31,7 @@ class LectureListAdapter : ListAdapter<Lecture, RecyclerView.ViewHolder>(Lecture
         companion object {
             fun from(
                 parent: ViewGroup,
-                itemClickListener: ListItemClickListener<Lecture>
+                itemClickListener: (Lecture) -> Unit
             ): LectureViewHolder {
                 return LectureViewHolder(
                     ListItemLectureBinding.inflate(
