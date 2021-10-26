@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
         else {
             when {
-                navController.backStack.size != 0 -> {
+                navController.backStack.size > 2 -> {
                     navController.popBackStack()
                 }
                 System.currentTimeMillis() - curBackPressed <= BACK_PRESSED -> {
@@ -111,6 +111,7 @@ class MainActivity : AppCompatActivity() {
                     startActivity(Intent(this, SplashActivity::class.java))
                 }
                 R.id.lecture_menu_plan -> {
+                    navController.navigate(R.id.lecturePlanFragment)
                 }
                 R.id.lecture_menu_notice -> {
                 }
@@ -144,4 +145,7 @@ class MainActivity : AppCompatActivity() {
                 R.menu.drawer_menu_in_list
         )
     }
+
+    @JvmName("getViewModel1")
+    fun getViewModel() = viewModel
 }
