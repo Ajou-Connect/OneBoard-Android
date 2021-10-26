@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import kr.khs.oneboard.ui.MainActivity
 import kr.khs.oneboard.utils.DialogUtil
 
 abstract class BaseFragment<T : ViewBinding, VM : BaseViewModel> : Fragment() {
@@ -46,5 +47,9 @@ abstract class BaseFragment<T : ViewBinding, VM : BaseViewModel> : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    fun inflateMenu(isDetail: Boolean = true) {
+        (requireActivity() as MainActivity).inflateLectureMenu(isDetail)
     }
 }
