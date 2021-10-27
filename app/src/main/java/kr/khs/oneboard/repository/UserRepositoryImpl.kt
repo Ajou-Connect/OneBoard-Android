@@ -6,8 +6,9 @@ import kr.khs.oneboard.api.ApiService
 import kr.khs.oneboard.data.Lecture
 import kr.khs.oneboard.data.api.Response
 import kr.khs.oneboard.utils.SUCCESS
+import javax.inject.Inject
 
-class UserRepositoryImpl(val apiService: ApiService) : UserRepository {
+class UserRepositoryImpl @Inject constructor(val apiService: ApiService) : UserRepository {
     override suspend fun healthCheck(): Boolean {
         val response: Response<Boolean>
         withContext(Dispatchers.IO) {
