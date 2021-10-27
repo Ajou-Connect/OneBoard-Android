@@ -18,10 +18,20 @@
         android:id="@+id/lectureDetailFragment"
         android:name="kr.khs.oneboard.ui.LectureDetailFragment"
         android:label="fragment_lecture_detail"
-        tools:layout="@layout/fragment_lecture_detail"></fragment>
+        tools:layout="@layout/fragment_lecture_detail" />
     <fragment
         android:id="@+id/lecturePlanFragment"
         android:name="kr.khs.oneboard.ui.LecturePlanFragment"
         android:label="fragment_lecture_plan"
-        tools:layout="@layout/fragment_lecture_plan"></fragment>
+        tools:layout="@layout/fragment_lecture_plan" />
+    <fragment
+        android:id="@+id/noticeFragment"
+        android:name="kr.khs.oneboard.ui.NoticeFragment"
+        android:label="fragment_notice"
+        tools:layout="@layout/fragment_notice" />
+    <fragment
+        android:id="@+id/assignmentFragment"
+        android:name="kr.khs.oneboard.ui.AssignmentFragment"
+        android:label="fragment_assignment"
+        tools:layout="@layout/fragment_assignment" />
 </navigation>
