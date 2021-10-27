@@ -17,7 +17,7 @@ private const val TYPE_NOTICE = 2
 class LectureBaseListAdapter :
     ListAdapter<LectureBase, RecyclerView.ViewHolder>(LectureBaseDiffUtil()) {
 
-    private lateinit var listItemClickListener: (LectureBase) -> Unit
+    lateinit var listItemClickListener: (LectureBase) -> Unit
 
     class AssignmentViewHolder(
         private val binding: ListItemAssignmentBinding,
