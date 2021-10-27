@@ -9,6 +9,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.navigation.NavController
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kr.khs.oneboard.R
@@ -114,16 +115,25 @@ class MainActivity : AppCompatActivity() {
                     navController.navigate(R.id.lecturePlanFragment)
                 }
                 R.id.lecture_menu_notice -> {
+                    navController.navigate(R.id.noticeFragment)
                 }
                 R.id.lecture_menu_lesson -> {
                 }
                 R.id.lecture_menu_attendance -> {
                 }
                 R.id.lecture_menu_assignment -> {
+                    navController.navigate(R.id.assignmentFragment)
                 }
                 R.id.lecture_menu_grade -> {
                 }
                 R.id.lecture_menu_understanding -> {
+                }
+                R.id.lecture_menu_go_list -> {
+                    navController.navigate(
+                        R.id.lectureListFragment,
+                        null,
+                        NavOptions.Builder().setPopUpTo(R.id.lectureListFragment, true).build()
+                    )
                 }
             }
             binding.drawerLayout.closeDrawer(GravityCompat.START)
