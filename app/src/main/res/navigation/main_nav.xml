@@ -51,4 +51,9 @@
             android:name="type"
             app:argType="boolean" />
     </fragment>
+    <fragment
+        android:id="@+id/attendanceFragment"
+        android:name="kr.khs.oneboard.ui.AttendanceFragment"
+        android:label="fragment_attendance"
+        tools:layout="@layout/fragment_attendance" />
 </navigation>
