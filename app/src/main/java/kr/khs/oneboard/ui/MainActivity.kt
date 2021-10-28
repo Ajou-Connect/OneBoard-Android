@@ -98,6 +98,7 @@ class MainActivity : AppCompatActivity() {
         // sample code
         // navController.navigate(R.id.lectureDetailFragment, bundleOf("lectureInfo" to Lecture(1, "1", "1", "1")))
 
+        // todo : 같은 destination일 때 처리
         binding.navigationView.setNavigationItemSelectedListener { menuItem ->
             Timber.tag("currentDestination").d("${navController.currentDestination}")
             when (menuItem.itemId) {
