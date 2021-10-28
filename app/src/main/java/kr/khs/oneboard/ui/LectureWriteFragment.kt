@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import kr.khs.oneboard.core.BaseFragment
+import kr.khs.oneboard.data.Assignment
+import kr.khs.oneboard.data.Notice
 import kr.khs.oneboard.databinding.FragmentLectureWriteBinding
 import kr.khs.oneboard.utils.TYPE_ASSIGNMENT
 import kr.khs.oneboard.utils.TYPE_NOTICE
@@ -73,7 +75,13 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
 
     private fun initWriteArticleButton() {
         binding.writeButton.setOnClickListener {
-            viewModel.writeContent(type)
+            viewModel.writeContent(
+                type,
+                if (type == TYPE_ASSIGNMENT)
+                    Assignment(1, 1, "1", "1", "1", 1L, 1L, "", "", "")
+                else
+                    Notice(1, 1, "1", "1", "1", 1L, 1L)
+            )
         }
     }
 

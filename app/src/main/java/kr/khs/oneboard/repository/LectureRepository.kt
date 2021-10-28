@@ -6,9 +6,9 @@ import kr.khs.oneboard.data.Notice
 interface LectureRepository {
     suspend fun getNoticeList(lectureId: Int): List<Notice>
 
-    suspend fun postNotice(): Boolean
+    suspend fun postNotice(notice: Notice): Boolean
 
     suspend fun getAssignmentList(lectureId: Int): List<Assignment>
 
-    suspend fun postAssignment(): Boolean
+    suspend fun postAssignment(assignment: Assignment): Boolean
 }

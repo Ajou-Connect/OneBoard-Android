@@ -36,7 +36,7 @@ class LectureRepositoryImpl @Inject constructor(
         return response.data
     }
 
-    override suspend fun postNotice(): Boolean {
+    override suspend fun postNotice(notice: Notice): Boolean {
 //        withContext(Dispatchers.IO) {
 //            apiService.postNotice()
 //        }
@@ -70,7 +70,7 @@ class LectureRepositoryImpl @Inject constructor(
         return response.data
     }
 
-    override suspend fun postAssignment(): Boolean {
+    override suspend fun postAssignment(assignment: Assignment): Boolean {
 //        withContext(Dispatchers.IO) {
 //            apiService.postAssignment()
 //        }
