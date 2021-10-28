@@ -18,7 +18,7 @@ class LectureRepositoryImpl @Inject constructor(
 //            response = apiService.getNoticeList(lectureId)
             response = Response(
                 SUCCESS,
-                (0 until 10)
+                (0 until 20)
                     .map {
                         Notice(
                             it,
@@ -36,13 +36,20 @@ class LectureRepositoryImpl @Inject constructor(
         return response.data
     }
 
+    override suspend fun postNotice(): Boolean {
+//        withContext(Dispatchers.IO) {
+//            apiService.postNotice()
+//        }
+        return true
+    }
+
     override suspend fun getAssignmentList(lectureId: Int): List<Assignment> {
         val response: Response<List<Assignment>>
         withContext(Dispatchers.IO) {
 //            response = apiService.getAssignmentList(lectureId)
             response = Response(
                 SUCCESS,
-                (0 until 10)
+                (0 until 20)
                     .map {
                         Assignment(
                             it,
@@ -61,5 +68,12 @@ class LectureRepositoryImpl @Inject constructor(
             )
         }
         return response.data
+    }
+
+    override suspend fun postAssignment(): Boolean {
+//        withContext(Dispatchers.IO) {
+//            apiService.postAssignment()
+//        }
+        return true
     }
 }
