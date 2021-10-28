@@ -19,7 +19,7 @@ object UserInfoUtil {
                 throw Exception("Invalid Name")
             return field
         }
-    var type: Boolean = false
+    var type: Boolean = TYPE_PROFESSOR
     var univ: String = ""
         get() {
             if (field == "")
