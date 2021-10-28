@@ -13,6 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kr.khs.oneboard.adapters.AssignmentListAdapter
 import kr.khs.oneboard.core.BaseFragment
 import kr.khs.oneboard.databinding.FragmentAssignmentBinding
+import kr.khs.oneboard.utils.DialogUtil
 import kr.khs.oneboard.utils.TYPE_ASSIGNMENT
 import kr.khs.oneboard.utils.TYPE_PROFESSOR
 import kr.khs.oneboard.utils.UserInfoUtil
@@ -85,6 +86,16 @@ class AssignmentFragment : BaseFragment<FragmentAssignmentBinding, AssignmentVie
             listAdapter = AssignmentListAdapter().apply {
                 listItemClickListener = { item ->
                     // todo item click listener
+                }
+                listItemDeleteListener = { item ->
+                    DialogUtil.createDialog(
+                        requireContext(),
+                        "삭제하시겠습니까?",
+                        "네",
+                        "아니오",
+                        { viewModel.deleteItem(item) },
+                        { }
+                    )
                 }
             }
             adapter = listAdapter

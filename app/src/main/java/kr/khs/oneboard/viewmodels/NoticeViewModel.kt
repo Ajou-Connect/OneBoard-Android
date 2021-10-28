@@ -24,4 +24,12 @@ class NoticeViewModel @Inject constructor(private val lectureRepository: Lecture
                 lectureRepository.getNoticeList(lectureId)
         }
     }
+
+    fun deleteItem(item: Notice) {
+        viewModelScope.launch {
+            val success = lectureRepository.postNotice(item)
+            if (success)
+                _list.value = _list.value!!.filter { it != item }
+        }
+    }
 }

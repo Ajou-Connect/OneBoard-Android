@@ -1,21 +1,26 @@
 package kr.khs.oneboard.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kr.khs.oneboard.data.Assignment
 import kr.khs.oneboard.databinding.ListItemAssignmentBinding
+import kr.khs.oneboard.utils.TYPE_PROFESSOR
+import kr.khs.oneboard.utils.UserInfoUtil
 
 class AssignmentListAdapter :
     ListAdapter<Assignment, RecyclerView.ViewHolder>(AssignmentDiffUtil()) {
 
     lateinit var listItemClickListener: (Assignment) -> Unit
+    lateinit var listItemDeleteListener: (Assignment) -> Unit
 
     class AssignmentViewHolder(
         private val binding: ListItemAssignmentBinding,
-        private val listItemClickListener: (Assignment) -> Unit
+        private val listItemClickListener: (Assignment) -> Unit,
+        private val listItemDeleteListener: (Assignment) -> Unit
     ) :
         RecyclerView.ViewHolder(binding.root) {
         init {
@@ -23,6 +28,17 @@ class AssignmentListAdapter :
                 binding.item?.let {
                     listItemClickListener.invoke(it)
                 }
+            }
+
+            if (UserInfoUtil.type == TYPE_PROFESSOR) {
+                binding.listItemAssignmentDelete.visibility = View.VISIBLE
+                binding.listItemAssignmentDelete.setOnClickListener {
+                    binding.item?.let {
+                        listItemDeleteListener.invoke(it)
+                    }
+                }
+            } else {
+                binding.listItemAssignmentDelete.visibility = View.GONE
             }
         }
 
@@ -34,7 +50,8 @@ class AssignmentListAdapter :
         companion object {
             fun from(
                 parent: ViewGroup,
-                listItemClickListener: (Assignment) -> Unit
+                listItemClickListener: (Assignment) -> Unit,
+                listItemDeleteListener: (Assignment) -> Unit
             ): AssignmentViewHolder {
                 return AssignmentViewHolder(
                     ListItemAssignmentBinding.inflate(
@@ -44,7 +61,8 @@ class AssignmentListAdapter :
                         parent,
                         false
                     ),
-                    listItemClickListener
+                    listItemClickListener,
+                    listItemDeleteListener
                 )
             }
         }
@@ -52,7 +70,7 @@ class AssignmentListAdapter :
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return AssignmentViewHolder.from(parent, listItemClickListener)
+        return AssignmentViewHolder.from(parent, listItemClickListener, listItemDeleteListener)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
