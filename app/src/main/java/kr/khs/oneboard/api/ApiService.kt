@@ -1,6 +1,7 @@
 package kr.khs.oneboard.api
 
 import kr.khs.oneboard.data.Assignment
+import kr.khs.oneboard.data.AttendanceStudent
 import kr.khs.oneboard.data.Lecture
 import kr.khs.oneboard.data.Notice
 import kr.khs.oneboard.data.api.Response
@@ -36,11 +37,11 @@ interface ApiService {
     @POST("lecture/notice")
     suspend fun postNotice()
 
-//    @GET("lecture/attendance")
-//    suspend fun getAttendance()
-//
-//    @POST("lecture/attendance")
-//    suspend fun postAttendance()
+    @GET("lecture/attendance")
+    suspend fun getAttendanceList(lectureId: Int): Response<List<AttendanceStudent>>
+
+    @POST("lecture/attendance")
+    suspend fun postAttendance(): Response<Boolean>
 
     @GET("lecture/assignment")
     suspend fun getAssignmentList(lectureId: Int): Response<List<Assignment>>

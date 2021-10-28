@@ -4,6 +4,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kr.khs.oneboard.api.ApiService
 import kr.khs.oneboard.data.Assignment
+import kr.khs.oneboard.data.AttendanceLesson
+import kr.khs.oneboard.data.AttendanceStudent
 import kr.khs.oneboard.data.Notice
 import kr.khs.oneboard.data.api.Response
 import kr.khs.oneboard.utils.SUCCESS
@@ -41,6 +43,43 @@ class LectureRepositoryImpl @Inject constructor(
 //            apiService.postNotice()
 //        }
         return true
+    }
+
+    override suspend fun getAttendanceList(lectureId: Int): List<AttendanceStudent> {
+        val response: Response<List<AttendanceStudent>>
+
+        withContext(Dispatchers.IO) {
+//            response = apiService.getAttendanceList(lectureId)
+            response = Response(SUCCESS, (0 until 20)
+                .map { a ->
+                    AttendanceStudent(
+                        a,
+                        "2015209$a".toInt(),
+                        "사이버보안학과 $a",
+                        "김희승 $a",
+                        (0 until 16).map { b ->
+                            AttendanceLesson(
+                                b,
+                                "20201028 $b",
+                                description = "${b}주차 - 목 (16:30~21:00)",
+                                check = b % 2 == 0
+                            )
+                        },
+                        false
+                    )
+                })
+        }
+
+        return response.data
+    }
+
+    override suspend fun postAttendanceList(list: List<AttendanceStudent>): Boolean {
+        val response: Response<Boolean>
+        withContext(Dispatchers.IO) {
+//            response = apiService.postAttendance()
+            response = Response(SUCCESS, true)
+        }
+        return response.data
     }
 
     override suspend fun getAssignmentList(lectureId: Int): List<Assignment> {
