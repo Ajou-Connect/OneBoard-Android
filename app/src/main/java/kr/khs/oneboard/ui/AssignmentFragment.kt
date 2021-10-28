@@ -5,12 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import kr.khs.oneboard.adapters.AssignmentListAdapter
 import kr.khs.oneboard.core.BaseFragment
 import kr.khs.oneboard.databinding.FragmentAssignmentBinding
+import kr.khs.oneboard.utils.TYPE_ASSIGNMENT
+import kr.khs.oneboard.utils.TYPE_PROFESSOR
+import kr.khs.oneboard.utils.UserInfoUtil
 import kr.khs.oneboard.viewmodels.AssignmentViewModel
 
 @AndroidEntryPoint
@@ -46,6 +51,29 @@ class AssignmentFragment : BaseFragment<FragmentAssignmentBinding, AssignmentVie
     override fun init() {
         getSafeArgs()
         initRecyclerView()
+        initFAB()
+    }
+
+    private fun initFAB() {
+        binding.fab.visibility = if (UserInfoUtil.type) View.VISIBLE else View.GONE
+
+        if (UserInfoUtil.type == TYPE_PROFESSOR) {
+            binding.rvAssignments.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    if (dy < 0)
+                        binding.fab.show()
+                    else if (dy > 0)
+                        binding.fab.hide()
+                }
+            })
+            binding.fab.setOnClickListener {
+                findNavController().navigate(
+                    AssignmentFragmentDirections.actionAssignmentFragmentToLectureWriteFragment(
+                        TYPE_ASSIGNMENT
+                    )
+                )
+            }
+        }
     }
 
     private fun getSafeArgs() {
