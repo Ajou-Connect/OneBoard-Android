@@ -20,7 +20,7 @@ data class AttendanceLesson(
     val id: Int,
     val date: String,
     val description: String,
-    var check: Boolean
+    var check: Int
 )
 
 // A 출석, B 지각, F 결석
