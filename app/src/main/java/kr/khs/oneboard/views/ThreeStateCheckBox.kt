@@ -25,12 +25,16 @@ class ThreeStateCheckBox @JvmOverloads constructor(
         attrs?.let {
             val typedArray = context.obtainStyledAttributes(attrs, R.styleable.ThreeStateCheckBox)
 
-            state = typedArray.getInt(0, STATE_UNCHECKED)
+            state = typedArray.getInt(R.styleable.ThreeStateCheckBox_state, STATE_UNCHECKED)
+
             textUnchecked =
                 typedArray.getString(R.styleable.ThreeStateCheckBox_text_state_unchecked)
             textIndeterminate =
                 typedArray.getString(R.styleable.ThreeStateCheckBox_text_state_indeterminate)
             textChecked = typedArray.getString(R.styleable.ThreeStateCheckBox_text_state_checked)
+
+            changeText(state)
+            changeDrawable(state)
 
             Timber.d("state: $state")
             Timber.d("textUnChecked : $textUnchecked")
@@ -51,18 +55,17 @@ class ThreeStateCheckBox @JvmOverloads constructor(
 
             Timber.d("state changed : $field -> $value")
             field = value
+
             isChecked = when (value) {
                 STATE_UNCHECKED -> false
                 STATE_INDETERMINATE -> true
                 STATE_CHECKED -> true
-                else -> throw IllegalStateException("$value is not a vlid state for ${this.javaClass.name}")
+                else -> throw IllegalStateException("$value is not a valid state for ${this.javaClass.name}")
             }
-            text = when (field) {
-                STATE_UNCHECKED -> textUnchecked
-                STATE_INDETERMINATE -> textIndeterminate
-                STATE_CHECKED -> textChecked
-                else -> ""
-            }
+
+            changeText(field)
+            changeDrawable(field)
+
             refreshDrawableState()
 
             onStateChanged?.let { it(this, value) }
@@ -74,35 +77,31 @@ class ThreeStateCheckBox @JvmOverloads constructor(
         Timber.d("initComponent()")
         setOnCheckedChangeListener { _, _ ->
             state = when (state) {
-                STATE_UNCHECKED -> {
-                    setButtonDrawable(R.drawable.ic_attendance_a)
-                    STATE_CHECKED
-                }
-                STATE_CHECKED -> {
-                    setButtonDrawable(R.drawable.ic_attendance_b)
-                    STATE_INDETERMINATE
-                }
-                STATE_INDETERMINATE -> {
-                    setButtonDrawable(R.drawable.ic_attendance_f)
-                    STATE_UNCHECKED
-                }
+                STATE_UNCHECKED -> STATE_CHECKED
+                STATE_CHECKED -> STATE_INDETERMINATE
+                STATE_INDETERMINATE -> STATE_UNCHECKED
                 else -> -1
             }
         }
+    }
+
+    private fun changeText(state: Int) {
         text = when (state) {
-            STATE_UNCHECKED -> {
-                setButtonDrawable(R.drawable.ic_attendance_f)
-                textUnchecked
-            }
-            STATE_INDETERMINATE -> {
-                setButtonDrawable(R.drawable.ic_attendance_b)
-                textIndeterminate
-            }
-            STATE_CHECKED -> {
-                setButtonDrawable(R.drawable.ic_attendance_a)
-                textChecked
-            }
+            STATE_UNCHECKED -> textUnchecked
+            STATE_INDETERMINATE -> textIndeterminate
+            STATE_CHECKED -> textChecked
             else -> ""
         }
+    }
+
+    private fun changeDrawable(state: Int) {
+        setButtonDrawable(
+            when (state) {
+                STATE_UNCHECKED -> R.drawable.ic_attendance_f
+                STATE_INDETERMINATE -> R.drawable.ic_attendance_b
+                STATE_CHECKED -> R.drawable.ic_attendance_a
+                else -> throw Exception("Unknown state")
+            }
+        )
     }
 }

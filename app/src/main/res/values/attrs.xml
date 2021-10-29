@@ -8,7 +8,7 @@
 
     <declare-styleable name="ThreeStateCheckBox">
         <attr name="state" />
-        <attr name="text_state_unchecked" format="string"/>
+        <attr name="text_state_unchecked" format="string" />
         <attr name="text_state_indeterminate" format="string" />
         <attr name="text_state_checked" format="string" />
     </declare-styleable>
