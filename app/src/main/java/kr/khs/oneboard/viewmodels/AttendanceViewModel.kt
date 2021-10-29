@@ -36,4 +36,10 @@ class AttendanceViewModel @Inject constructor(private val lectureRepository: Lec
             }
         }
     }
+
+    fun saveAttendanceList() {
+        viewModelScope.launch {
+            // todo 서버 작업
+        }
+    }
 }

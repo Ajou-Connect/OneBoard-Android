@@ -9,6 +9,8 @@
         <entry key="app/src/main/res/drawable-v24/outline_expand_less_24.xml" value="0.5270833333333333" />
         <entry key="app/src/main/res/drawable-v24/outline_expand_more_24.xml" value="0.5270833333333333" />
         <entry key="app/src/main/res/drawable-v24/outline_remove_24.xml" value="0.38796296296296295" />
+        <entry key="app/src/main/res/drawable/outline_restart_alt_24.xml" value="0.5276041666666667" />
+        <entry key="app/src/main/res/drawable/outline_save_24.xml" value="0.5276041666666667" />
         <entry key="app/src/main/res/drawable/three_state_button.xml" value="0.27870370370370373" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.5114583333333333" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.47282608695652173" />
@@ -35,6 +37,7 @@
         <entry key="app/src/main/res/menu/drawer_menu_in_list.xml" value="0.5114583333333333" />
         <entry key="app/src/main/res/menu/drawer_menu_professor.xml" value="0.5114583333333333" />
         <entry key="app/src/main/res/menu/drawer_menu_student.xml" value="0.5114583333333333" />
+        <entry key="app/src/main/res/menu/option_menu_in_attendance.xml" value="0.5114583333333333" />
         <entry key="app/src/main/res/xml/attrs.xml" value="0.24848024316109424" />
       </map>
     </option>
