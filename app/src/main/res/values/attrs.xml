@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="state" format="enum">
+        <enum name="unchecked" value="0" />
+        <enum name="indeterminate" value="1" />
+        <enum name="checked" value="2" />
+    </attr>
+
+    <declare-styleable name="ThreeStateCheckBox">
+        <attr name="state" />
+        <attr name="text_state_unchecked" format="string"/>
+        <attr name="text_state_indeterminate" format="string" />
+        <attr name="text_state_checked" format="string" />
+    </declare-styleable>
+</resources>
