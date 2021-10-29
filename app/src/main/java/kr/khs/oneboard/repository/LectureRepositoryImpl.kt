@@ -59,10 +59,10 @@ class LectureRepositoryImpl @Inject constructor(
                         "김희승 $a",
                         (0 until 16).map { b ->
                             AttendanceLesson(
-                                b,
+                                10 * a + b,
                                 "20201028 $b",
                                 description = "${b}주차 - 목 (16:30~21:00)",
-                                check = b % 2 == 0
+                                check = (0 until 3).random()
                             )
                         },
                         false
