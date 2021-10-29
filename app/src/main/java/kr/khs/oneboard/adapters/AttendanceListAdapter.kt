@@ -3,6 +3,7 @@ package kr.khs.oneboard.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.*
+import kr.khs.oneboard.data.AttendanceLesson
 import kr.khs.oneboard.data.AttendanceStudent
 import kr.khs.oneboard.databinding.ListItemAttendanceStudentBinding
 import kr.khs.oneboard.utils.collapse
@@ -11,11 +12,20 @@ import timber.log.Timber
 
 class AttendanceListAdapter :
     ListAdapter<AttendanceStudent, RecyclerView.ViewHolder>(AttendanceDiffUtil()) {
-    class AttendanceViewHolder(private val binding: ListItemAttendanceStudentBinding) :
+
+    lateinit var onStateChange: (AttendanceLesson) -> Unit
+
+    class AttendanceViewHolder(
+        private val binding: ListItemAttendanceStudentBinding,
+        private val onStateChange: (AttendanceLesson) -> Unit
+    ) :
         RecyclerView.ViewHolder(binding.root) {
         init {
             with(binding.attendanceList) {
-                adapter = AttendanceLessonListAdapter()
+                adapter = AttendanceLessonListAdapter().apply {
+                    onStateChange =
+                        this@AttendanceViewHolder.onStateChange
+                }
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                 addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
             }
@@ -45,27 +55,36 @@ class AttendanceListAdapter :
         }
 
         fun bind(item: AttendanceStudent) {
+            Timber.tag("Lesson${item.studentId}").d("$item")
             binding.item = item
-            (binding.attendanceList.adapter as AttendanceLessonListAdapter).submitList(item.lessonList)
+            (binding.attendanceList.adapter as AttendanceLessonListAdapter).submitList(item.lessonList.toMutableList())
             binding.executePendingBindings()
-            if (item.isExpand) expandLess()
+            if (item.isExpand) expandMore() else expandLess()
         }
 
         companion object {
-            fun from(parent: ViewGroup): AttendanceViewHolder {
+            fun from(
+                parent: ViewGroup,
+                onStateChange: (AttendanceLesson) -> Unit
+            ): AttendanceViewHolder {
                 return AttendanceViewHolder(
                     ListItemAttendanceStudentBinding.inflate(
                         LayoutInflater.from(
                             parent.context
                         ), parent, false
-                    )
+                    ),
+                    onStateChange
                 )
             }
         }
     }
 
+    override fun submitList(list: MutableList<AttendanceStudent>?) {
+        super.submitList(list?.map { it.copy() })
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return AttendanceViewHolder.from(parent)
+        return AttendanceViewHolder.from(parent, onStateChange)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

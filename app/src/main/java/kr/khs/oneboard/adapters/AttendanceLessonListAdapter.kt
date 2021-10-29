@@ -7,42 +7,58 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kr.khs.oneboard.data.AttendanceLesson
 import kr.khs.oneboard.databinding.ListItemAttendanceLessonBinding
-import timber.log.Timber
 
 class AttendanceLessonListAdapter :
     ListAdapter<AttendanceLesson, RecyclerView.ViewHolder>(AttendanceLessonDiffUtil()) {
 
-    class AttendanceLessonViewHolder(private val binding: ListItemAttendanceLessonBinding) :
+    lateinit var onStateChange: (AttendanceLesson) -> Unit
+
+    class AttendanceLessonViewHolder(
+        private val binding: ListItemAttendanceLessonBinding,
+        private val onStateChange: (AttendanceLesson) -> Unit
+    ) :
         RecyclerView.ViewHolder(binding.root) {
         init {
-
+            binding.attendanceLessonCheckbox.onStateChanged = { threeStateCheckBox, state ->
+                binding.item?.let {
+                    onStateChange.invoke(it.apply { check = state })
+                }
+            }
         }
 
         fun bind(item: AttendanceLesson) {
             binding.item = item
-            Timber.tag("AttendanceLesson Bind").d("$item")
+            binding.attendanceLessonCheckbox.state = item.check
             binding.executePendingBindings()
         }
 
         companion object {
-            fun from(parent: ViewGroup): AttendanceLessonViewHolder {
+            fun from(
+                parent: ViewGroup,
+                onStateChange: (AttendanceLesson) -> Unit
+            ): AttendanceLessonViewHolder {
                 return AttendanceLessonViewHolder(
                     ListItemAttendanceLessonBinding.inflate(
                         LayoutInflater.from(parent.context),
                         parent,
                         false
-                    )
+                    ),
+                    onStateChange
                 )
             }
         }
     }
 
+    override fun submitList(list: MutableList<AttendanceLesson>?) {
+        super.submitList(list?.map { it.copy() })
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return AttendanceLessonViewHolder.from(parent)
+        return AttendanceLessonListAdapter.AttendanceLessonViewHolder.from(parent, onStateChange)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as AttendanceLessonViewHolder).bind(getItem(position))
+        (holder as AttendanceLessonListAdapter.AttendanceLessonViewHolder).bind(getItem(position))
     }
 
 }
@@ -53,7 +69,7 @@ class AttendanceLessonDiffUtil : DiffUtil.ItemCallback<AttendanceLesson>() {
     }
 
     override fun areContentsTheSame(oldItem: AttendanceLesson, newItem: AttendanceLesson): Boolean {
-        return oldItem == newItem
+        return oldItem.check == newItem.check
     }
 
 }

@@ -14,6 +14,7 @@ import kr.khs.oneboard.databinding.FragmentAttendanceBinding
 import kr.khs.oneboard.utils.TYPE_PROFESSOR
 import kr.khs.oneboard.utils.UserInfoUtil
 import kr.khs.oneboard.viewmodels.AttendanceViewModel
+import timber.log.Timber
 
 @AndroidEntryPoint
 class AttendanceFragment : BaseFragment<FragmentAttendanceBinding, AttendanceViewModel>() {
@@ -34,7 +35,8 @@ class AttendanceFragment : BaseFragment<FragmentAttendanceBinding, AttendanceVie
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.attendanceList.observe(viewLifecycleOwner) {
-            attendanceListAdapter.submitList(it)
+            Timber.tag("ChangeAttendance").d("$it")
+            attendanceListAdapter.submitList(it.toMutableList())
         }
     }
 
@@ -56,7 +58,9 @@ class AttendanceFragment : BaseFragment<FragmentAttendanceBinding, AttendanceVie
         if (UserInfoUtil.type == TYPE_PROFESSOR) {
             with(binding.listAttendance) {
                 attendanceListAdapter = AttendanceListAdapter().apply {
-
+                    onStateChange = { attendanceLesson ->
+                        viewModel.updateAttendance(attendanceLesson)
+                    }
                 }
                 adapter = attendanceListAdapter
                 layoutManager =
