@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -89,7 +90,11 @@ class ContentDetailFragment : BaseFragment<FragmentContentDetailBinding, Content
         with(binding.contentDetailAssignmentList) {
             submitListAdapter = SubmitListAdapter().apply {
                 listItemClickListener = { item ->
-                    // todo : Click Listener
+                    findNavController().navigate(
+                        ContentDetailFragmentDirections.actionContentDetailFragmentToSubmitDetailFragment(
+                            item
+                        )
+                    )
                 }
             }
             adapter = submitListAdapter
