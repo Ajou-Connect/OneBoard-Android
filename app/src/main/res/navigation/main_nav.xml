@@ -32,6 +32,9 @@
         <action
             android:id="@+id/action_noticeFragment_to_lectureWriteFragment"
             app:destination="@id/lectureWriteFragment" />
+        <action
+            android:id="@+id/action_noticeFragment_to_contentDetailFragment"
+            app:destination="@id/contentDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/assignmentFragment"
@@ -41,6 +44,9 @@
         <action
             android:id="@+id/action_assignmentFragment_to_lectureWriteFragment"
             app:destination="@id/lectureWriteFragment" />
+        <action
+            android:id="@+id/action_assignmentFragment_to_contentDetailFragment"
+            app:destination="@id/contentDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/lectureWriteFragment"
@@ -56,4 +62,20 @@
         android:name="kr.khs.oneboard.ui.AttendanceFragment"
         android:label="fragment_attendance"
         tools:layout="@layout/fragment_attendance" />
+    <fragment
+        android:id="@+id/contentDetailFragment"
+        android:name="kr.khs.oneboard.ui.ContentDetailFragment"
+        android:label="fragment_content_detail"
+        tools:layout="@layout/fragment_content_detail">
+        <argument
+            android:name="notice"
+            app:argType="kr.khs.oneboard.data.Notice"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <argument
+            android:name="assignment"
+            app:argType="kr.khs.oneboard.data.Assignment"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
 </navigation>

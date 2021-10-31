@@ -85,7 +85,12 @@ class AssignmentFragment : BaseFragment<FragmentAssignmentBinding, AssignmentVie
         with(binding.rvAssignments) {
             listAdapter = AssignmentListAdapter().apply {
                 listItemClickListener = { item ->
-                    // todo item click listener
+                    findNavController().navigate(
+                        AssignmentFragmentDirections.actionAssignmentFragmentToContentDetailFragment()
+                            .apply {
+                                assignment = item
+                            }
+                    )
                 }
                 listItemDeleteListener = { item ->
                     DialogUtil.createDialog(

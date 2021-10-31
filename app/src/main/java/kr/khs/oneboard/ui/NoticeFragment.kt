@@ -85,7 +85,12 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding, NoticeViewModel>() {
         with(binding.rvNotices) {
             listAdapter = NoticeListAdapter().apply {
                 listItemClickListener = { item ->
-                    // todo item click listener
+                    findNavController().navigate(
+                        NoticeFragmentDirections.actionNoticeFragmentToContentDetailFragment()
+                            .apply {
+                                notice = item
+                            }
+                    )
                 }
                 listItemDeleteListener = { item ->
                     DialogUtil.createDialog(

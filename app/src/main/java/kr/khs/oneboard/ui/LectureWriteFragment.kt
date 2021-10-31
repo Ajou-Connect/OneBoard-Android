@@ -126,9 +126,9 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
             viewModel.writeContent(
                 type,
                 if (type == TYPE_ASSIGNMENT)
-                    Assignment(1, 1, "1", "1", "1", 1L, 1L, "", "", "")
+                    Assignment(1, 1, "1", "1", "1", "1", 1L, 1L, "", "", "")
                 else
-                    Notice(1, 1, "1", "1", "1", 1L, 1L)
+                    Notice(1, 1, "1", "1", "1", "1", 1L, 1L)
             )
         }
     }
