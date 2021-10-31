@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.viewbinding.ViewBinding
 import kr.khs.oneboard.ui.MainActivity
 import kr.khs.oneboard.utils.DialogUtil
@@ -15,8 +16,8 @@ abstract class BaseFragment<T : ViewBinding, VM : BaseViewModel> : Fragment() {
     protected val binding: T
         get() = _binding!!
 
-    protected val parentViewModel: MainViewModel
-        get() = (requireActivity() as MainActivity).getViewModel()
+    protected val parentViewModel: MainViewModel by activityViewModels()
+
     abstract val viewModel: VM
 
     override fun onCreateView(
