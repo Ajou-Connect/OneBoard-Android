@@ -3,13 +3,11 @@ package kr.khs.oneboard.repository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kr.khs.oneboard.api.ApiService
-import kr.khs.oneboard.data.Assignment
-import kr.khs.oneboard.data.AttendanceLesson
-import kr.khs.oneboard.data.AttendanceStudent
-import kr.khs.oneboard.data.Notice
+import kr.khs.oneboard.data.*
 import kr.khs.oneboard.data.api.Response
 import kr.khs.oneboard.utils.SUCCESS
 import javax.inject.Inject
+import kotlin.random.Random
 
 class LectureRepositoryImpl @Inject constructor(
     val apiService: ApiService
@@ -27,6 +25,7 @@ class LectureRepositoryImpl @Inject constructor(
                             it,
                             "$lectureId - 공지 $it",
                             "내용 $it",
+                            "$it 교수",
                             "노출 날짜 $it",
                             it.toLong(),
                             it.toLong()
@@ -95,6 +94,7 @@ class LectureRepositoryImpl @Inject constructor(
                             it,
                             "$lectureId - 과제 $it",
                             "내용 $it",
+                            "$it 교수",
                             "노출 날짜 $it",
                             it.toLong(),
                             it.toLong(),
@@ -114,5 +114,37 @@ class LectureRepositoryImpl @Inject constructor(
 //            apiService.postAssignment()
 //        }
         return true
+    }
+
+    override suspend fun getSubmitAssignmentList(assignmentId: Int): List<Submit> {
+        val response: Response<List<Submit>>
+        withContext(Dispatchers.IO) {
+//            response = apiService.getSubmitAssignmentList(assignmentId)
+            response = Response(
+                SUCCESS,
+                (0 until 20)
+                    .map {
+                        val isScore = Random.nextBoolean()
+                        Submit(
+                            id = it,
+                            assignmentId = it * 10,
+                            studentId = it,
+                            studentName = "김희승$it",
+                            content = "Content $it",
+                            createdDT = "2021.10.$it",
+                            updatedDT = "$it",
+                            fileUrl = if (Random.nextBoolean()) "https://naver.com" else null,
+                            score = if (isScore) (0..100).random() else null,
+                            feedBack = if (isScore) "Feed Back $it" else null
+                        )
+                    }
+            )
+        }
+
+        return response.data
+    }
+
+    override suspend fun postAssignmentFeedBack(): Boolean {
+        TODO("Not yet implemented")
     }
 }

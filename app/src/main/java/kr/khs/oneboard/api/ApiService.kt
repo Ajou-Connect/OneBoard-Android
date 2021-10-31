@@ -1,9 +1,6 @@
 package kr.khs.oneboard.api
 
-import kr.khs.oneboard.data.Assignment
-import kr.khs.oneboard.data.AttendanceStudent
-import kr.khs.oneboard.data.Lecture
-import kr.khs.oneboard.data.Notice
+import kr.khs.oneboard.data.*
 import kr.khs.oneboard.data.api.Response
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -50,5 +47,9 @@ interface ApiService {
     @POST("lecture/assignment")
     suspend fun postAssignment()
 
-    // todo lecture/assignment/result부터
+    @POST("lecture/assignment/result")
+    suspend fun postAssignmentFeedBack(): Response<Boolean>
+
+    @GET("lecture/assignment/list")
+    suspend fun getSubmitAssignmentList(assignmentId: Int): Response<List<Submit>>
 }

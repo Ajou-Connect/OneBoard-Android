@@ -3,6 +3,7 @@ package kr.khs.oneboard.repository
 import kr.khs.oneboard.data.Assignment
 import kr.khs.oneboard.data.AttendanceStudent
 import kr.khs.oneboard.data.Notice
+import kr.khs.oneboard.data.Submit
 
 interface LectureRepository {
     suspend fun getNoticeList(lectureId: Int): List<Notice>
@@ -16,4 +17,8 @@ interface LectureRepository {
     suspend fun getAssignmentList(lectureId: Int): List<Assignment>
 
     suspend fun postAssignment(assignment: Assignment): Boolean
+
+    suspend fun getSubmitAssignmentList(assignmentId: Int): List<Submit>
+
+    suspend fun postAssignmentFeedBack(): Boolean
 }
