@@ -1,19 +1,24 @@
 package kr.khs.oneboard.ui
 
+import android.annotation.SuppressLint
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import com.noowenz.customdatetimepicker.CustomDateTimePicker
 import dagger.hilt.android.AndroidEntryPoint
 import kr.khs.oneboard.core.BaseFragment
 import kr.khs.oneboard.data.Assignment
 import kr.khs.oneboard.data.Notice
 import kr.khs.oneboard.databinding.FragmentLectureWriteBinding
+import kr.khs.oneboard.utils.PatternUtil
 import kr.khs.oneboard.utils.TYPE_ASSIGNMENT
 import kr.khs.oneboard.utils.TYPE_NOTICE
 import kr.khs.oneboard.utils.ToastUtil
 import kr.khs.oneboard.viewmodels.LectureWriteViewModel
+import java.util.*
 import kotlin.properties.Delegates
 
 @AndroidEntryPoint
@@ -68,8 +73,51 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
                 if (isChecked) View.INVISIBLE else View.VISIBLE
         }
 
+        binding.writeExposeTimeTextView.text =
+            PatternUtil.convertLongToTime(Calendar.getInstance().timeInMillis)
+
         binding.writeExposeTimeTextView.setOnClickListener {
-            // todo 달력 다이얼로그 띄워서 날짜 / 시간 지정할 수 있도록 설정
+            CustomDateTimePicker(
+                requireActivity(),
+                object : CustomDateTimePicker.ICustomDateTimeListener {
+                    override fun onCancel() {
+
+                    }
+
+                    @SuppressLint("SetTextI18n")
+                    override fun onSet(
+                        dialog: Dialog,
+                        calendarSelected: Calendar,
+                        dateSelected: Date,
+                        year: Int,
+                        monthFullName: String,
+                        monthShortName: String,
+                        monthNumber: Int,
+                        day: Int,
+                        weekDayFullName: String,
+                        weekDayShortName: String,
+                        hour24: Int,
+                        hour12: Int,
+                        min: Int,
+                        sec: Int,
+                        AM_PM: String
+                    ) {
+                        binding.writeExposeTimeTextView.text = String.format(
+                            "%d-%02d-%02d %02d:%02d",
+                            year,
+                            monthNumber + 1,
+                            day,
+                            hour24,
+                            min
+                        )
+                    }
+                }).apply {
+                set24HourFormat(true)
+                setMaxMinDisplayDate(
+                    minDate = Calendar.getInstance().timeInMillis
+                )
+                setDate(Calendar.getInstance())
+            }.showDialog()
         }
     }
 
