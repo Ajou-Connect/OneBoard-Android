@@ -27,9 +27,11 @@ class NoticeViewModel @Inject constructor(private val lectureRepository: Lecture
 
     fun deleteItem(item: Notice) {
         viewModelScope.launch {
+            showProgress()
             val success = lectureRepository.postNotice(item)
             if (success)
                 _list.value = _list.value!!.filter { it != item }
+            hideProgress()
         }
     }
 }

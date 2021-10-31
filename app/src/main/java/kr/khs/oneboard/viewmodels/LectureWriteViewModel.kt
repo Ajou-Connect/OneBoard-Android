@@ -22,6 +22,7 @@ class LectureWriteViewModel @Inject constructor(private val repository: LectureR
     fun writeContent(type: Boolean, item: LectureBase) {
         var result: Boolean
         viewModelScope.launch {
+            showProgress()
             result = when (type) {
                 TYPE_NOTICE -> {
                     Timber.tag("Write").d("${item as Notice}")
@@ -35,6 +36,7 @@ class LectureWriteViewModel @Inject constructor(private val repository: LectureR
             }
 
             status.value = result
+            hideProgress()
         }
     }
 }

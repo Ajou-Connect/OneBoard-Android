@@ -20,16 +20,20 @@ class AssignmentViewModel @Inject constructor(private val lectureRepository: Lec
 
     fun getList(lectureId: Int) {
         viewModelScope.launch {
+            showProgress()
             _list.value =
                 lectureRepository.getAssignmentList(lectureId)
+            hideProgress()
         }
     }
 
     fun deleteItem(item: Assignment) {
         viewModelScope.launch {
+            showProgress()
             val success = lectureRepository.postAssignment(item)
             if (success)
                 _list.value = _list.value!!.filter { it != item }
+            hideProgress()
         }
     }
 }
