@@ -152,4 +152,17 @@ class LectureRepositoryImpl @Inject constructor(
         }
         return response.data
     }
+
+    override suspend fun getGradeRatio(lectureId: Int): HashMap<String, Int> {
+        val response: Response<HashMap<String, Int>>
+        withContext(Dispatchers.IO) {
+//            response = apiService.getGradeRatio(lectureId)
+            response = Response(
+                SUCCESS,
+                hashMapOf("A" to 30, "B" to 70)
+            )
+        }
+
+        return response.data
+    }
 }

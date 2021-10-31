@@ -21,4 +21,6 @@ interface LectureRepository {
     suspend fun getSubmitAssignmentList(assignmentId: Int): List<Submit>
 
     suspend fun postAssignmentFeedBack(submit: Submit): Boolean
+
+    suspend fun getGradeRatio(lectureId: Int): HashMap<String, Int>
 }
