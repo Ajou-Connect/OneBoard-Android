@@ -128,6 +128,7 @@ class MainActivity : AppCompatActivity() {
                     navController.navigate(R.id.assignmentFragment)
                 }
                 R.id.lecture_menu_grade -> {
+                    navController.navigate(R.id.gradeFragment)
                 }
                 R.id.lecture_menu_understanding -> {
                 }
