@@ -1,7 +1,10 @@
 package kr.khs.oneboard.data
 
+import android.os.Parcelable
 import com.squareup.moshi.Json
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class Submit(
     val id: Int,
     @Json(name = "assignment_id")
@@ -19,4 +22,4 @@ data class Submit(
     val createdDT: String,
     @Json(name = "updated_dt")
     val updatedDT: String
-)
+) : Parcelable
