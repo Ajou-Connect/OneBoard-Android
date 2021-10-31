@@ -20,5 +20,5 @@ interface LectureRepository {
 
     suspend fun getSubmitAssignmentList(assignmentId: Int): List<Submit>
 
-    suspend fun postAssignmentFeedBack(): Boolean
+    suspend fun postAssignmentFeedBack(submit: Submit): Boolean
 }
