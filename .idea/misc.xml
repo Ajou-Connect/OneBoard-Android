@@ -19,6 +19,7 @@
         <entry key="app/src/main/res/layout/drawer_header.xml" value="0.5114583333333333" />
         <entry key="app/src/main/res/layout/fragment_assignment.xml" value="0.5114583333333333" />
         <entry key="app/src/main/res/layout/fragment_attendance.xml" value="0.5114583333333333" />
+        <entry key="app/src/main/res/layout/fragment_content_detail.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_lecture_base.xml" value="0.5114583333333333" />
         <entry key="app/src/main/res/layout/fragment_lecture_detail.xml" value="0.5114583333333333" />
         <entry key="app/src/main/res/layout/fragment_lecture_list.xml" value="0.24138804457953394" />
@@ -32,6 +33,7 @@
         <entry key="app/src/main/res/layout/list_item_lecture_base.xml" value="0.5114583333333333" />
         <entry key="app/src/main/res/layout/list_item_lecutre.xml" value="0.5114583333333333" />
         <entry key="app/src/main/res/layout/list_item_notice.xml" value="0.5114583333333333" />
+        <entry key="app/src/main/res/layout/list_item_submit.xml" value="0.375" />
         <entry key="app/src/main/res/menu/drawer_header_student.xml" value="0.5114583333333333" />
         <entry key="app/src/main/res/menu/drawer_menu_in_lecture.xml" value="0.5114583333333333" />
         <entry key="app/src/main/res/menu/drawer_menu_in_list.xml" value="0.5114583333333333" />

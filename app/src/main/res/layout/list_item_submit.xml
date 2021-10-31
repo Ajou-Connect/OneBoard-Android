@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="item"
+            type="kr.khs.oneboard.data.Submit" />
+
+        <variable
+            name="onClickListener"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="View"
+            type="android.view.View" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/submitStudentName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@{item.studentName}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="김희승" />
+
+        <TextView
+            android:id="@+id/submitFileUrl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@+id/submitStudentName"
+            app:layout_constraintTop_toBottomOf="@+id/submitStudentName"
+            tools:text="https://naver.com" />
+
+        <TextView
+            android:id="@+id/submitContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{item.content}"
+            app:layout_constraintStart_toStartOf="@+id/submitStudentName"
+            app:layout_constraintTop_toBottomOf="@+id/submitFileUrl"
+            tools:text="제출 내용" />
+
+        <TextView
+            android:id="@+id/submitScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@+id/submitStudentName"
+            app:layout_constraintTop_toBottomOf="@+id/submitContent"
+            tools:text="30" />
+
+        <TextView
+            android:id="@+id/submitDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="@{item.createdDT}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/submitStudentName"
+            tools:text="2021.01.01" />
+
+        <TextView
+            android:id="@+id/submitFeedback"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@+id/submitStudentName"
+            app:layout_constraintTop_toBottomOf="@+id/submitScore"
+            tools:text="Feed back" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
