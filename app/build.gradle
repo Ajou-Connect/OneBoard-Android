@@ -91,4 +91,7 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:$rootProject.okHttp_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.okHttp_version"
     implementation "com.squareup.moshi:moshi-kotlin:1.12.0"
+
+    // DateTimePicker
+    implementation 'com.github.noowenz:CustomDateTimePicker:1.01'
 }
