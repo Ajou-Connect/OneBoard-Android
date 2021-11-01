@@ -95,4 +95,9 @@
         android:name="kr.khs.oneboard.ui.GradeFragment"
         android:label="fragment_grade"
         tools:layout="@layout/fragment_grade" />
+    <fragment
+        android:id="@+id/lessonListFragment"
+        android:name="kr.khs.oneboard.ui.LessonListFragment"
+        android:label="fragment_lesson_list"
+        tools:layout="@layout/fragment_lesson_list" />
 </navigation>
