@@ -52,4 +52,13 @@ interface ApiService {
 
     @GET("lecture/assignment/list")
     suspend fun getSubmitAssignmentList(assignmentId: Int): Response<List<Submit>>
+
+    @GET("lecture/grade")
+    suspend fun getGrade()
+
+    @POST("lecture/grade/list")
+    suspend fun getGradeList(lectureId: Int): Response<List<GradeStudent>>
+
+    @GET("lecture/grade/ratio")
+    suspend fun getGradeRatio(lectureId: Int): Response<HashMap<String, Int>>
 }
