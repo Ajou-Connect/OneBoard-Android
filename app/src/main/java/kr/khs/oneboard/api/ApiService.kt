@@ -61,4 +61,12 @@ interface ApiService {
 
     @GET("lecture/grade/ratio")
     suspend fun getGradeRatio(lectureId: Int): Response<HashMap<String, Int>>
+
+    @GET("lecture/lesson")
+    suspend fun getLessonList(id: Int): Response<List<Lesson>>
+
+    @POST("lecture/lesson")
+    suspend fun postLesson(id: Int): Response<Boolean>
+
+    // get lecture/lesson/video 부터
 }
