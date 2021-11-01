@@ -7,7 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import kr.khs.oneboard.adapters.GradeListAdapter
 import kr.khs.oneboard.core.BaseFragment
 import kr.khs.oneboard.databinding.FragmentGradeBinding
 import kr.khs.oneboard.utils.TYPE_STUDENT
@@ -18,6 +21,8 @@ import timber.log.Timber
 @AndroidEntryPoint
 class GradeFragment : BaseFragment<FragmentGradeBinding, GradeViewModel>() {
     override val viewModel: GradeViewModel by viewModels()
+
+    private lateinit var gradeListAdapter: GradeListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,6 +48,10 @@ class GradeFragment : BaseFragment<FragmentGradeBinding, GradeViewModel>() {
                 binding.gradeBRatio.setText((it / 10).toString())
             }
         }
+
+        viewModel.gradeList.observe(viewLifecycleOwner) {
+            gradeListAdapter.submitList(it.toMutableList())
+        }
     }
 
     override fun getFragmentViewBinding(
@@ -52,6 +61,19 @@ class GradeFragment : BaseFragment<FragmentGradeBinding, GradeViewModel>() {
 
     override fun init() {
         initRatioLayout()
+        initGradeListRecyclerView()
+    }
+
+    private fun initGradeListRecyclerView() {
+        with(binding.gradeStudentList) {
+            gradeListAdapter = GradeListAdapter()
+            adapter = gradeListAdapter
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))
+        }
+
+        viewModel.getGradeList(parentViewModel.getLecture().id)
     }
 
     private fun initRatioLayout() {

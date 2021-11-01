@@ -20,6 +20,7 @@
         <entry key="app/src/main/res/layout/fragment_assignment.xml" value="0.5114583333333333" />
         <entry key="app/src/main/res/layout/fragment_attendance.xml" value="0.5114583333333333" />
         <entry key="app/src/main/res/layout/fragment_content_detail.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/fragment_grade.xml" value="0.5" />
         <entry key="app/src/main/res/layout/fragment_lecture_base.xml" value="0.5114583333333333" />
         <entry key="app/src/main/res/layout/fragment_lecture_detail.xml" value="0.5114583333333333" />
         <entry key="app/src/main/res/layout/fragment_lecture_list.xml" value="0.24138804457953394" />
@@ -30,6 +31,8 @@
         <entry key="app/src/main/res/layout/list_item_assignment.xml" value="0.5114583333333333" />
         <entry key="app/src/main/res/layout/list_item_attendance_lesson.xml" value="0.5114583333333333" />
         <entry key="app/src/main/res/layout/list_item_attendance_student.xml" value="0.5114583333333333" />
+        <entry key="app/src/main/res/layout/list_item_grade.xml" value="0.2604166666666667" />
+        <entry key="app/src/main/res/layout/list_item_grade_detail.xml" value="0.5114583333333333" />
         <entry key="app/src/main/res/layout/list_item_lecture.xml" value="0.5109375" />
         <entry key="app/src/main/res/layout/list_item_lecture_base.xml" value="0.5114583333333333" />
         <entry key="app/src/main/res/layout/list_item_lecutre.xml" value="0.5114583333333333" />

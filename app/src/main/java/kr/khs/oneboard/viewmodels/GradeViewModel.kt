@@ -6,12 +6,18 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kr.khs.oneboard.core.BaseViewModel
+import kr.khs.oneboard.data.GradeStudent
 import kr.khs.oneboard.repository.LectureRepository
 import javax.inject.Inject
 
 @HiltViewModel
 class GradeViewModel @Inject constructor(private val lectureRepository: LectureRepository) :
     BaseViewModel() {
+
+    private val _gradeList = MutableLiveData<List<GradeStudent>>()
+    val gradeList: LiveData<List<GradeStudent>>
+        get() = _gradeList
+
     private val _aRatio = MutableLiveData<Int>()
     val aRatio: LiveData<Int>
         get() = _aRatio
@@ -37,6 +43,14 @@ class GradeViewModel @Inject constructor(private val lectureRepository: LectureR
         }
         b?.let { b ->
             _bRatio.value = b
+        }
+    }
+
+    fun getGradeList(lectureId: Int) {
+        viewModelScope.launch {
+            showProgress()
+            _gradeList.value = lectureRepository.getGradeList(lectureId)
+            hideProgress()
         }
     }
 }
