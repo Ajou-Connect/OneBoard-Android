@@ -120,6 +120,7 @@ class MainActivity : AppCompatActivity() {
                     navController.navigate(R.id.noticeFragment)
                 }
                 R.id.lecture_menu_lesson -> {
+                    navController.navigate(R.id.lessonListFragment)
                 }
                 R.id.lecture_menu_attendance -> {
                     navController.navigate(R.id.attendanceFragment)
