@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -58,7 +59,7 @@ class LessonListFragment : BaseFragment<FragmentLessonListBinding, LessonListVie
 
         binding.rvLessonList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (dy < 0)
+                if (dy <= 0)
                     binding.fab.show()
                 else
                     binding.fab.hide()
@@ -66,7 +67,8 @@ class LessonListFragment : BaseFragment<FragmentLessonListBinding, LessonListVie
         })
 
         binding.fab.setOnClickListener {
-
+            // TODO: 2021/11/01 add lesson
+            findNavController().navigate(LessonListFragmentDirections.actionLessonListFragmentToLessonWriteFragment())
         }
     }
 
