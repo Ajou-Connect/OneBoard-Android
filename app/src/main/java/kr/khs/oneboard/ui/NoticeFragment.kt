@@ -61,7 +61,7 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding, NoticeViewModel>() {
         if (UserInfoUtil.type == TYPE_PROFESSOR) {
             binding.rvNotices.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    if (dy < 0)
+                    if (dy <= 0)
                         binding.fab.show()
                     else if (dy > 0)
                         binding.fab.hide()
