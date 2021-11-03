@@ -24,9 +24,10 @@
         android:id="@+id/lessonWriteDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="@+id/lessonwriteTitle"
-        app:layout_constraintTop_toBottomOf="@+id/lessonwriteTitle"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/lessonWriteTime"
+        app:layout_constraintEnd_toStartOf="@+id/lessonWriteTime"
+        app:layout_constraintTop_toTopOf="@+id/lessonWriteTime"
         tools:text="2021.11.04" />
 
     <TextView
@@ -34,6 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/lessonWriteCheckbox"
         app:layout_constraintEnd_toEndOf="@+id/lessonwriteTitle"
         app:layout_constraintTop_toBottomOf="@+id/lessonwriteTitle"
         tools:text="16:30" />
@@ -42,10 +44,10 @@
         android:id="@+id/lessonWriteSpinner"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="@+id/lessonwriteTitle"
         app:layout_constraintStart_toStartOf="@+id/lessonwriteTitle"
-        app:layout_constraintTop_toBottomOf="@+id/lessonWriteDate" />
+        app:layout_constraintTop_toBottomOf="@+id/lessonWriteCheckbox" />
 
     <TextView
         android:id="@+id/lessonWriteShowText"
@@ -76,4 +78,13 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/lessonWriteCheckbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="변경 하기"
+        app:layout_constraintStart_toStartOf="@+id/lessonwriteTitle"
+        app:layout_constraintTop_toBottomOf="@+id/lessonwriteTitle" />
 </androidx.constraintlayout.widget.ConstraintLayout>
