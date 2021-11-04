@@ -110,22 +110,6 @@ class LessonWriteFragment : BaseFragment<FragmentLessonWriteBinding, LessonWrite
             set(year, month, day)
         }
 
-        // 1안 : 이전 수업과 동일 체크박스
-        // 이전 수업과 동일로 할 경우 날짜는 어떻게?
-        binding.lessonWriteCheckbox.text = "이전 수업과 동일"
-        binding.lessonWriteCheckbox.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                binding.lessonWriteDate.text = "2021-11-04"
-                binding.lessonWriteTime.text = "16:30"
-                setDateTimeEnabled(false)
-            } else {
-                setDateTimeEnabled(true)
-            }
-        }
-        binding.lessonWriteDate.text = "2021-11-04"
-        binding.lessonWriteTime.text = "16:30"
-
-        // 2안 : 가장 가까운 날짜 디폴트로, 체크박스를 통해 수정 가능
         binding.lessonWriteCheckbox.text = "수정하기"
         setDateTimeEnabled(false)
         binding.lessonWriteCheckbox.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -140,7 +124,6 @@ class LessonWriteFragment : BaseFragment<FragmentLessonWriteBinding, LessonWrite
         binding.lessonWriteDate.text = "2021-11-04"
         binding.lessonWriteTime.text = "16:30"
 
-        // 1, 2안 끝
         binding.lessonWriteDate.setOnClickListener {
             DatePickerDialog(
                 requireContext(),
