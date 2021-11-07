@@ -20,6 +20,14 @@ class LessonListAdapter : ListAdapter<Lesson, RecyclerView.ViewHolder>(LessonDif
         private val binding: ListItemLessonBinding,
         private val itemClickListener: (Lesson) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.root.setOnClickListener {
+                binding.item?.let { item ->
+                    itemClickListener.invoke(item)
+                }
+            }
+        }
+
         fun bind(item: Lesson) {
             binding.item = item
             item.note?.let {
