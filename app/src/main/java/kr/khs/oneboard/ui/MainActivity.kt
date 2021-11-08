@@ -10,7 +10,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import kr.khs.oneboard.R
 import kr.khs.oneboard.databinding.ActivityMainBinding
 import kr.khs.oneboard.databinding.DrawerHeaderBinding
+import kr.khs.oneboard.utils.UserInfoUtil
 import kr.khs.oneboard.viewmodels.MainViewModel
+import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -29,6 +31,7 @@ class MainActivity : AppCompatActivity() {
         initDrawer()
         initNavigationView()
 
+        Timber.tag("JWT").d(UserInfoUtil.getToken(applicationContext))
     }
 
     private fun initDrawer() {
