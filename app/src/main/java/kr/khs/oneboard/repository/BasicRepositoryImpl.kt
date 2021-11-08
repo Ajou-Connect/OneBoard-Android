@@ -3,6 +3,7 @@ package kr.khs.oneboard.repository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kr.khs.oneboard.api.ApiService
+import kr.khs.oneboard.core.UseCase
 import kr.khs.oneboard.data.LoginBody
 import kr.khs.oneboard.data.LoginResponse
 import kr.khs.oneboard.data.api.BasicResponse
@@ -16,7 +17,7 @@ import javax.inject.Named
 class BasicRepositoryImpl @Inject constructor(
     @Named("withoutJWT") private val apiService: ApiService
 ) : BasicRepository {
-    override suspend fun loginCheck(token: String): Boolean {
+    override suspend fun loginCheck(token: String): UseCase<Boolean> {
         val response: BasicResponse
         withContext(Dispatchers.IO) {
             response = try {
@@ -25,23 +26,35 @@ class BasicRepositoryImpl @Inject constructor(
                 BasicResponseImpl(FAIL)
             }
         }
-        return response.result == SUCCESS
+        return if (response.result == SUCCESS)
+            UseCase.success(true)
+        else
+            UseCase.error("Invalidate Token")
     }
 
-    override suspend fun healthCheck(): Boolean {
+    override suspend fun healthCheck(): UseCase<Boolean> {
         val response: Response<Boolean>
-        withContext(Dispatchers.IO) {
+        try {
+            withContext(Dispatchers.IO) {
 //            response = apiService.healthCheck()
-            response = Response(SUCCESS, true)
+                response = Response(SUCCESS, true)
+            }
+        } catch (e: Exception) {
+            return UseCase.error("")
         }
-        return response.data
+
+        return UseCase.success(response.data)
     }
 
-    override suspend fun login(body: LoginBody): Response<LoginResponse> {
+    override suspend fun login(body: LoginBody): UseCase<Response<LoginResponse>> {
         val response: Response<LoginResponse>
-        withContext(Dispatchers.IO) {
-            response = apiService.login(body)
+        try {
+            withContext(Dispatchers.IO) {
+                response = apiService.login(body)
+            }
+        } catch (e: Exception) {
+            return UseCase.error("Invalidate email or password")
         }
-        return response
+        return UseCase.success(response)
     }
 }
