@@ -6,11 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import kr.khs.oneboard.repository.UserRepository
+import kr.khs.oneboard.repository.BasicRepository
 import javax.inject.Inject
 
 @HiltViewModel
-class SplashViewModel @Inject constructor(private val repository: UserRepository) : ViewModel() {
+class SplashViewModel @Inject constructor(private val repository: BasicRepository) : ViewModel() {
     private val _healthCheck = MutableLiveData(false)
     val healthCheck: LiveData<Boolean>
         get() = _healthCheck
