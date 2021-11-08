@@ -4,6 +4,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kr.khs.oneboard.api.ApiService
 import kr.khs.oneboard.data.Lecture
+import kr.khs.oneboard.data.User
 import kr.khs.oneboard.data.api.Response
 import kr.khs.oneboard.utils.SUCCESS
 import javax.inject.Inject
@@ -13,8 +14,13 @@ class UserRepositoryImpl @Inject constructor(
     @Named("withJWT") private val apiService: ApiService,
 ) : UserRepository {
 
-    override suspend fun getUserInfo() {
-        TODO("Not yet implemented")
+    override suspend fun getUserInfo(): Response<User> {
+        val response: Response<User>
+        withContext(Dispatchers.IO) {
+            response = apiService.getUserInfo()
+        }
+
+        return response
     }
 
     override suspend fun getUserLectures(): List<Lecture> {
