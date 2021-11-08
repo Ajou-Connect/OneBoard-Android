@@ -56,6 +56,13 @@ class LoginActivity : AppCompatActivity() {
                 DialogUtil.offLoadingDialog()
             }
         }
+
+        viewModel.isError.observe(this) {
+            if (it != "") {
+                ToastUtil.shortToast(applicationContext, it)
+                viewModel.setErrorMessage()
+            }
+        }
     }
 
     private fun initEditTextWatcher() {
