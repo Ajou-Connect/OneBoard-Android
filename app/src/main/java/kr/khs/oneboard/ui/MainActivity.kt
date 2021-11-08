@@ -8,9 +8,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import dagger.hilt.android.AndroidEntryPoint
 import kr.khs.oneboard.R
+import kr.khs.oneboard.data.User
 import kr.khs.oneboard.databinding.ActivityMainBinding
 import kr.khs.oneboard.databinding.DrawerHeaderBinding
-import kr.khs.oneboard.utils.UserInfoUtil
+import kr.khs.oneboard.extensions.restart
+import kr.khs.oneboard.utils.*
 import kr.khs.oneboard.viewmodels.MainViewModel
 import timber.log.Timber
 
@@ -32,6 +34,39 @@ class MainActivity : AppCompatActivity() {
         initNavigationView()
 
         Timber.tag("JWT").d(UserInfoUtil.getToken(applicationContext))
+
+        viewModel.isLoading.observe(this) {
+            if (it) {
+                DialogUtil.onLoadingDialog(this)
+            } else {
+                DialogUtil.offLoadingDialog()
+            }
+        }
+
+        viewModel.user.observe(this) {
+            when (it.result) {
+                SUCCESS -> {
+                    with(it.data) {
+                        this.setInfo()
+
+                        drawerHeaderBinding.drawerEmail.text = UserInfoUtil.email
+                        drawerHeaderBinding.drawerMajor.text = UserInfoUtil.major
+                        drawerHeaderBinding.drawerName.text = UserInfoUtil.name
+                        drawerHeaderBinding.drawerStudentId.text = UserInfoUtil.studentId
+                    }
+                }
+                FAIL -> {
+                    DialogUtil.createDialog(
+                        context = this,
+                        message = "유저 정보를 올바르게 불러오지 못했습니다.",
+                        positiveText = "다시 시도",
+                        negativeText = "앱 재시작",
+                        positiveAction = { viewModel.getUserInfo() },
+                        negativeAction = { restart() }
+                    )
+                }
+            }
+        }
     }
 
     private fun initDrawer() {
@@ -50,15 +85,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun initDrawerHeader() {
         with(drawerHeaderBinding) {
-            // todo 유저 정보 저장 후, 수정
-//            drawerEmail.text = UserInfoUtil.email
-//            drawerMajor.text = UserInfoUtil.major
-//            drawerName.text = UserInfoUtil.name
-//            drawerStudentId.text = UserInfoUtil.studentId
-            drawerEmail.text = "ks96ks@ajou.ac.kr"
-            drawerMajor.text = "사이버 보안학과"
-            drawerName.text = "김희승"
-            drawerStudentId.text = "201520930"
+            drawerEmail.text = ""
+            drawerMajor.text = ""
+            drawerName.text = ""
+            drawerStudentId.text = ""
         }
     }
 
@@ -83,5 +113,14 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         actionBarDrawerToggle.onOptionsItemSelected(item)
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun User.setInfo() {
+        UserInfoUtil.email = email
+        UserInfoUtil.major = major
+        UserInfoUtil.name = name
+        UserInfoUtil.studentId = studentNumber
+        UserInfoUtil.type = if (userType == "T") TYPE_PROFESSOR else TYPE_STUDENT
+        UserInfoUtil.univ = university
     }
 }
