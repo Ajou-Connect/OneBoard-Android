@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kr.khs.oneboard.core.BaseViewModel
+import kr.khs.oneboard.core.UseCase
 import kr.khs.oneboard.data.LoginBody
 import kr.khs.oneboard.data.LoginResponse
 import kr.khs.oneboard.data.api.Response
@@ -26,7 +27,11 @@ class LoginViewModel @Inject constructor(private val repository: BasicRepository
     fun login(email: String, password: String) {
         viewModelScope.launch {
             showProgress()
-            _loginYN.value = repository.login(LoginBody(email, password))
+            val response = repository.login(LoginBody(email, password))
+            if (response.status == UseCase.Status.SUCCESS)
+                _loginYN.value = response.data!!
+            else
+                setErrorMessage("알 수 없는 오류가 발생했습니다.\n다시 시도해주세요.")
             hideProgress()
         }
     }
