@@ -31,7 +31,7 @@ class SplashViewModel @Inject constructor(private val repository: UserRepository
 
     fun checkValidToken(token: String) {
         if (token == "")
-            _loginCheck.value = false
+            _loginCheck.value = true
         else {
             viewModelScope.launch {
                 _loginCheck.value = repository.loginCheck(token)
