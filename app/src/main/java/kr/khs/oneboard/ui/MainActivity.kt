@@ -12,7 +12,10 @@ import kr.khs.oneboard.data.User
 import kr.khs.oneboard.databinding.ActivityMainBinding
 import kr.khs.oneboard.databinding.DrawerHeaderBinding
 import kr.khs.oneboard.extensions.restart
-import kr.khs.oneboard.utils.*
+import kr.khs.oneboard.utils.DialogUtil
+import kr.khs.oneboard.utils.TYPE_PROFESSOR
+import kr.khs.oneboard.utils.TYPE_STUDENT
+import kr.khs.oneboard.utils.UserInfoUtil
 import kr.khs.oneboard.viewmodels.MainViewModel
 import timber.log.Timber
 
@@ -43,28 +46,23 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.user.observe(this) {
-            when (it.result) {
-                SUCCESS -> {
-                    with(it.data) {
-                        this.setInfo()
+        viewModel.user.observe(this) { user ->
+            user?.let {
+                user.setInfo()
 
-                        drawerHeaderBinding.drawerEmail.text = UserInfoUtil.email
-                        drawerHeaderBinding.drawerMajor.text = UserInfoUtil.major
-                        drawerHeaderBinding.drawerName.text = UserInfoUtil.name
-                        drawerHeaderBinding.drawerStudentId.text = UserInfoUtil.studentId
-                    }
-                }
-                FAIL -> {
-                    DialogUtil.createDialog(
-                        context = this,
-                        message = "유저 정보를 올바르게 불러오지 못했습니다.",
-                        positiveText = "다시 시도",
-                        negativeText = "앱 재시작",
-                        positiveAction = { viewModel.getUserInfo() },
-                        negativeAction = { restart() }
-                    )
-                }
+                drawerHeaderBinding.drawerEmail.text = UserInfoUtil.email
+                drawerHeaderBinding.drawerMajor.text = UserInfoUtil.major
+                drawerHeaderBinding.drawerName.text = UserInfoUtil.name
+                drawerHeaderBinding.drawerStudentId.text = UserInfoUtil.studentId
+            } ?: run {
+                DialogUtil.createDialog(
+                    context = this,
+                    message = "유저 정보를 올바르게 불러오지 못했습니다.",
+                    positiveText = "다시 시도",
+                    negativeText = "앱 재시작",
+                    positiveAction = { viewModel.getUserInfo() },
+                    negativeAction = { restart() }
+                )
             }
         }
     }
