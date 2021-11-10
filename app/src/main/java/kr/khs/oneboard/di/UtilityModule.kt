@@ -16,7 +16,7 @@ import javax.inject.Singleton
 class UtilityModule {
 
     @Provides
-    fun provideListener(): ZoomInstantSDKDelegate = object : ZoomInstantSDKDelegate {
+    fun provideListener(): ZoomVideoSDKDelegate = object : ZoomVideoSDKDelegate {
         override fun onSessionJoin() {
             Timber.tag("ZoomListener").d("onSessionJoin()")
         }
@@ -30,91 +30,95 @@ class UtilityModule {
         }
 
         override fun onUserJoin(
-            p0: ZoomInstantSDKUserHelper?,
-            p1: MutableList<ZoomInstantSDKUser>?
+            p0: ZoomVideoSDKUserHelper?,
+            p1: MutableList<ZoomVideoSDKUser>?
         ) {
             Timber.tag("ZoomListener").d("onUserJoin()")
         }
 
         override fun onUserLeave(
-            p0: ZoomInstantSDKUserHelper?,
-            p1: MutableList<ZoomInstantSDKUser>?
+            p0: ZoomVideoSDKUserHelper?,
+            p1: MutableList<ZoomVideoSDKUser>?
         ) {
             Timber.tag("ZoomListener").d("onUserLeave()")
         }
 
         override fun onUserVideoStatusChanged(
-            p0: ZoomInstantSDKVideoHelper?,
-            p1: MutableList<ZoomInstantSDKUser>?
+            p0: ZoomVideoSDKVideoHelper?,
+            p1: MutableList<ZoomVideoSDKUser>?
         ) {
             Timber.tag("ZoomListener").d("onUserVideoStatusChanged()")
         }
 
         override fun onUserAudioStatusChanged(
-            p0: ZoomInstantSDKAudioHelper?,
-            p1: MutableList<ZoomInstantSDKUser>?
+            p0: ZoomVideoSDKAudioHelper?,
+            p1: MutableList<ZoomVideoSDKUser>?
         ) {
             Timber.tag("ZoomListener").d("onUserAudioStatusChanged()")
         }
 
         override fun onUserShareStatusChanged(
-            p0: ZoomInstantSDKShareHelper?,
-            p1: ZoomInstantSDKUser?,
-            p2: ZoomInstantSDKShareStatus?
+            p0: ZoomVideoSDKShareHelper?,
+            p1: ZoomVideoSDKUser?,
+            p2: ZoomVideoSDKShareStatus?
         ) {
             Timber.tag("ZoomListener").d("onUserShareStatusChanged()")
         }
 
         override fun onLiveStreamStatusChanged(
-            p0: ZoomInstantSDKLiveStreamHelper?,
-            p1: ZoomInstantSDKLiveStreamStatus?
+            p0: ZoomVideoSDKLiveStreamHelper?,
+            p1: ZoomVideoSDKLiveStreamStatus?
         ) {
             Timber.tag("ZoomListener").d("onLiveStreamStatusChanged()")
         }
 
         override fun onChatNewMessageNotify(
-            p0: ZoomInstantSDKChatHelper?,
-            p1: ZoomInstantSDKChatMessage?
+            p0: ZoomVideoSDKChatHelper?,
+            p1: ZoomVideoSDKChatMessage?
         ) {
             Timber.tag("ZoomListener").d("onChatNewMessageNotify()")
         }
 
-        override fun onUserHostChanged(p0: ZoomInstantSDKUserHelper?, p1: ZoomInstantSDKUser?) {
+        override fun onUserHostChanged(p0: ZoomVideoSDKUserHelper?, p1: ZoomVideoSDKUser?) {
             Timber.tag("ZoomListener").d("onUserHostChanged()")
         }
 
-        override fun onUserManagerChanged(p0: ZoomInstantSDKUser?) {
+        override fun onUserManagerChanged(p0: ZoomVideoSDKUser?) {
             Timber.tag("ZoomListener").d("onUserManagerChanged()")
         }
 
-        override fun onUserNameChanged(p0: ZoomInstantSDKUser?) {
+        override fun onUserNameChanged(p0: ZoomVideoSDKUser?) {
             Timber.tag("ZoomListener").d("onUserNameChanged()")
         }
 
         override fun onUserActiveAudioChanged(
-            p0: ZoomInstantSDKAudioHelper?,
-            p1: MutableList<ZoomInstantSDKUser>?
+            p0: ZoomVideoSDKAudioHelper?,
+            p1: MutableList<ZoomVideoSDKUser>?
         ) {
             Timber.tag("ZoomListener").d("onUserActiveAudioChanged()")
         }
 
-        override fun onSessionNeedPassword(p0: ZoomInstantSDKPasswordHandler?) {
+        override fun onSessionNeedPassword(p0: ZoomVideoSDKPasswordHandler?) {
             Timber.tag("ZoomListener").d("onSessionNeedPassword()")
         }
 
-        override fun onSessionPasswordWrong(p0: ZoomInstantSDKPasswordHandler?) {
+        override fun onSessionPasswordWrong(p0: ZoomVideoSDKPasswordHandler?) {
             Timber.tag("ZoomListener").d("onSessionPasswordWrong()")
         }
 
-        override fun onMixedAudioRawDataReceived(p0: ZoomInstantSDKAudioRawData?) {
+        override fun onMixedAudioRawDataReceived(p0: ZoomVideoSDKAudioRawData?) {
             Timber.tag("ZoomListener").d("onMixedAudioRawDataReceived()")
         }
 
         override fun onOneWayAudioRawDataReceived(
-            p0: ZoomInstantSDKAudioRawData?,
-            p1: ZoomInstantSDKUser?
+            p0: ZoomVideoSDKAudioRawData?,
+            p1: ZoomVideoSDKUser?
         ) {
             Timber.tag("ZoomListener").d("onOneWayAudioRawDataReceived()")
+        }
+
+        override fun onShareAudioRawDataReceived(p0: ZoomVideoSDKAudioRawData?) {
+            Timber.tag("ZoomListener").d("onShareAudioRawDataReceived()")
         }
 
     }
@@ -123,29 +127,29 @@ class UtilityModule {
     @Provides
     fun provideZoomSDK(
         @ApplicationContext context: Context,
-        listener: ZoomInstantSDKDelegate
-    ): ZoomInstantSDK {
-        val params = ZoomInstantSDKInitParams().apply {
+        listener: ZoomVideoSDKDelegate
+    ): ZoomVideoSDK {
+        val params = ZoomVideoSDKInitParams().apply {
             domain = WEB_DOMAIN
             logFilePrefix = "OneBoardLogPrefix"
             enableLog = true
             videoRawDataMemoryMode =
-                ZoomInstantSDKRawDataMemoryMode.ZoomInstantSDKRawDataMemoryModeHeap
+                ZoomVideoSDKRawDataMemoryMode.ZoomVideoSDKRawDataMemoryModeHeap
             audioRawDataMemoryMode =
-                ZoomInstantSDKRawDataMemoryMode.ZoomInstantSDKRawDataMemoryModeHeap
+                ZoomVideoSDKRawDataMemoryMode.ZoomVideoSDKRawDataMemoryModeHeap
             shareRawDataMemoryMode =
-                ZoomInstantSDKRawDataMemoryMode.ZoomInstantSDKRawDataMemoryModeHeap
+                ZoomVideoSDKRawDataMemoryMode.ZoomVideoSDKRawDataMemoryModeHeap
         }
-        val ret = ZoomInstantSDK.getInstance().initialize(context, params)
+        val ret = ZoomVideoSDK.getInstance().initialize(context, params)
 
         Timber.tag("ZoomInit").d(
             when (ret) {
-                ZoomInstantSDKErrors.Errors_Success -> "SUCCESS"
+                ZoomVideoSDKErrors.Errors_Success -> "SUCCESS"
                 else -> "ERROR"
             }
         )
 
-        ZoomInstantSDK.getInstance().addListener(listener)
-        return ZoomInstantSDK.getInstance()
+        ZoomVideoSDK.getInstance().addListener(listener)
+        return ZoomVideoSDK.getInstance()
     }
 }

@@ -12,10 +12,7 @@ import kr.khs.oneboard.databinding.FragmentLessonDetailBinding
 import kr.khs.oneboard.utils.*
 import kr.khs.oneboard.viewmodels.LessonDetailViewModel
 import timber.log.Timber
-import us.zoom.sdk.ZoomInstantSDK
-import us.zoom.sdk.ZoomInstantSDKAudioOption
-import us.zoom.sdk.ZoomInstantSDKSessionContext
-import us.zoom.sdk.ZoomInstantSDKVideoOption
+import us.zoom.sdk.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -23,7 +20,7 @@ class LessonDetailFragment : BaseFragment<FragmentLessonDetailBinding, LessonDet
     override val viewModel: LessonDetailViewModel by viewModels()
 
     @Inject
-    lateinit var zoom: ZoomInstantSDK
+    lateinit var zoom: ZoomVideoSDK
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -64,15 +61,15 @@ class LessonDetailFragment : BaseFragment<FragmentLessonDetailBinding, LessonDet
         // https://devforum.zoom.us/t/cannot-join-web-meeting/58071/8
         binding.lessonDetailBtn.setOnClickListener {
             if (UserInfoUtil.type == TYPE_PROFESSOR) {
-                val sessionContext = ZoomInstantSDKSessionContext().apply {
+                val sessionContext = ZoomVideoSDKSessionContext().apply {
                     sessionName = "mysession_oneboard"
                     userName = "ricky"
                     token = createJWT(sessionName, userName)
-                    audioOption = ZoomInstantSDKAudioOption().apply {
+                    audioOption = ZoomVideoSDKAudioOption().apply {
                         connect = true
                         mute = true
                     }
-                    videoOption = ZoomInstantSDKVideoOption().apply {
+                    videoOption = ZoomVideoSDKVideoOption().apply {
                         localVideoOn = false
                     }
                 }
