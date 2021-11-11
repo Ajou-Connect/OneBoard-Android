@@ -10,7 +10,11 @@ interface LectureRepository {
 
     suspend fun postNotice(lectureId: Int, notice: NoticeUpdateRequestDto): UseCase<Boolean>
 
-    suspend fun putNotice(lectureId: Int, noticeId: Int, notice: NoticeUpdateRequestDto): UseCase<Boolean>
+    suspend fun putNotice(
+        lectureId: Int,
+        noticeId: Int,
+        notice: NoticeUpdateRequestDto
+    ): UseCase<Boolean>
 
     suspend fun deleteNotice(lectureId: Int, noticeId: Int): UseCase<Boolean>
 
