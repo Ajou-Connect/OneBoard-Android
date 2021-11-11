@@ -9,6 +9,7 @@ import androidx.viewbinding.ViewBinding
 import kr.khs.oneboard.ui.MainActivity
 import kr.khs.oneboard.utils.DialogUtil
 import kr.khs.oneboard.viewmodels.MainViewModel
+import kr.khs.oneboard.utils.ToastUtil
 
 abstract class BaseFragment<T : ViewBinding, VM : BaseViewModel> : Fragment() {
     private var _binding: T? = null
@@ -39,6 +40,13 @@ abstract class BaseFragment<T : ViewBinding, VM : BaseViewModel> : Fragment() {
                 DialogUtil.onLoadingDialog(requireActivity())
             } else {
                 DialogUtil.offLoadingDialog()
+            }
+        }
+
+        viewModel.isError.observe(viewLifecycleOwner) {
+            if (it != "") {
+                ToastUtil.shortToast(requireContext(), it)
+                viewModel.setErrorMessage()
             }
         }
     }
