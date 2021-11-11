@@ -136,6 +136,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.list_menu_logout -> {
                     UserInfoUtil.setToken(this, "")
                     startActivity(Intent(this, SplashActivity::class.java))
+                    finish()
                 }
                 R.id.lecture_menu_plan -> {
                     navController.navigate(R.id.lecturePlanFragment)
@@ -160,6 +161,11 @@ class MainActivity : AppCompatActivity() {
                         null,
                         NavOptions.Builder().setPopUpTo(R.id.lectureListFragment, true).build()
                     )
+                }
+                R.id.lecture_menu_logout -> {
+                    UserInfoUtil.setToken(this, "")
+                    startActivity(Intent(this, SplashActivity::class.java))
+                    finish()
                 }
             }
             binding.drawerLayout.closeDrawer(GravityCompat.START)
