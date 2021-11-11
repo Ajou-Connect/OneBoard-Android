@@ -9,5 +9,19 @@
         android:id="@+id/lectureListFragment"
         android:name="kr.khs.oneboard.ui.LectureListFragment"
         android:label="fragment_lecture_list"
-        tools:layout="@layout/fragment_lecture_list" />
+        tools:layout="@layout/fragment_lecture_list">
+        <action
+            android:id="@+id/action_lectureListFragment_to_lectureDetailFragment"
+            app:destination="@id/lectureDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/lectureDetailFragment"
+        android:name="kr.khs.oneboard.ui.LectureDetailFragment"
+        android:label="fragment_lecture_detail"
+        tools:layout="@layout/fragment_lecture_detail"></fragment>
+    <fragment
+        android:id="@+id/lecturePlanFragment"
+        android:name="kr.khs.oneboard.ui.LecturePlanFragment"
+        android:label="fragment_lecture_plan"
+        tools:layout="@layout/fragment_lecture_plan"></fragment>
 </navigation>

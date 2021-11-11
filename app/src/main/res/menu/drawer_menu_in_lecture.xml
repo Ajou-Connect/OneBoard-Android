@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/lecture_menu_plan"
+        android:title="강의 계획서" />
+    <item
+        android:id="@+id/lecture_menu_notice"
+        android:title="공지사항" />
+    <item
+        android:id="@+id/lecture_menu_lesson"
+        android:title="수업" />
+    <item
+        android:id="@+id/lecture_menu_attendance"
+        android:title="출석" />
+    <item
+        android:id="@+id/lecture_menu_assignment"
+        android:title="과제/시험" />
+    <item
+        android:id="@+id/lecture_menu_grade"
+        android:title="성적" />
+    <item
+        android:id="@+id/lecture_menu_understanding"
+        android:title="분석 정보 확인" />
+</menu>

@@ -1,21 +1,22 @@
 package kr.khs.oneboard.ui
 
+import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kr.khs.oneboard.R
 import kr.khs.oneboard.data.User
 import kr.khs.oneboard.databinding.ActivityMainBinding
 import kr.khs.oneboard.databinding.DrawerHeaderBinding
 import kr.khs.oneboard.extensions.restart
-import kr.khs.oneboard.utils.DialogUtil
-import kr.khs.oneboard.utils.TYPE_PROFESSOR
-import kr.khs.oneboard.utils.TYPE_STUDENT
-import kr.khs.oneboard.utils.UserInfoUtil
+import kr.khs.oneboard.utils.*
 import kr.khs.oneboard.viewmodels.MainViewModel
 import timber.log.Timber
 
@@ -28,6 +29,9 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var drawerHeaderBinding: DrawerHeaderBinding
     private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
+    private lateinit var navController: NavController
+    private val BACK_PRESSED = 2000L
+    private var curBackPressed = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,6 +71,26 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("RestrictedApi")
+    override fun onBackPressed() {
+        if (binding.drawerLayout.isOpen)
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+        else {
+            when {
+                navController.backStack.size > 2 -> {
+                    navController.popBackStack()
+                }
+                System.currentTimeMillis() - curBackPressed <= BACK_PRESSED -> {
+                    super.onBackPressed()
+                }
+                else -> {
+                    ToastUtil.shortToast(applicationContext, "뒤로가기 버튼을 한 번 더 누르면 종료됩니다.")
+                    curBackPressed = System.currentTimeMillis()
+                }
+            }
+        }
+    }
+
     private fun initDrawer() {
         actionBarDrawerToggle =
             ActionBarDrawerToggle(this, binding.drawerLayout, R.string.app_name, R.string.app_name)
@@ -82,6 +106,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initDrawerHeader() {
+        navController =
+            (supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment).navController
         with(drawerHeaderBinding) {
             drawerEmail.text = ""
             drawerMajor.text = ""
@@ -91,17 +117,39 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initNavigationView() {
-        // todo 교수, 학생일 경우 다른 메뉴 inflate
-        binding.navigationView.inflateMenu(
-//            if(UserInfoUtil.type)
-            R.menu.drawer_menu_professor
-//            else
-//                R.menu.drawer_menu_student
-        )
+        inflateLectureMenu()
+
+        // sample code
+        // navController.navigate(R.id.lectureDetailFragment, bundleOf("lectureInfo" to Lecture(1, "1", "1", "1")))
 
         binding.navigationView.setNavigationItemSelectedListener { menuItem ->
+            Timber.tag("currentDestination").d("${navController.currentDestination}")
             when (menuItem.itemId) {
-
+                R.id.list_menu_attendance -> {
+                }
+                R.id.list_menu_grade -> {
+                }
+                R.id.list_menu_lecture -> {
+                }
+                R.id.list_menu_logout -> {
+                    UserInfoUtil.setToken(this, "")
+                    startActivity(Intent(this, SplashActivity::class.java))
+                }
+                R.id.lecture_menu_plan -> {
+                    navController.navigate(R.id.lecturePlanFragment)
+                }
+                R.id.lecture_menu_notice -> {
+                }
+                R.id.lecture_menu_lesson -> {
+                }
+                R.id.lecture_menu_attendance -> {
+                }
+                R.id.lecture_menu_assignment -> {
+                }
+                R.id.lecture_menu_grade -> {
+                }
+                R.id.lecture_menu_understanding -> {
+                }
             }
             binding.drawerLayout.closeDrawer(GravityCompat.START)
             false
@@ -112,6 +160,19 @@ class MainActivity : AppCompatActivity() {
         actionBarDrawerToggle.onOptionsItemSelected(item)
         return super.onOptionsItemSelected(item)
     }
+
+    fun inflateLectureMenu(isDetail: Boolean = false) {
+        binding.navigationView.menu.clear()
+        binding.navigationView.inflateMenu(
+            if (isDetail)
+                R.menu.drawer_menu_in_lecture
+            else
+                R.menu.drawer_menu_in_list
+        )
+    }
+
+    @JvmName("getViewModel1")
+    fun getViewModel() = viewModel
 
     private fun User.setInfo() {
         UserInfoUtil.email = email

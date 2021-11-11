@@ -9,6 +9,7 @@
         <entry key="app/src/main/res/layout/dialog_loading.xml" value="0.22685185185185186" />
         <entry key="app/src/main/res/layout/drawer_header.xml" value="0.5114583333333333" />
         <entry key="app/src/main/res/layout/fragment_lecture_list.xml" value="0.24138804457953394" />
+        <entry key="app/src/main/res/layout/list_item_lecture.xml" value="0.3" />
         <entry key="app/src/main/res/layout/list_item_lecutre.xml" value="0.5114583333333333" />
         <entry key="app/src/main/res/menu/drawer_header_student.xml" value="0.5114583333333333" />
         <entry key="app/src/main/res/menu/drawer_menu_professor.xml" value="0.5114583333333333" />
