@@ -5,12 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kr.khs.oneboard.api.ApiService
-import kr.khs.oneboard.repository.LectureRepository
-import kr.khs.oneboard.repository.LectureRepositoryImpl
-import kr.khs.oneboard.repository.BasicRepository
-import kr.khs.oneboard.repository.BasicRepositoryImpl
-import kr.khs.oneboard.repository.UserRepository
-import kr.khs.oneboard.repository.UserRepositoryImpl
+import kr.khs.oneboard.repository.*
 import javax.inject.Named
 import javax.inject.Singleton
 
