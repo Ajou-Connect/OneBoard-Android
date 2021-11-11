@@ -1,14 +1,20 @@
 package kr.khs.oneboard.repository
 
+import kr.khs.oneboard.core.UseCase
 import kr.khs.oneboard.data.Assignment
 import kr.khs.oneboard.data.Notice
+import kr.khs.oneboard.data.request.NoticeUpdateRequestDto
 
 interface LectureRepository {
-    suspend fun getNoticeList(lectureId: Int): List<Notice>
+    suspend fun getNoticeList(lectureId: Int): UseCase<List<Notice>>
 
-    suspend fun postNotice(notice: Notice): Boolean
+    suspend fun postNotice(lectureId: Int, notice: NoticeUpdateRequestDto): UseCase<Boolean>
 
-    suspend fun getAssignmentList(lectureId: Int): List<Assignment>
+    suspend fun putNotice(lectureId: Int, noticeId: Int, notice: NoticeUpdateRequestDto): UseCase<Boolean>
 
-    suspend fun postAssignment(assignment: Assignment): Boolean
+    suspend fun deleteNotice(lectureId: Int, noticeId: Int): UseCase<Boolean>
+
+    suspend fun getAssignmentList(lectureId: Int): UseCase<List<Assignment>>
+
+    suspend fun postAssignment(assignment: Assignment): UseCase<Boolean>
 }
