@@ -6,11 +6,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import kr.khs.oneboard.repository.UserRepository
+import kr.khs.oneboard.core.UseCase
+import kr.khs.oneboard.repository.BasicRepository
 import javax.inject.Inject
 
 @HiltViewModel
-class SplashViewModel @Inject constructor(private val repository: UserRepository) : ViewModel() {
+class SplashViewModel @Inject constructor(private val repository: BasicRepository) : ViewModel() {
     private val _healthCheck = MutableLiveData(false)
     val healthCheck: LiveData<Boolean>
         get() = _healthCheck
@@ -25,7 +26,15 @@ class SplashViewModel @Inject constructor(private val repository: UserRepository
 
     fun checkHealth() {
         viewModelScope.launch {
-            _healthCheck.value = repository.healthCheck()
+            val response = repository.healthCheck()
+            _healthCheck.value = when (response.status) {
+                UseCase.Status.SUCCESS -> {
+                    true
+                }
+                UseCase.Status.ERROR -> {
+                    false
+                }
+            }
         }
     }
 
@@ -34,7 +43,15 @@ class SplashViewModel @Inject constructor(private val repository: UserRepository
             _loginCheck.value = false
         else {
             viewModelScope.launch {
-                _loginCheck.value = repository.loginCheck(token)
+                val response = repository.loginCheck(token)
+                _loginCheck.value = when (response.status) {
+                    UseCase.Status.SUCCESS -> {
+                        true
+                    }
+                    UseCase.Status.ERROR -> {
+                        false
+                    }
+                }
             }
         }
     }

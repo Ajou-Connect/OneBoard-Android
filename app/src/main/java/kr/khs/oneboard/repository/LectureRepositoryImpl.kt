@@ -8,9 +8,10 @@ import kr.khs.oneboard.data.Notice
 import kr.khs.oneboard.data.api.Response
 import kr.khs.oneboard.utils.SUCCESS
 import javax.inject.Inject
+import javax.inject.Named
 
 class LectureRepositoryImpl @Inject constructor(
-    val apiService: ApiService
+    @Named("withJWT") private val apiService: ApiService
 ) : LectureRepository {
     override suspend fun getNoticeList(lectureId: Int): List<Notice> {
         val response: Response<List<Notice>>
