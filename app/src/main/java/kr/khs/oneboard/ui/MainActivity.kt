@@ -15,12 +15,8 @@ import kr.khs.oneboard.R
 import kr.khs.oneboard.data.User
 import kr.khs.oneboard.databinding.ActivityMainBinding
 import kr.khs.oneboard.databinding.DrawerHeaderBinding
-import kr.khs.oneboard.utils.ToastUtil
 import kr.khs.oneboard.extensions.restart
-import kr.khs.oneboard.utils.DialogUtil
-import kr.khs.oneboard.utils.TYPE_PROFESSOR
-import kr.khs.oneboard.utils.TYPE_STUDENT
-import kr.khs.oneboard.utils.UserInfoUtil
+import kr.khs.oneboard.utils.*
 import kr.khs.oneboard.viewmodels.MainViewModel
 import timber.log.Timber
 
