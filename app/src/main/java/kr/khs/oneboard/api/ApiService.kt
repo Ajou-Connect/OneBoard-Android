@@ -3,10 +3,8 @@ package kr.khs.oneboard.api
 import kr.khs.oneboard.data.*
 import kr.khs.oneboard.data.api.BasicResponseImpl
 import kr.khs.oneboard.data.api.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.POST
+import kr.khs.oneboard.data.request.NoticeUpdateRequestDto
+import retrofit2.http.*
 
 interface ApiService {
     @GET("healthCheck")
@@ -21,7 +19,7 @@ interface ApiService {
     @GET("auth/check")
     suspend fun loginCheck(@Header("X-AUTH-TOKEN") token: String): BasicResponseImpl
 
-    @GET("/user")
+    @GET("user")
     suspend fun getUserInfo(): Response<User>
 
     @GET("user/lectures")
@@ -30,12 +28,27 @@ interface ApiService {
     @GET("lecture")
     suspend fun getUserLecture(): Response<Lecture>
 
-    @GET("lecture/notice")
-    suspend fun getNoticeList(lectureId: Int): Response<List<Notice>>
+    @GET("lecture/{lectureId}/notices")
+    suspend fun getNoticeList(@Path("lectureId") lectureId: Int): Response<List<Notice>>
 
-    // todo 등록, 수정, 삭제
-    @POST("lecture/notice")
-    suspend fun postNotice()
+    @POST("lecture/{lectureId}/notice")
+    suspend fun postNotice(
+        @Path("lectureId") lectureId: Int,
+        @Body dto: NoticeUpdateRequestDto
+    ): BasicResponseImpl
+
+    @PUT("/lecture/{lectureId}/notice/{noticeId}")
+    suspend fun putNotice(
+        @Path("lectureId") lectureId: Int,
+        @Path("noticeId") noticeId: Int,
+        @Body dto: NoticeUpdateRequestDto
+    ): BasicResponseImpl
+
+    @DELETE("/lecture/{lectureId}/notice/{noticeId}")
+    suspend fun deleteNotice(
+        @Path("lectureId") lectureId: Int,
+        @Path("noticeId") noticeId: Int
+    ): BasicResponseImpl
 
 //    @GET("lecture/attendance")
 //    suspend fun getAttendance()
