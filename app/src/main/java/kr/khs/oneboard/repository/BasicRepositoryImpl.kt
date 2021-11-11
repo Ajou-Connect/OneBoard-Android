@@ -11,6 +11,7 @@ import kr.khs.oneboard.data.api.BasicResponseImpl
 import kr.khs.oneboard.data.api.Response
 import kr.khs.oneboard.utils.FAIL
 import kr.khs.oneboard.utils.SUCCESS
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -23,6 +24,7 @@ class BasicRepositoryImpl @Inject constructor(
             response = try {
                 apiService.loginCheck(token)
             } catch (e: Exception) {
+                Timber.e(e)
                 BasicResponseImpl(FAIL)
             }
         }
@@ -40,6 +42,7 @@ class BasicRepositoryImpl @Inject constructor(
                 response = Response(SUCCESS, true)
             }
         } catch (e: Exception) {
+            Timber.e(e)
             return UseCase.error("")
         }
 
@@ -53,6 +56,7 @@ class BasicRepositoryImpl @Inject constructor(
                 response = apiService.login(body)
             }
         } catch (e: Exception) {
+            Timber.e(e)
             return UseCase.error("Invalidate email or password")
         }
         return UseCase.success(response)

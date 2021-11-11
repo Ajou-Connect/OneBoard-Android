@@ -8,6 +8,7 @@ import kr.khs.oneboard.data.Lecture
 import kr.khs.oneboard.data.User
 import kr.khs.oneboard.data.api.Response
 import kr.khs.oneboard.utils.SUCCESS
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -22,6 +23,7 @@ class UserRepositoryImpl @Inject constructor(
                 response = apiService.getUserInfo()
             }
         } catch (e: Exception) {
+            Timber.e(e)
             return UseCase.error("API Error")
         }
 
@@ -76,6 +78,7 @@ class UserRepositoryImpl @Inject constructor(
                 )
             }
         } catch (e: Exception) {
+            Timber.e(e)
             return UseCase.error("")
         }
         return UseCase.success(response.data)
