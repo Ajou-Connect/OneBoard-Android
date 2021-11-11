@@ -7,20 +7,20 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import kr.khs.oneboard.core.BaseFragment
-import kr.khs.oneboard.data.Assignment
-import kr.khs.oneboard.data.Notice
+import kr.khs.oneboard.data.request.NoticeUpdateRequestDto
 import kr.khs.oneboard.databinding.FragmentLectureWriteBinding
+import kr.khs.oneboard.extensions.toDateTime
 import kr.khs.oneboard.utils.TYPE_ASSIGNMENT
 import kr.khs.oneboard.utils.TYPE_NOTICE
 import kr.khs.oneboard.utils.ToastUtil
 import kr.khs.oneboard.viewmodels.LectureWriteViewModel
+import timber.log.Timber
 import kotlin.properties.Delegates
 
 @AndroidEntryPoint
 class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWriteViewModel>() {
     override val viewModel: LectureWriteViewModel by viewModels()
     private var type by Delegates.notNull<Boolean>()
-    private var exposerRightNow by Delegates.notNull<Boolean>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -74,13 +74,22 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
     }
 
     private fun initWriteArticleButton() {
+        Timber.tag("WriteArticle").d(if (TYPE_NOTICE) "notice" else "assingment")
         binding.writeButton.setOnClickListener {
             viewModel.writeContent(
+                parentViewModel.getLecture().id,
                 type,
-                if (type == TYPE_ASSIGNMENT)
-                    Assignment(1, 1, "1", "1", "1", 1L, 1L, "", "", "")
+                if (type == TYPE_NOTICE)
+                    NoticeUpdateRequestDto(
+                        binding.writeTitleEditText.text.toString(),
+                        binding.writeContentEditText.text.toString(),
+                        if (binding.writeExposeTimeCheckBox.isChecked)
+                            System.currentTimeMillis().toDateTime()
+                        else
+                            "${binding.writeExposeTimeTextView.text}:00"
+                    )
                 else
-                    Notice(1, 1, "1", "1", "1", 1L, 1L)
+                    null
             )
         }
     }

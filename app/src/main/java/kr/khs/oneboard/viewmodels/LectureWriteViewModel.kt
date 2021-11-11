@@ -5,11 +5,9 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kr.khs.oneboard.core.BaseViewModel
-import kr.khs.oneboard.data.Assignment
-import kr.khs.oneboard.data.LectureBase
-import kr.khs.oneboard.data.Notice
+import kr.khs.oneboard.core.UseCase
+import kr.khs.oneboard.data.request.NoticeUpdateRequestDto
 import kr.khs.oneboard.repository.LectureRepository
-import kr.khs.oneboard.utils.TYPE_ASSIGNMENT
 import kr.khs.oneboard.utils.TYPE_NOTICE
 import timber.log.Timber
 import javax.inject.Inject
@@ -19,22 +17,22 @@ class LectureWriteViewModel @Inject constructor(private val repository: LectureR
     BaseViewModel() {
     val status = MutableLiveData<Boolean>()
 
-    fun writeContent(type: Boolean, item: LectureBase) {
-        var result: Boolean
+    fun writeContent(lectureId: Int, type: Boolean, notice: NoticeUpdateRequestDto? = null) {
+        var result: UseCase<Boolean>
         viewModelScope.launch {
             result = when (type) {
                 TYPE_NOTICE -> {
-                    Timber.tag("Write").d("${item as Notice}")
-                    repository.postNotice(item as Notice)
+                    Timber.tag("Write").d("$notice")
+                    repository.postNotice(lectureId, notice!!)
                 }
-                TYPE_ASSIGNMENT -> {
-                    Timber.tag("Write").d("${item as Assignment}")
-                    repository.postAssignment(item as Assignment)
-                }
-                else -> false
+//                TYPE_ASSIGNMENT -> {
+//                    Timber.tag("Write").d("${item as Assignment}")
+//                    repository.postAssignment(item as Assignment)
+//                }
+                else -> throw Exception("Unknown Type")
             }
 
-            status.value = result
+            status.value = if (result.status == UseCase.Status.SUCCESS) result.data!! else false
         }
     }
 }
