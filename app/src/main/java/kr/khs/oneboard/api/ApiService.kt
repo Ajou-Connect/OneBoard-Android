@@ -57,7 +57,7 @@ interface ApiService {
 //    @POST("lecture/attendance")
 //    suspend fun postAttendance()
 
-    @GET("lecture/{lectureId}/assignment")
+    @GET("lecture/{lectureId}/assignments")
     suspend fun getAssignmentList(@Path("lectureId") lectureId: Int): Response<List<Assignment>>
 
     @POST("lecture/{lectureId}/assignment")
