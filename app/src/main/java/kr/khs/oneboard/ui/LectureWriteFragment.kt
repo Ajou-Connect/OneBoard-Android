@@ -12,6 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kr.khs.oneboard.core.BaseFragment
 import kr.khs.oneboard.data.Assignment
 import kr.khs.oneboard.data.Notice
+import kr.khs.oneboard.data.request.AssignmentUpdateRequestDto
 import kr.khs.oneboard.data.request.NoticeUpdateRequestDto
 import kr.khs.oneboard.databinding.FragmentLectureWriteBinding
 import kr.khs.oneboard.extensions.toDateTime
@@ -31,7 +32,6 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
     private var notice: Notice? = null
     private var assignment: Assignment? = null
 
-    // TODO: 2021/11/11 과제 관련 기능
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -66,13 +66,14 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
         arguments?.let {
             type = it.getBoolean("type")
             isEdit = it.getBoolean("isEdit")
-            if (type == TYPE_NOTICE)
+            if (isEdit && type == TYPE_NOTICE)
                 notice = it.getParcelable("notice")
-            else
+            else if (isEdit && type == TYPE_ASSIGNMENT)
                 assignment = it.getParcelable("assignment")
         } ?: goBackWhenError()
 
         initExposeTime()
+        initStartEndDtLayout()
         initFileAddButton()
         initWriteArticleButton()
         initDefaultData()
@@ -160,7 +161,7 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
                     parentViewModel.getLecture().id,
                     if (type == TYPE_NOTICE) notice?.id ?: -1 else assignment?.id ?: -1,
                     type,
-                    if (type == TYPE_NOTICE)
+                    if (type == TYPE_NOTICE) {
                         NoticeUpdateRequestDto(
                             binding.writeTitleEditText.text.toString(),
                             binding.writeContentEditText.text.toString(),
@@ -169,14 +170,28 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
                             else
                                 "${binding.writeExposeTimeTextView.text}"
                         )
-                    else
+                    } else
+                        null,
+                    if (type == TYPE_ASSIGNMENT) {
+                        AssignmentUpdateRequestDto(
+                            binding.writeTitleEditText.text.toString(),
+                            binding.writeContentEditText.text.toString(),
+                            "",
+                            "",
+                            "",
+                            if (binding.writeExposeTimeCheckBox.isChecked)
+                                System.currentTimeMillis().toDateTime()
+                            else
+                                "${binding.writeExposeTimeTextView.text}"
+                        )
+                    } else
                         null
                 )
             } else {
                 viewModel.writeContent(
                     parentViewModel.getLecture().id,
                     type,
-                    if (type == TYPE_NOTICE)
+                    if (type == TYPE_NOTICE) {
                         NoticeUpdateRequestDto(
                             binding.writeTitleEditText.text.toString(),
                             binding.writeContentEditText.text.toString(),
@@ -185,7 +200,25 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
                             else
                                 "${binding.writeExposeTimeTextView.text}:00"
                         )
-                    else
+                    } else
+                        null,
+                    if (type == TYPE_ASSIGNMENT) {
+                        if (binding.writeStartDt == binding.writeEndDt) {
+                            viewModel.setErrorMessage("시작 시간과 마감 시간은 동일할 수 없습니다.")
+                            return@setOnClickListener
+                        }
+                        AssignmentUpdateRequestDto(
+                            binding.writeTitleEditText.text.toString(),
+                            binding.writeContentEditText.text.toString(),
+                            "",
+                            binding.writeStartDt.text.toString(),
+                            binding.writeEndDt.text.toString(),
+                            if (binding.writeExposeTimeCheckBox.isChecked)
+                                System.currentTimeMillis().toDateTime()
+                            else
+                                "${binding.writeExposeTimeTextView.text}"
+                        )
+                    } else
                         null
                 )
             }
@@ -206,4 +239,99 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
         }
     }
 
+    private fun initStartEndDtLayout() {
+        when (type) {
+            TYPE_NOTICE -> {
+                binding.writeStartEndDT.visibility = View.GONE
+            }
+            TYPE_ASSIGNMENT -> {
+                binding.writeStartEndDT.visibility = View.VISIBLE
+                binding.writeStartDt.text = System.currentTimeMillis().toDateTime()
+                binding.writeEndDt.text = System.currentTimeMillis().toDateTime()
+
+                binding.writeStartDt.setOnClickListener { textview ->
+                    CustomDateTimePicker(
+                        requireActivity(),
+                        object : CustomDateTimePicker.ICustomDateTimeListener {
+                            override fun onCancel() {}
+
+                            override fun onSet(
+                                dialog: Dialog,
+                                calendarSelected: Calendar,
+                                dateSelected: Date,
+                                year: Int,
+                                monthFullName: String,
+                                monthShortName: String,
+                                monthNumber: Int,
+                                day: Int,
+                                weekDayFullName: String,
+                                weekDayShortName: String,
+                                hour24: Int,
+                                hour12: Int,
+                                min: Int,
+                                sec: Int,
+                                AM_PM: String
+                            ) {
+                                (textview as TextView).text = String.format(
+                                    "%4d-%2d-%2d %2d:%2d:%2d",
+                                    year,
+                                    monthNumber + 1,
+                                    day,
+                                    hour24,
+                                    min,
+                                    sec
+                                )
+                            }
+                        }).apply {
+                        set24HourFormat(true)
+                        setMaxMinDisplayDate(
+                            minDate = Calendar.getInstance().timeInMillis
+                        )
+                        setDate(Calendar.getInstance())
+                    }.showDialog()
+                }
+                binding.writeEndDt.setOnClickListener { textview ->
+                    CustomDateTimePicker(
+                        requireActivity(),
+                        object : CustomDateTimePicker.ICustomDateTimeListener {
+                            override fun onCancel() {}
+
+                            override fun onSet(
+                                dialog: Dialog,
+                                calendarSelected: Calendar,
+                                dateSelected: Date,
+                                year: Int,
+                                monthFullName: String,
+                                monthShortName: String,
+                                monthNumber: Int,
+                                day: Int,
+                                weekDayFullName: String,
+                                weekDayShortName: String,
+                                hour24: Int,
+                                hour12: Int,
+                                min: Int,
+                                sec: Int,
+                                AM_PM: String
+                            ) {
+                                (textview as TextView).text = String.format(
+                                    "%4d-%2d-%2d %2d:%2d:%2d",
+                                    year,
+                                    monthNumber + 1,
+                                    day,
+                                    hour24,
+                                    min,
+                                    sec
+                                )
+                            }
+                        }).apply {
+                        set24HourFormat(true)
+                        setMaxMinDisplayDate(
+                            minDate = Calendar.getInstance().timeInMillis
+                        )
+                        setDate(Calendar.getInstance())
+                    }.showDialog()
+                }
+            }
+        }
+    }
 }
