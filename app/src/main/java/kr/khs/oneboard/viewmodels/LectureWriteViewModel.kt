@@ -17,6 +17,30 @@ class LectureWriteViewModel @Inject constructor(private val repository: LectureR
     BaseViewModel() {
     val status = MutableLiveData<Boolean>()
 
+    fun editContent(
+        lectureId: Int,
+        contentId: Int,
+        type: Boolean,
+        notice: NoticeUpdateRequestDto? = null
+    ) {
+        if (contentId == -1) {
+            setErrorMessage("올바르지 않은 접근입니다.")
+            return
+        }
+
+        var result: UseCase<Boolean>
+        viewModelScope.launch {
+            result = when (type) {
+                TYPE_NOTICE -> {
+                    repository.putNotice(lectureId, contentId, notice!!)
+                }
+                else -> throw Exception("Unknown Type")
+            }
+
+            status.value = if (result.status == UseCase.Status.SUCCESS) result.data!! else false
+        }
+    }
+
     fun writeContent(lectureId: Int, type: Boolean, notice: NoticeUpdateRequestDto? = null) {
         var result: UseCase<Boolean>
         viewModelScope.launch {
