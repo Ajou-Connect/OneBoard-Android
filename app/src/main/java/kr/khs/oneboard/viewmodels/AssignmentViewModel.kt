@@ -30,9 +30,9 @@ class AssignmentViewModel @Inject constructor(private val lectureRepository: Lec
         }
     }
 
-    fun deleteItem(item: Assignment) {
+    fun deleteItem(lectureId: Int, item: Assignment) {
         viewModelScope.launch {
-            val success = lectureRepository.postAssignment(item)
+            val success = lectureRepository.deleteAssignment(lectureId, item.id)
             if (success.status == UseCase.Status.SUCCESS)
                 _list.value = _list.value!!.filter { it != item }
             else
