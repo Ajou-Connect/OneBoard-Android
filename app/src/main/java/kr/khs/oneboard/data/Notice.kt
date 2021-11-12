@@ -1,5 +1,9 @@
 package kr.khs.oneboard.data
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class Notice(
     override val id: Int,
     override val title: String,
@@ -7,8 +11,4 @@ data class Notice(
     override val exposeDt: String,
     override val createdDt: String,
     override val updatedDt: String
-) : LectureBase()
-
-// 공지사항 등록 수정 삭제
-// 시험/과제 등록 수정 삭제
-// 수업 등록 수정 삭제
+) : LectureBase(), Parcelable
