@@ -16,6 +16,7 @@ import kr.khs.oneboard.data.request.AssignmentUpdateRequestDto
 import kr.khs.oneboard.data.request.NoticeUpdateRequestDto
 import kr.khs.oneboard.databinding.FragmentLectureWriteBinding
 import kr.khs.oneboard.extensions.toDateTime
+import kr.khs.oneboard.extensions.toTimeInMillis
 import kr.khs.oneboard.utils.TYPE_ASSIGNMENT
 import kr.khs.oneboard.utils.TYPE_NOTICE
 import kr.khs.oneboard.utils.ToastUtil
@@ -102,6 +103,11 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
                 notice?.exposeDt
             else
                 assignment?.exposeDt
+
+        if (type == TYPE_ASSIGNMENT) {
+            binding.writeStartDt.text = assignment?.startDt
+            binding.writeEndDt.text = assignment?.endDt
+        }
     }
 
     private fun initExposeTime() {
@@ -109,6 +115,8 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
             binding.writeExposeTimeTextView.visibility =
                 if (isChecked) View.INVISIBLE else View.VISIBLE
         }
+
+        binding.writeExposeTimeTextView.text = System.currentTimeMillis().toDateTime()
 
         binding.writeExposeTimeTextView.setOnClickListener { textview ->
             CustomDateTimePicker(
@@ -134,7 +142,7 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
                         AM_PM: String
                     ) {
                         (textview as TextView).text = String.format(
-                            "%4d-%2d-%2d %2d:%2d:%2d",
+                            "%04d-%02d-%02d %02d:%02d:%02d",
                             year,
                             monthNumber + 1,
                             day,
@@ -173,12 +181,19 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
                     } else
                         null,
                     if (type == TYPE_ASSIGNMENT) {
+                        if (binding.writeStartDt.text.toString()
+                                .toTimeInMillis() >= binding.writeEndDt.text.toString()
+                                .toTimeInMillis()
+                        ) {
+                            viewModel.setErrorMessage("시작 시간이 마감 시간보다 크거나 같을 수 없습니다.")
+                            return@setOnClickListener
+                        }
                         AssignmentUpdateRequestDto(
                             binding.writeTitleEditText.text.toString(),
                             binding.writeContentEditText.text.toString(),
                             "",
-                            "",
-                            "",
+                            binding.writeStartDt.text.toString(),
+                            binding.writeEndDt.text.toString(),
                             if (binding.writeExposeTimeCheckBox.isChecked)
                                 System.currentTimeMillis().toDateTime()
                             else
@@ -198,13 +213,16 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
                             if (binding.writeExposeTimeCheckBox.isChecked)
                                 System.currentTimeMillis().toDateTime()
                             else
-                                "${binding.writeExposeTimeTextView.text}:00"
+                                "${binding.writeExposeTimeTextView.text}"
                         )
                     } else
                         null,
                     if (type == TYPE_ASSIGNMENT) {
-                        if (binding.writeStartDt == binding.writeEndDt) {
-                            viewModel.setErrorMessage("시작 시간과 마감 시간은 동일할 수 없습니다.")
+                        if (binding.writeStartDt.text.toString()
+                                .toTimeInMillis() >= binding.writeEndDt.text.toString()
+                                .toTimeInMillis()
+                        ) {
+                            viewModel.setErrorMessage("시작 시간이 마감 시간보다 크거나 같을 수 없습니다.")
                             return@setOnClickListener
                         }
                         AssignmentUpdateRequestDto(
@@ -273,7 +291,7 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
                                 AM_PM: String
                             ) {
                                 (textview as TextView).text = String.format(
-                                    "%4d-%2d-%2d %2d:%2d:%2d",
+                                    "%04d-%02d-%02d %02d:%02d:%02d",
                                     year,
                                     monthNumber + 1,
                                     day,
@@ -314,7 +332,7 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
                                 AM_PM: String
                             ) {
                                 (textview as TextView).text = String.format(
-                                    "%4d-%2d-%2d %2d:%2d:%2d",
+                                    "%04d-%02d-%02d %02d:%02d:%02d",
                                     year,
                                     monthNumber + 1,
                                     day,
