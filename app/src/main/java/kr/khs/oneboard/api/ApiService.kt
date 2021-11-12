@@ -3,6 +3,7 @@ package kr.khs.oneboard.api
 import kr.khs.oneboard.data.*
 import kr.khs.oneboard.data.api.BasicResponseImpl
 import kr.khs.oneboard.data.api.Response
+import kr.khs.oneboard.data.request.AssignmentUpdateRequestDto
 import kr.khs.oneboard.data.request.NoticeUpdateRequestDto
 import retrofit2.http.*
 
@@ -56,12 +57,27 @@ interface ApiService {
 //    @POST("lecture/attendance")
 //    suspend fun postAttendance()
 
-    @GET("lecture/assignment")
-    suspend fun getAssignmentList(lectureId: Int): Response<List<Assignment>>
+    @GET("lecture/{lectureId}/assignment")
+    suspend fun getAssignmentList(@Path("lectureId") lectureId: Int): Response<List<Assignment>>
 
-    // todo 등록, 수정, 삭제
-    @POST("lecture/assignment")
-    suspend fun postAssignment()
+    @POST("lecture/{lectureId}/assignment")
+    suspend fun postAssignment(
+        @Path("lectureId") lectureId: Int,
+        @Body dto: AssignmentUpdateRequestDto
+    ): BasicResponseImpl
+
+    @PUT("lecture/{lectureId}/assignment/{assignmentId}")
+    suspend fun putAssignment(
+        @Path("lectureId") lectureId: Int,
+        @Path("assignmentId") assignmentId: Int,
+        @Body dto: AssignmentUpdateRequestDto
+    ): BasicResponseImpl
+
+    @DELETE("lecture/{lectureId}/assignment/{assignmentId}")
+    suspend fun deleteAssignment(
+        @Path("lectureId") lectureId: Int,
+        @Path("assignmentId") assignmentId: Int
+    ): BasicResponseImpl
 
     // todo lecture/assignment/result부터
 }
