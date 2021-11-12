@@ -3,6 +3,7 @@ package kr.khs.oneboard.repository
 import kr.khs.oneboard.core.UseCase
 import kr.khs.oneboard.data.Assignment
 import kr.khs.oneboard.data.Notice
+import kr.khs.oneboard.data.request.AssignmentUpdateRequestDto
 import kr.khs.oneboard.data.request.NoticeUpdateRequestDto
 
 interface LectureRepository {
@@ -20,5 +21,16 @@ interface LectureRepository {
 
     suspend fun getAssignmentList(lectureId: Int): UseCase<List<Assignment>>
 
-    suspend fun postAssignment(assignment: Assignment): UseCase<Boolean>
+    suspend fun postAssignment(
+        lectureId: Int,
+        assignment: AssignmentUpdateRequestDto
+    ): UseCase<Boolean>
+
+    suspend fun putAssignment(
+        lectureId: Int,
+        assignmentId: Int,
+        assignment: AssignmentUpdateRequestDto
+    ): UseCase<Boolean>
+
+    suspend fun deleteAssignment(lectureId: Int, assignmentId: Int): UseCase<Boolean>
 }
