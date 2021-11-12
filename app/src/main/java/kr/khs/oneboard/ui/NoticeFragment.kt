@@ -13,6 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kr.khs.oneboard.adapters.NoticeListAdapter
 import kr.khs.oneboard.core.BaseFragment
 import kr.khs.oneboard.databinding.FragmentNoticeBinding
+import kr.khs.oneboard.extensions.toTimeInMillis
 import kr.khs.oneboard.utils.DialogUtil
 import kr.khs.oneboard.utils.TYPE_NOTICE
 import kr.khs.oneboard.utils.TYPE_PROFESSOR
@@ -39,7 +40,11 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding, NoticeViewModel>() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.list.observe(viewLifecycleOwner) {
-            listAdapter.submitList(it)
+            listAdapter.submitList(
+                it.filter { notice ->
+                    notice.exposeDt.toTimeInMillis() <= System.currentTimeMillis()
+                }
+            )
         }
     }
 
@@ -85,7 +90,14 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding, NoticeViewModel>() {
         with(binding.rvNotices) {
             listAdapter = NoticeListAdapter().apply {
                 listItemClickListener = { item ->
-                    // todo item click listener
+                    findNavController().navigate(
+                        NoticeFragmentDirections.actionNoticeFragmentToLectureWriteFragment(
+                            TYPE_NOTICE
+                        ).apply {
+                            isEdit = true
+                            notice = item
+                        }
+                    )
                 }
                 listItemDeleteListener = { item ->
                     DialogUtil.createDialog(
@@ -93,7 +105,7 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding, NoticeViewModel>() {
                         "삭제하시겠습니까?",
                         "네",
                         "아니오",
-                        { viewModel.deleteItem(item) },
+                        { viewModel.deleteItem(parentViewModel.getLecture().id, item.id) },
                         { }
                     )
                 }
