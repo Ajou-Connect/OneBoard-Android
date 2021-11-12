@@ -9,7 +9,6 @@ data class Assignment(
     override val title: String,
     override val content: String,
     override val exposeDt: String,
-    override val createdDt: String,
     override val updatedDt: String,
     val fileUrl: String,
     val startDt: String,

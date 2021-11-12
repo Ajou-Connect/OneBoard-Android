@@ -9,6 +9,5 @@ data class Notice(
     override val title: String,
     override val content: String,
     override val exposeDt: String,
-    override val createdDt: String,
     override val updatedDt: String
 ) : LectureBase(), Parcelable
