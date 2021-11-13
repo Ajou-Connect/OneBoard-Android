@@ -15,6 +15,9 @@
         android:theme="@style/Theme.OneBoard"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.SessionActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.SplashActivity"
             android:label="@string/title_activity_splash"
             android:noHistory="true"
