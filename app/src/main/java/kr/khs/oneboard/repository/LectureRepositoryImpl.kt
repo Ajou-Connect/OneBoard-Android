@@ -5,6 +5,7 @@ import kotlinx.coroutines.withContext
 import kr.khs.oneboard.api.ApiService
 import kr.khs.oneboard.core.UseCase
 import kr.khs.oneboard.data.Assignment
+import kr.khs.oneboard.data.Lecture
 import kr.khs.oneboard.data.Notice
 import kr.khs.oneboard.data.api.Response
 import kr.khs.oneboard.data.request.AssignmentUpdateRequestDto
@@ -17,6 +18,19 @@ import javax.inject.Named
 class LectureRepositoryImpl @Inject constructor(
     @Named("withJWT") private val apiService: ApiService
 ) : LectureRepository {
+    override suspend fun getDetailLecture(lectureId: Int): UseCase<Lecture> {
+        val response: Response<Lecture>
+        try {
+            withContext(Dispatchers.IO) {
+                response = apiService.getDetailLecture(lectureId)
+            }
+        } catch (e: Exception) {
+            return UseCase.error("Error")
+        }
+
+        return UseCase.success(response.data)
+    }
+
     override suspend fun getNoticeList(lectureId: Int): UseCase<List<Notice>> {
         val response: Response<List<Notice>>
         try {

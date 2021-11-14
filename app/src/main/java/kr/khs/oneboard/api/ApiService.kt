@@ -26,8 +26,8 @@ interface ApiService {
     @GET("lectures")
     suspend fun getUserLectures(): Response<List<Lecture>>
 
-    @GET("lecture")
-    suspend fun getUserLecture(): Response<Lecture>
+    @GET("lecture/{lectureId}")
+    suspend fun getDetailLecture(@Path("lectureId") lectureId: Int): Response<Lecture>
 
     @GET("lecture/{lectureId}/notices")
     suspend fun getNoticeList(@Path("lectureId") lectureId: Int): Response<List<Notice>>
