@@ -15,7 +15,8 @@ This is an android application for `Professor` and `Unversity Student`<br/>
 1. You can take `non-face-to-face` real-time lectures.
 
 ## Development Environment
-- Kotlin @1.5.21
+- Target & Compile SDK Version @31
+- Kotlin @1.5.31
 - Android Studio Arctic Fox 2020.3.1 Patch 3
 - Gradle Vesion @7.0.2
 
