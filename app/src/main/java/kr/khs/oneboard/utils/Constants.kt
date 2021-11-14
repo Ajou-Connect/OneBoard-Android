@@ -7,3 +7,6 @@ const val FAIL = "FAIL"
 
 const val TYPE_PROFESSOR = true
 const val TYPE_STUDENT = false
+
+const val TYPE_NOTICE = true
+const val TYPE_ASSIGNMENT = false

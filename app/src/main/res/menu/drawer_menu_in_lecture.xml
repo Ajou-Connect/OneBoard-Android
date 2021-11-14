@@ -21,4 +21,12 @@
     <item
         android:id="@+id/lecture_menu_understanding"
         android:title="분석 정보 확인" />
+    <group>
+        <item
+            android:id="@+id/lecture_menu_go_list"
+            android:title="강의 목록 되돌아가기" />
+    </group>
+    <item
+        android:id="@+id/lecture_menu_logout"
+        android:title="로그아웃" />
 </menu>

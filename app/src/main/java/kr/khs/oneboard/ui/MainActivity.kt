@@ -9,6 +9,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.navigation.NavController
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kr.khs.oneboard.R
@@ -122,6 +123,7 @@ class MainActivity : AppCompatActivity() {
         // sample code
         // navController.navigate(R.id.lectureDetailFragment, bundleOf("lectureInfo" to Lecture(1, "1", "1", "1")))
 
+        // todo : 같은 destination일 때 처리
         binding.navigationView.setNavigationItemSelectedListener { menuItem ->
             Timber.tag("currentDestination").d("${navController.currentDestination}")
             when (menuItem.itemId) {
@@ -134,21 +136,36 @@ class MainActivity : AppCompatActivity() {
                 R.id.list_menu_logout -> {
                     UserInfoUtil.setToken(this, "")
                     startActivity(Intent(this, SplashActivity::class.java))
+                    finish()
                 }
                 R.id.lecture_menu_plan -> {
                     navController.navigate(R.id.lecturePlanFragment)
                 }
                 R.id.lecture_menu_notice -> {
+                    navController.navigate(R.id.noticeFragment)
                 }
                 R.id.lecture_menu_lesson -> {
                 }
                 R.id.lecture_menu_attendance -> {
                 }
                 R.id.lecture_menu_assignment -> {
+                    navController.navigate(R.id.assignmentFragment)
                 }
                 R.id.lecture_menu_grade -> {
                 }
                 R.id.lecture_menu_understanding -> {
+                }
+                R.id.lecture_menu_go_list -> {
+                    navController.navigate(
+                        R.id.lectureListFragment,
+                        null,
+                        NavOptions.Builder().setPopUpTo(R.id.lectureListFragment, true).build()
+                    )
+                }
+                R.id.lecture_menu_logout -> {
+                    UserInfoUtil.setToken(this, "")
+                    startActivity(Intent(this, SplashActivity::class.java))
+                    finish()
                 }
             }
             binding.drawerLayout.closeDrawer(GravityCompat.START)

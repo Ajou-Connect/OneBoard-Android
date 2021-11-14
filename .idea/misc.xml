@@ -8,10 +8,24 @@
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.11481481481481481" />
         <entry key="app/src/main/res/layout/dialog_loading.xml" value="0.22685185185185186" />
         <entry key="app/src/main/res/layout/drawer_header.xml" value="0.5114583333333333" />
+<<<<<<< HEAD
+        <entry key="app/src/main/res/layout/fragment_assignment.xml" value="0.5114583333333333" />
+        <entry key="app/src/main/res/layout/fragment_lecture_base.xml" value="0.5114583333333333" />
+        <entry key="app/src/main/res/layout/fragment_lecture_detail.xml" value="0.5114583333333333" />
+        <entry key="app/src/main/res/layout/fragment_lecture_list.xml" value="0.24138804457953394" />
+        <entry key="app/src/main/res/layout/fragment_lecture_plan.xml" value="0.2947916666666667" />
+        <entry key="app/src/main/res/layout/fragment_lecture_write.xml" value="0.5114583333333333" />
+        <entry key="app/src/main/res/layout/fragment_notice.xml" value="0.5114583333333333" />
+        <entry key="app/src/main/res/layout/list_item_assignment.xml" value="0.5114583333333333" />
+        <entry key="app/src/main/res/layout/list_item_lecture_base.xml" value="0.5114583333333333" />
+=======
         <entry key="app/src/main/res/layout/fragment_lecture_list.xml" value="0.24138804457953394" />
         <entry key="app/src/main/res/layout/list_item_lecture.xml" value="0.3" />
+>>>>>>> ab3b11b4e19cb40e980b62e6607c7a7a89eeb9ce
         <entry key="app/src/main/res/layout/list_item_lecutre.xml" value="0.5114583333333333" />
         <entry key="app/src/main/res/menu/drawer_header_student.xml" value="0.5114583333333333" />
+        <entry key="app/src/main/res/menu/drawer_menu_in_lecture.xml" value="0.5114583333333333" />
+        <entry key="app/src/main/res/menu/drawer_menu_in_list.xml" value="0.5114583333333333" />
         <entry key="app/src/main/res/menu/drawer_menu_professor.xml" value="0.5114583333333333" />
       </map>
     </option>

@@ -5,10 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kr.khs.oneboard.api.ApiService
-import kr.khs.oneboard.repository.BasicRepository
-import kr.khs.oneboard.repository.BasicRepositoryImpl
-import kr.khs.oneboard.repository.UserRepository
-import kr.khs.oneboard.repository.UserRepositoryImpl
+import kr.khs.oneboard.repository.*
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -27,4 +24,10 @@ class RepositoryModule {
     fun provideUserRepository(
         @Named("withJWT") jwtApiService: ApiService
     ): UserRepository = UserRepositoryImpl(jwtApiService)
+
+    @Singleton
+    @Provides
+    fun provideLectureRepository(
+        @Named("withJWT") jwtApiService: ApiService
+    ): LectureRepository = LectureRepositoryImpl(jwtApiService)
 }
