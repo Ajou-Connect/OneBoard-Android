@@ -7,7 +7,6 @@ import kr.khs.oneboard.core.UseCase
 import kr.khs.oneboard.data.Lecture
 import kr.khs.oneboard.data.User
 import kr.khs.oneboard.data.api.Response
-import kr.khs.oneboard.utils.SUCCESS
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Named
