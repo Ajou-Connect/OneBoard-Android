@@ -34,48 +34,7 @@ class UserRepositoryImpl @Inject constructor(
         val response: Response<List<Lecture>>
         try {
             withContext(Dispatchers.IO) {
-//            response = apiService.getUserLectures()
-                response = Response(
-                    SUCCESS,
-                    listOf(
-                        Lecture(
-                            id = 1,
-                            title = "SW 캡스톤 디자인1",
-                            semester = "2021-2",
-                            professor = "윤대균"
-                        ),
-                        Lecture(
-                            id = 2,
-                            title = "SW 캡스톤 디자인2",
-                            semester = "2021-2",
-                            professor = "윤대균"
-                        ),
-                        Lecture(
-                            id = 3,
-                            title = "SW 캡스톤 디자인3",
-                            semester = "2021-2",
-                            professor = "윤대균"
-                        ),
-                        Lecture(
-                            id = 4,
-                            title = "SW 캡스톤 디자인4",
-                            semester = "2021-2",
-                            professor = "윤대균"
-                        ),
-                        Lecture(
-                            id = 5,
-                            title = "SW 캡스톤 디자인5",
-                            semester = "2021-2",
-                            professor = "윤대균"
-                        ),
-                        Lecture(
-                            id = 6,
-                            title = "SW 캡스톤 디자인6",
-                            semester = "2021-2",
-                            professor = "윤대균"
-                        ),
-                    )
-                )
+                response = apiService.getUserLectures()
             }
         } catch (e: Exception) {
             Timber.e(e)
