@@ -10,6 +10,5 @@ data class Lecture(
     val title: String,
     val semester: String,
     val professor: String,
-    @Json(name = "lecture_plan")
-    val lecturePlan: String = "",
+    val lecturePlan: String? = null,
 ) : Parcelable
