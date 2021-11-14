@@ -23,7 +23,7 @@ interface ApiService {
     @GET("user")
     suspend fun getUserInfo(): Response<User>
 
-    @GET("user/lectures")
+    @GET("lectures")
     suspend fun getUserLectures(): Response<List<Lecture>>
 
     @GET("lecture")
