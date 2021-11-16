@@ -126,8 +126,7 @@ class UtilityModule {
     @Singleton
     @Provides
     fun provideZoomSDK(
-        @ApplicationContext context: Context,
-        listener: ZoomVideoSDKDelegate
+        @ApplicationContext context: Context
     ): ZoomVideoSDK {
         val params = ZoomVideoSDKInitParams().apply {
             domain = WEB_DOMAIN
@@ -149,7 +148,6 @@ class UtilityModule {
             }
         )
 
-        ZoomVideoSDK.getInstance().addListener(listener)
         return ZoomVideoSDK.getInstance()
     }
 }

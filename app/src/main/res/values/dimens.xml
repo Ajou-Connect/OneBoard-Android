@@ -12,4 +12,22 @@
     inner_frame_layout_padding (below variable) on round screens.
     -->
     <dimen name="inner_frame_layout_padding">5dp</dimen>
+    <dimen name="dp_8">8dp</dimen>
+    <dimen name="dp_13">13dp</dimen>
+    <dimen name="dp_22">22dp</dimen>
+    <dimen name="textsize_16">16sp</dimen>
+    <dimen name="dp_4">4dp</dimen>
+    <dimen name="textsize_13">13sp</dimen>
+    <dimen name="dp_9">9dp</dimen>
+    <dimen name="dp_100">100dp</dimen>
+    <dimen name="dp_160">160dp</dimen>
+    <dimen name="dp_12">12dp</dimen>
+    <dimen name="textsize_14">14sp</dimen>
+    <dimen name="dp_280">200dp</dimen>
+    <dimen name="dp_24">24dp</dimen>
+    <dimen name="dp_5">5dp</dimen>
+    <dimen name="dp_20">20dp</dimen>
+    <dimen name="dp_15">15dp</dimen>
+    <dimen name="textsize_20">20sp</dimen>
+    <dimen name="textsize_12">12sp</dimen>
 </resources>

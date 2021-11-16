@@ -17,10 +17,11 @@ class RawDataRenderer @JvmOverloads constructor(
     private val context: Context,
     private val attrs: AttributeSet? = null
 ) : ZoomSurfaceViewRender(context, attrs), ZoomVideoSDKRawDataPipeDelegate {
-
     companion object {
         private var handlerThread: HandlerThread? = null
         private lateinit var handler: Handler
+        const val VideoAspect_Full_Filled = 0
+        const val VideoAspect_Original = 1
     }
 
     private var user: ZoomVideoSDKUser? = null
