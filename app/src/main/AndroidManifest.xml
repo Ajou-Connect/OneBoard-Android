@@ -5,6 +5,9 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-feature android:glEsVersion="0x00020000" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:name=".OneBoardApp"
         android:allowBackup="true"
@@ -14,17 +17,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.OneBoard"
         android:usesCleartextTraffic="true">
-        <activity
-            android:name=".core.zoom.BaseSessionActivity"
-            android:exported="false" />
+        <activity android:name=".core.zoom.IntegrationActivity" />
         <activity
             android:name=".ui.SessionActivity"
-            android:exported="false" />
+            android:configChanges="screenSize|orientation|keyboardHidden|keyboard"
+            android:exported="false"
+            android:hardwareAccelerated="false"
+            android:theme="@style/Theme.OneBoard.NoActionBar.FullScreen"
+            android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".ui.SplashActivity"
             android:label="@string/title_activity_splash"
             android:noHistory="true"
-            android:theme="@style/Theme.OneBoard.NoActionBar">
+            android:theme="@style/Theme.OneBoard.NoActionBar"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,6 +42,11 @@
             android:noHistory="true"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".ui.MainActivity" />
+
+        <service
+            android:name=".core.zoom.NotificationService"
+            android:exported="false"
+            android:foregroundServiceType="mediaProjection" />
     </application>
 
 </manifest>
