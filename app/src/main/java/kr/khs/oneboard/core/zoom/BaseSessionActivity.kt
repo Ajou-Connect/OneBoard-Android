@@ -1,7 +1,6 @@
 package kr.khs.oneboard.core.zoom
 
 import android.annotation.SuppressLint
-import android.app.Dialog
 import android.app.Service
 import android.content.Context
 import android.content.Intent
@@ -16,13 +15,11 @@ import android.os.Looper
 import android.provider.Settings
 import android.util.DisplayMetrics
 import android.view.*
-import android.widget.FrameLayout
-import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kr.khs.oneboard.R
 import kr.khs.oneboard.adapters.ChatMsgAdapter
@@ -50,16 +47,12 @@ open class BaseSessionActivity : AppCompatActivity(), ZoomVideoSDKDelegate, Shar
         const val REQUEST_SELECT_ORIGINAL_PIC = 1003
     }
 
-    protected val binding: ActivityBaseSessionBinding by lazy {
-        ActivityBaseSessionBinding.inflate(LayoutInflater.from(this))
+    protected val binding: ActivitySessionBinding by lazy {
+        ActivitySessionBinding.inflate(LayoutInflater.from(this))
     }
 
     protected val actionBarBinding: LayoutBottomActionBarBinding by lazy {
         LayoutBottomActionBarBinding.inflate(layoutInflater, binding.root, false)
-    }
-
-    private val dialogSessionInfoBinding: DialogSessionInfoBinding by lazy {
-        DialogSessionInfoBinding.inflate(layoutInflater, binding.root, false)
     }
 
     @get:JvmName("getMeetingDisplay")
@@ -486,50 +479,55 @@ open class BaseSessionActivity : AppCompatActivity(), ZoomVideoSDKDelegate, Shar
     }
 
     fun onClickInfo(view: View) {
-        val builder = Dialog(this, R.style.MyDialog).apply {
-            setContentView(dialogSessionInfoBinding.root)
+        val binding = DialogSessionInfoBinding.inflate(layoutInflater)
+        val builder = MaterialAlertDialogBuilder(this).apply {
+            setView(binding.root)
         }
+
         var size = UserHelper.getAllUsers().size
         if (size <= 0)
             size = 1
-        dialogSessionInfoBinding.infoUserSize.text = "$size"
-        dialogSessionInfoBinding.infoSessionPwd.text = ""
-        dialogSessionInfoBinding.infoSessionName.text = zoom.session.sessionName
+        binding.infoUserSize.text = "$size"
+        binding.infoSessionPwd.text = ""
+        binding.infoSessionName.text = zoom.session.sessionName
 
-        builder.setCanceledOnTouchOutside(true)
         builder.setCancelable(true)
-        builder.show()
+        val dialog = builder.create()
+        dialog.setCanceledOnTouchOutside(true)
+        dialog.show()
     }
 
     fun onClickEnd(view: View) {
         val userInfo = session.mySelf
-        Dialog(this, R.style.MyDialog).apply {
-            setCanceledOnTouchOutside(true)
-            setCancelable(true)
-            val binding = DialogLeaveAlertBinding.inflate(layoutInflater)
-            setContentView(binding.root)
-            binding.btnLeave.setOnClickListener {
-                dismiss()
+        val binding = DialogLeaveAlertBinding.inflate(layoutInflater)
+        val builder = MaterialAlertDialogBuilder(this).apply {
+            setView(binding.root)
+        }
+            .setCancelable(true)
+
+        val dialog = builder.create()
+        binding.btnLeave.setOnClickListener {
+            dialog.dismiss()
+            releaseResource()
+            val ret = ZoomVideoSDK.getInstance().leaveSession(false)
+            Timber.d("leaveSession ret = $ret")
+        }
+        var end = false
+        if (null != userInfo && userInfo.isHost) {
+            binding.btnEnd.text =
+                getString(R.string.leave_end_text)
+            end = true
+        }
+        val endSession = end
+        binding.btnEnd.setOnClickListener {
+            dialog.dismiss()
+            if (endSession) {
                 releaseResource()
-                val ret = ZoomVideoSDK.getInstance().leaveSession(false)
+                val ret = ZoomVideoSDK.getInstance().leaveSession(true)
                 Timber.d("leaveSession ret = $ret")
             }
-            var end = false
-            if (null != userInfo && userInfo.isHost) {
-                binding.btnEnd.text =
-                    getString(R.string.leave_end_text)
-                end = true
-            }
-            val endSession = end
-            binding.btnEnd.setOnClickListener {
-                dismiss()
-                if (endSession) {
-                    releaseResource()
-                    val ret = ZoomVideoSDK.getInstance().leaveSession(true)
-                    Timber.d("leaveSession ret = $ret")
-                }
-            }
-        }.show()
+        }
+        dialog.show()
     }
 
     private fun releaseResource() {
@@ -568,28 +566,30 @@ open class BaseSessionActivity : AppCompatActivity(), ZoomVideoSDKDelegate, Shar
             sdkShareHelper.stopShare()
             return
         }
+        val binding = DialogShareViewBinding.inflate(layoutInflater)
+        val builder = MaterialAlertDialogBuilder(this).apply {
+            setView(binding.root)
+        }
+            .setCancelable(true)
+        val dialog = builder.create()
+        dialog.setCanceledOnTouchOutside(true)
 
-        Dialog(this, R.style.MyDialog).apply {
-            val binding = DialogShareViewBinding.inflate(layoutInflater)
-            setContentView(binding.root)
-            setCanceledOnTouchOutside(true)
-            setCancelable(true)
-            binding.groupScreenShare.setOnClickListener {
-                this.dismiss()
-                if (sdkShareHelper.isSharingOut) {
-                    sdkShareHelper.stopShare()
-                    shareToolbar?.let {
-                        it.destroy()
-                    }
-                } else {
-                    askScreenSharePermission()
+        binding.groupScreenShare.setOnClickListener {
+            dialog.dismiss()
+            if (sdkShareHelper.isSharingOut) {
+                sdkShareHelper.stopShare()
+                shareToolbar?.let {
+                    it.destroy()
                 }
+            } else {
+                askScreenSharePermission()
             }
-            binding.groupPictureShare.setOnClickListener {
-                selectFromGallery()
-                dismiss()
-            }
-        }.show()
+        }
+        binding.groupPictureShare.setOnClickListener {
+            selectFromGallery()
+            dialog.dismiss()
+        }
+        dialog.show()
     }
 
     private fun selectFromGallery() {
@@ -643,50 +643,53 @@ open class BaseSessionActivity : AppCompatActivity(), ZoomVideoSDKDelegate, Shar
     fun onClickMore(view: View) {
         val zoomSDKUserInfo = session.mySelf ?: return
 
-        Dialog(this, R.style.MyDialog).apply {
-            val binding = DialogMoreActionBinding.inflate(layoutInflater)
-            setContentView(binding.root)
-            var hasLast = false
-            if (zoomSDKUserInfo.videoStatus.isOn) {
-                binding.llSwitchCamera.visibility = View.VISIBLE
-                binding.llSwitchCamera.setOnClickListener {
-                    dismiss()
-                    onClickMoreSwitchCamera()
-                }
+        val binding = DialogMoreActionBinding.inflate(layoutInflater)
+        val builder = MaterialAlertDialogBuilder(this).apply {
+            setView(binding.root)
+        }
+            .setCancelable(true)
 
+        val dialog = builder.create()
+        var hasLast = false
+        if (zoomSDKUserInfo.videoStatus.isOn) {
+            binding.llSwitchCamera.visibility = View.VISIBLE
+            binding.llSwitchCamera.setOnClickListener {
+                dialog.dismiss()
+                onClickMoreSwitchCamera()
+            }
+
+            hasLast = true
+        } else {
+            binding.llSwitchCamera.visibility = View.GONE
+        }
+        if (canSwitchAudioSource()) {
+            binding.llSpeaker.visibility = View.VISIBLE
+            binding.llSpeaker.setOnClickListener {
+                dialog.dismiss()
+                onClickMoreSpeaker()
+            }
+            if (hasLast.not()) {
                 hasLast = true
-            } else {
-                binding.llSwitchCamera.visibility = View.GONE
+                binding.llSpeaker.background =
+                    resources.getDrawable(R.drawable.more_action_last_bg, null)
             }
-            if (canSwitchAudioSource()) {
-                binding.llSpeaker.visibility = View.VISIBLE
-                binding.llSpeaker.setOnClickListener {
-                    dismiss()
-                    onClickMoreSpeaker()
-                }
-                if (hasLast.not()) {
-                    hasLast = true
-                    binding.llSpeaker.background =
-                        resources.getDrawable(R.drawable.more_action_last_bg, null)
-                }
-            } else {
-                binding.llSpeaker.visibility = View.GONE
-            }
+        } else {
+            binding.llSpeaker.visibility = View.GONE
+        }
 
-            if (hasLast.not())
-                return
+        if (hasLast.not())
+            return
 
-            if (isSpeakerOn()) {
-                binding.tvSpeaker.text = "Turn Off Speaker"
-                binding.ivSpeaker.setImageResource(R.drawable.icon_speaker_off)
-            } else {
-                binding.tvSpeaker.text = "Turn On Speaker"
-                binding.ivSpeaker.setImageResource(R.drawable.icon_speaker_on)
-            }
+        if (isSpeakerOn()) {
+            binding.tvSpeaker.text = "Turn Off Speaker"
+            binding.ivSpeaker.setImageResource(R.drawable.icon_speaker_off)
+        } else {
+            binding.tvSpeaker.text = "Turn On Speaker"
+            binding.ivSpeaker.setImageResource(R.drawable.icon_speaker_on)
+        }
 
-            setCanceledOnTouchOutside(true)
-            setCancelable(true)
-        }.show()
+        dialog.setCanceledOnTouchOutside(true)
+        dialog.show()
     }
 
     private fun checkMoreAction() {
@@ -985,22 +988,26 @@ open class BaseSessionActivity : AppCompatActivity(), ZoomVideoSDKDelegate, Shar
     }
 
     private fun showInputPwdDialog(handler: ZoomVideoSDKPasswordHandler) {
-        Dialog(this, R.style.MyDialog).apply {
-            val binding = DialogSessionInputPwdBinding.inflate(layoutInflater)
-            setContentView(binding.root)
-            setCancelable(false)
-            setCanceledOnTouchOutside(false)
-            binding.btnOk.setOnClickListener {
-                handler.inputSessionPassword(
-                    binding.editPwd.text.toString()
-                )
-                dismiss()
+        val binding = DialogSessionInputPwdBinding.inflate(layoutInflater)
+        val builder =
+            MaterialAlertDialogBuilder(this).apply {
+                setView(binding.root)
             }
-            binding.btnCancel.setOnClickListener {
-                handler.leaveSessionIgnorePassword()
-                dismiss()
-            }
-        }.show()
+                .setCancelable(false)
+
+        val dialog = builder.create()
+        dialog.setCanceledOnTouchOutside(false)
+        binding.btnOk.setOnClickListener {
+            handler.inputSessionPassword(
+                binding.editPwd.text.toString()
+            )
+            dialog.dismiss()
+        }
+        binding.btnCancel.setOnClickListener {
+            handler.leaveSessionIgnorePassword()
+            dialog.dismiss()
+        }
+        dialog.show()
     }
 
     override fun onSessionPasswordWrong(handler: ZoomVideoSDKPasswordHandler?) {
