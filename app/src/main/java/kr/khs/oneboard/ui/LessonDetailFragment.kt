@@ -1,12 +1,18 @@
 package kr.khs.oneboard.ui
 
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import kr.khs.oneboard.core.BaseFragment
+import kr.khs.oneboard.core.zoom.BaseSessionActivity
 import kr.khs.oneboard.data.Lesson
 import kr.khs.oneboard.databinding.FragmentLessonDetailBinding
 import kr.khs.oneboard.utils.*
@@ -17,10 +23,17 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class LessonDetailFragment : BaseFragment<FragmentLessonDetailBinding, LessonDetailViewModel>() {
+    companion object {
+        const val REQUEST_PERMISSION_CODE = 1010
+    }
+
     override val viewModel: LessonDetailViewModel by viewModels()
 
     @Inject
     lateinit var zoom: ZoomVideoSDK
+
+    @Inject
+    lateinit var listener: ZoomVideoSDKDelegate
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,6 +54,7 @@ class LessonDetailFragment : BaseFragment<FragmentLessonDetailBinding, LessonDet
         getSafeArgs()
 
         initViews()
+        zoom.addListener(listener)
     }
 
     private fun initViews() {
@@ -57,31 +71,48 @@ class LessonDetailFragment : BaseFragment<FragmentLessonDetailBinding, LessonDet
             }
         }
 
-        // 같은 상황
-        // https://devforum.zoom.us/t/cannot-join-web-meeting/58071/8
         binding.lessonDetailBtn.setOnClickListener {
             if (UserInfoUtil.type == TYPE_PROFESSOR) {
-                val sessionContext = ZoomVideoSDKSessionContext().apply {
-                    sessionName = "mysession_oneboard"
-                    userName = "ricky"
-                    token = createJWT(sessionName, userName)
-                    audioOption = ZoomVideoSDKAudioOption().apply {
-                        connect = true
-                        mute = true
-                    }
-                    videoOption = ZoomVideoSDKVideoOption().apply {
-                        localVideoOn = false
-                    }
-                }
-                zoom.joinSession(sessionContext)
-                zoom.session?.run {
-                    Timber.tag("Session").d("name : $sessionName")
-                    Timber.tag("Session").d("password: $sessionPassword")
-                    Timber.tag("Session").d("host : $sessionHost")
-                    Timber.tag("Session").d("mySelf : ${mySelf.userName}")
-//                    Timber.tag("Session").d("hostname : $sessionHostName")
-                }
+                createOrJoinSession()
             }
+        }
+    }
+
+    private fun createOrJoinSession() {
+        if (checkPermission().not())
+            return
+
+        val sessionContext = ZoomVideoSDKSessionContext().apply {
+            // TODO: 2021/11/13 change session name, user name
+            sessionName = "mysession_oneboard"
+            userName = "ricky"
+            token = createJWT(sessionName, userName)
+            audioOption = ZoomVideoSDKAudioOption().apply {
+                connect = true
+                mute = true
+            }
+            videoOption = ZoomVideoSDKVideoOption().apply {
+                localVideoOn = true
+            }
+        }
+
+        zoom.joinSession(sessionContext)
+        zoom.session?.run {
+            Timber.tag("Session").d("name : $sessionName")
+            Timber.tag("Session").d("password: $sessionPassword")
+            Timber.tag("Session").d("host : $sessionHost")
+            Timber.tag("Session").d("mySelf : ${mySelf.userName}")
+            //                    Timber.tag("Session").d("hostname : $sessionHostName")
+
+            startActivity(
+                Intent(requireContext(), SessionActivity::class.java).apply {
+                    putExtra("name", mySelf.userName)
+                    putExtra("sessionName", sessionName)
+                    putExtra("renderType", BaseSessionActivity.RENDER_TYPE_ZOOMRENDERER)
+                }
+            )
+        } ?: run {
+            ToastUtil.shortToast(requireContext(), "세션 생성에 실패했습니다.")
         }
     }
 
@@ -93,4 +124,67 @@ class LessonDetailFragment : BaseFragment<FragmentLessonDetailBinding, LessonDet
         } ?: goBackWhenError()
     }
 
+    private fun checkPermission(): Boolean {
+        Timber.d("Check Permission")
+        val cameraPermission =
+            ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA)
+        val recordAudioPermission =
+            ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.RECORD_AUDIO)
+        val storagePermission = ContextCompat.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.READ_EXTERNAL_STORAGE
+        )
+        val permissionGranted = PackageManager.PERMISSION_GRANTED
+        if (cameraPermission != permissionGranted || recordAudioPermission != permissionGranted || storagePermission != permissionGranted) {
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.RECORD_AUDIO,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                ),
+                REQUEST_PERMISSION_CODE
+            )
+
+            return false
+        }
+        return true
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            REQUEST_PERMISSION_CODE -> {
+                val cameraPermission =
+                    ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA)
+                val recordAudioPermission =
+                    ContextCompat.checkSelfPermission(
+                        requireContext(),
+                        Manifest.permission.RECORD_AUDIO
+                    )
+                val storagePermission = ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                )
+                val permissionGranted = PackageManager.PERMISSION_GRANTED
+                if (cameraPermission != permissionGranted && recordAudioPermission != permissionGranted && storagePermission != permissionGranted) {
+                    Timber.d("OnPermissionGranted!!")
+                    onPermissionGranted()
+                }
+            }
+        }
+    }
+
+    private fun onPermissionGranted() {
+        createOrJoinSession()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        zoom.removeListener(listener)
+    }
 }
