@@ -35,7 +35,7 @@ class ChatMsgAdapter(private val listener: ItemClickListener) :
     }
 
     fun onReceive(item: ZoomVideoSDKChatMessage) {
-        val senderName = "${item.senderUser.userName} : }"
+        val senderName = "${item.senderUser.userName} : "
         val content = item.content
 
         val builder = SpannableStringBuilder().apply {
@@ -47,7 +47,7 @@ class ChatMsgAdapter(private val listener: ItemClickListener) :
                 Spannable.SPAN_EXCLUSIVE_INCLUSIVE
             )
             setSpan(
-                ForegroundColorSpan(Color.parseColor("FFFFFF")),
+                ForegroundColorSpan(Color.parseColor("#FFFFFF")),
                 senderName.length,
                 length,
                 Spannable.SPAN_EXCLUSIVE_INCLUSIVE
