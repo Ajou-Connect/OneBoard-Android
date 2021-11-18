@@ -72,7 +72,7 @@ class AttendanceLessonDiffUtil : DiffUtil.ItemCallback<AttendanceLesson>() {
     }
 
     override fun areContentsTheSame(oldItem: AttendanceLesson, newItem: AttendanceLesson): Boolean {
-        return oldItem.status == newItem.status
+        return oldItem == newItem
     }
 
 }

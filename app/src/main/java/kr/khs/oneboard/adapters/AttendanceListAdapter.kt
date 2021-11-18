@@ -99,7 +99,7 @@ class AttendanceListAdapter :
     }
 
     override fun submitList(list: MutableList<AttendanceStudent>?) {
-        super.submitList(list?.let { it.map { item -> item.deepCopy() } })
+        super.submitList(list?.let { it.map { item -> item.copy() } })
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
