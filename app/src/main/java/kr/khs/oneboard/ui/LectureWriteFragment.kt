@@ -107,6 +107,7 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
         if (type == TYPE_ASSIGNMENT) {
             binding.writeStartDt.text = assignment?.startDt
             binding.writeEndDt.text = assignment?.endDt
+            binding.writeAssignmentScore.setText(assignment?.score.toString())
         }
     }
 
@@ -197,7 +198,8 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
                             if (binding.writeExposeTimeCheckBox.isChecked)
                                 System.currentTimeMillis().toDateTime()
                             else
-                                "${binding.writeExposeTimeTextView.text}"
+                                "${binding.writeExposeTimeTextView.text}",
+                            binding.writeAssignmentScore.text.toString().toFloat()
                         )
                     } else
                         null
@@ -234,7 +236,8 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
                             if (binding.writeExposeTimeCheckBox.isChecked)
                                 System.currentTimeMillis().toDateTime()
                             else
-                                "${binding.writeExposeTimeTextView.text}"
+                                "${binding.writeExposeTimeTextView.text}",
+                            binding.writeAssignmentScore.text.toString().toFloat()
                         )
                     } else
                         null
