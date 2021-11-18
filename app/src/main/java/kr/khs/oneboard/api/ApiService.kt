@@ -4,6 +4,7 @@ import kr.khs.oneboard.data.*
 import kr.khs.oneboard.data.api.BasicResponseImpl
 import kr.khs.oneboard.data.api.Response
 import kr.khs.oneboard.data.request.AssignmentUpdateRequestDto
+import kr.khs.oneboard.data.request.AttendanceUpdateRequestDto
 import kr.khs.oneboard.data.request.NoticeUpdateRequestDto
 import retrofit2.http.*
 
@@ -51,11 +52,14 @@ interface ApiService {
         @Path("noticeId") noticeId: Int
     ): BasicResponseImpl
 
-    @GET("lecture/attendance")
-    suspend fun getAttendanceList(lectureId: Int): Response<List<AttendanceStudent>>
+    @GET("lecture/{lectureId}/attendance")
+    suspend fun getAttendanceList(@Path("lectureId") lectureId: Int): Response<List<AttendanceStudent>>
 
-    @POST("lecture/attendance")
-    suspend fun postAttendance(): Response<Boolean>
+    @PUT("lecture/{lectureId}attendance")
+    suspend fun putAttendance(
+        @Path("lectureId") lectureId: Int,
+        @Body dto: AttendanceUpdateRequestDto
+    ): BasicResponseImpl
 
     @GET("lecture/{lectureId}/assignments")
     suspend fun getAssignmentList(@Path("lectureId") lectureId: Int): Response<List<Assignment>>
