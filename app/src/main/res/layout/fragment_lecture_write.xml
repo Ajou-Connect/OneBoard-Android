@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/primaryBackgroundColor"
     tools:context=".ui.LectureWriteFragment">
 
 
@@ -28,6 +29,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColor="@color/black"
             android:text="2021.10.28-16:30" />
 
 
@@ -78,7 +80,7 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="@+id/writeTitleEditText"
         app:layout_constraintStart_toStartOf="@+id/writeTitleEditText"
-        app:layout_constraintTop_toBottomOf="@+id/writeExposeTime">
+        app:layout_constraintTop_toBottomOf="@id/writeStartEndDT">
 
         <TextView
             android:id="@+id/writeFileDescription"
@@ -93,6 +95,47 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="파일 추가" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/writeStartEndDT"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="@+id/writeExposeTime"
+        app:layout_constraintStart_toStartOf="@+id/writeExposeTime"
+        app:layout_constraintTop_toBottomOf="@+id/writeExposeTime">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:text="시작 시간" />
+
+        <TextView
+            android:id="@+id/writeStartDt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="2"
+            android:text="2021-11-12 12:43" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:text="마감 시간" />
+
+        <TextView
+            android:id="@+id/writeEndDt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="2"
+            android:text="2021-11-12 12:43" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

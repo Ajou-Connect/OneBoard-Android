@@ -85,7 +85,14 @@ class AssignmentFragment : BaseFragment<FragmentAssignmentBinding, AssignmentVie
         with(binding.rvAssignments) {
             listAdapter = AssignmentListAdapter().apply {
                 listItemClickListener = { item ->
-                    // todo item click listener
+                    findNavController().navigate(
+                        AssignmentFragmentDirections.actionAssignmentFragmentToLectureWriteFragment(
+                            TYPE_ASSIGNMENT
+                        ).apply {
+                            isEdit = true
+                            assignment = item
+                        }
+                    )
                 }
                 listItemDeleteListener = { item ->
                     DialogUtil.createDialog(
@@ -93,7 +100,7 @@ class AssignmentFragment : BaseFragment<FragmentAssignmentBinding, AssignmentVie
                         "삭제하시겠습니까?",
                         "네",
                         "아니오",
-                        { viewModel.deleteItem(item) },
+                        { viewModel.deleteItem(parentViewModel.getLecture().id, item) },
                         { }
                     )
                 }

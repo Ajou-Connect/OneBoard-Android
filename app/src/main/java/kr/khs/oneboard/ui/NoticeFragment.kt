@@ -39,7 +39,9 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding, NoticeViewModel>() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.list.observe(viewLifecycleOwner) {
-            listAdapter.submitList(it)
+            listAdapter.submitList(
+                it
+            )
         }
     }
 
@@ -85,7 +87,14 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding, NoticeViewModel>() {
         with(binding.rvNotices) {
             listAdapter = NoticeListAdapter().apply {
                 listItemClickListener = { item ->
-                    // todo item click listener
+                    findNavController().navigate(
+                        NoticeFragmentDirections.actionNoticeFragmentToLectureWriteFragment(
+                            TYPE_NOTICE
+                        ).apply {
+                            isEdit = true
+                            notice = item
+                        }
+                    )
                 }
                 listItemDeleteListener = { item ->
                     DialogUtil.createDialog(
@@ -93,7 +102,7 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding, NoticeViewModel>() {
                         "삭제하시겠습니까?",
                         "네",
                         "아니오",
-                        { viewModel.deleteItem(item) },
+                        { viewModel.deleteItem(parentViewModel.getLecture().id, item.id) },
                         { }
                     )
                 }

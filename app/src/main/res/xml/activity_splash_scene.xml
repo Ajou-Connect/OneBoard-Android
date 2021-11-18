@@ -1,68 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<MotionScene xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ConstraintSet android:id="@+id/splashMotionStart">
         <Constraint
             android:id="@+id/splashTitle"
-            android:layout_width="0dp"
-            android:layout_height="200dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/splashGuideLine"
+        <Constraint
+            android:id="@+id/splashVerticalGuideLine"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.3" />
 
         <Constraint
+            android:id="@+id/splashHorizontalGuideLine"
             android:layout_width="wrap_content"
-            android:layout_height="200dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.48" />
+
+        <Constraint
             android:id="@+id/splashLineImage"
-            app:layout_constraintBottom_toBottomOf="@+id/splashTitle"
-            app:layout_constraintEnd_toEndOf="@+id/splashGuideLine"
-            app:layout_constraintStart_toStartOf="@+id/splashGuideLine"
-            app:layout_constraintTop_toTopOf="@+id/splashTitle"
-            android:visibility="invisible" />
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            app:layout_constraintBottom_toTopOf="@id/splashHorizontalGuideLine"
+            app:layout_constraintStart_toStartOf="@id/splashVerticalGuideLine" />
     </ConstraintSet>
 
     <ConstraintSet android:id="@+id/splashMotionEnd">
         <Constraint
             android:id="@+id/splashTitle"
-            android:layout_width="0dp"
-            android:layout_height="200dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/splashGuideLine"
+        <Constraint
+            android:id="@+id/splashVerticalGuideLine"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.3"
-            tools:ignore="DuplicateIds" />
+            app:layout_constraintGuide_percent="0.3" />
+
+        <Constraint
+            android:id="@+id/splashHorizontalGuideLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.48" />
 
         <Constraint
             android:id="@+id/splashLineImage"
             android:layout_width="0dp"
-            android:layout_height="200dp"
-            app:layout_constraintBottom_toBottomOf="@+id/splashTitle"
-            app:layout_constraintEnd_toEndOf="@+id/splashTitle"
-            app:layout_constraintStart_toStartOf="@+id/splashTitle"
-            app:layout_constraintTop_toTopOf="@+id/splashTitle" />
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            app:layout_constraintBottom_toTopOf="@id/splashHorizontalGuideLine"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/splashVerticalGuideLine" />
     </ConstraintSet>
 
     <Transition
         android:id="@+id/splashAnimation"
+        app:autoTransition="animateToEnd"
         app:constraintSetEnd="@id/splashMotionEnd"
         app:constraintSetStart="@+id/splashMotionStart"
-        app:autoTransition="animateToEnd"
-        app:duration="2000"></Transition>
+        app:duration="2000" />
 </MotionScene>

@@ -50,6 +50,20 @@
         <argument
             android:name="type"
             app:argType="boolean" />
+        <argument
+            android:name="isEdit"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <argument
+            android:name="notice"
+            app:argType="kr.khs.oneboard.data.Notice"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <argument
+            android:name="assignment"
+            app:argType="kr.khs.oneboard.data.Assignment"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
     <fragment
         android:id="@+id/attendanceFragment"

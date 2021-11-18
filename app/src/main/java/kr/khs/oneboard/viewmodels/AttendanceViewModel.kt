@@ -22,7 +22,7 @@ class AttendanceViewModel @Inject constructor(private val lectureRepository: Lec
     fun getAttendanceList(lectureId: Int) {
         viewModelScope.launch {
             showProgress()
-            _attendanceList.value = lectureRepository.getAttendanceList(lectureId)
+            _attendanceList.value = lectureRepository.getAttendanceList(lectureId).data!!
             hideProgress()
         }
     }

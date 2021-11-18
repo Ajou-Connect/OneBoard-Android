@@ -3,49 +3,181 @@ package kr.khs.oneboard.repository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kr.khs.oneboard.api.ApiService
-import kr.khs.oneboard.data.Assignment
-import kr.khs.oneboard.data.AttendanceLesson
-import kr.khs.oneboard.data.AttendanceStudent
-import kr.khs.oneboard.data.Notice
+import kr.khs.oneboard.core.UseCase
+import kr.khs.oneboard.data.*
 import kr.khs.oneboard.data.api.Response
+import kr.khs.oneboard.data.request.AssignmentUpdateRequestDto
+import kr.khs.oneboard.data.request.NoticeUpdateRequestDto
 import kr.khs.oneboard.utils.SUCCESS
+import timber.log.Timber
 import javax.inject.Inject
+import javax.inject.Named
 
 class LectureRepositoryImpl @Inject constructor(
-    val apiService: ApiService
+    @Named("withJWT") private val apiService: ApiService
 ) : LectureRepository {
-    override suspend fun getNoticeList(lectureId: Int): List<Notice> {
-        val response: Response<List<Notice>>
-        withContext(Dispatchers.IO) {
-//            response = apiService.getNoticeList(lectureId)
-            response = Response(
-                SUCCESS,
-                (0 until 20)
-                    .map {
-                        Notice(
-                            it,
-                            it,
-                            "$lectureId - 공지 $it",
-                            "내용 $it",
-                            "노출 날짜 $it",
-                            it.toLong(),
-                            it.toLong()
-                        )
-                    }
-                    .toList()
-            )
+    override suspend fun getDetailLecture(lectureId: Int): UseCase<Lecture> {
+        val response: Response<Lecture>
+        try {
+            withContext(Dispatchers.IO) {
+                response = apiService.getDetailLecture(lectureId)
+            }
+        } catch (e: Exception) {
+            return UseCase.error("Error")
         }
-        return response.data
+
+        return UseCase.success(response.data)
     }
 
-    override suspend fun postNotice(notice: Notice): Boolean {
-//        withContext(Dispatchers.IO) {
-//            apiService.postNotice()
-//        }
-        return true
+    override suspend fun getNoticeList(lectureId: Int): UseCase<List<Notice>> {
+        val response: Response<List<Notice>>
+        try {
+            withContext(Dispatchers.IO) {
+                response = apiService.getNoticeList(lectureId)
+            }
+        } catch (e: Exception) {
+            Timber.e(e)
+            return UseCase.error("Error")
+        }
+
+        return UseCase.success(response.data)
     }
 
-    override suspend fun getAttendanceList(lectureId: Int): List<AttendanceStudent> {
+    override suspend fun postNotice(
+        lectureId: Int,
+        notice: NoticeUpdateRequestDto
+    ): UseCase<Boolean> {
+        var returnValue: UseCase<Boolean>
+        try {
+            withContext(Dispatchers.IO) {
+                val response = apiService.postNotice(lectureId, notice)
+                returnValue = if (response.result == SUCCESS)
+                    UseCase.success(true)
+                else
+                    UseCase.success(false)
+            }
+        } catch (e: Exception) {
+            Timber.e(e)
+            returnValue = UseCase.error("Error")
+        }
+
+        return returnValue
+    }
+
+    override suspend fun putNotice(
+        lectureId: Int,
+        noticeId: Int,
+        notice: NoticeUpdateRequestDto
+    ): UseCase<Boolean> {
+        var returnValue: UseCase<Boolean>
+        try {
+            withContext(Dispatchers.IO) {
+                val response = apiService.putNotice(lectureId, noticeId, notice)
+                returnValue = if (response.result == SUCCESS)
+                    UseCase.success(true)
+                else
+                    UseCase.success(false)
+            }
+        } catch (e: Exception) {
+            returnValue = UseCase.error("Error")
+        }
+
+        return returnValue
+    }
+
+    override suspend fun deleteNotice(
+        lectureId: Int,
+        noticeId: Int
+    ): UseCase<Boolean> {
+        var returnValue: UseCase<Boolean>
+        try {
+            withContext(Dispatchers.IO) {
+                val response = apiService.deleteNotice(lectureId, noticeId)
+                returnValue = if (response.result == SUCCESS)
+                    UseCase.success(true)
+                else
+                    UseCase.success(false)
+            }
+        } catch (e: Exception) {
+            returnValue = UseCase.error("Error")
+        }
+
+        return returnValue
+    }
+
+
+    override suspend fun getAssignmentList(lectureId: Int): UseCase<List<Assignment>> {
+        val response: Response<List<Assignment>>
+        try {
+            withContext(Dispatchers.IO) {
+                response = apiService.getAssignmentList(lectureId)
+            }
+        } catch (e: Exception) {
+            return UseCase.error("Error")
+        }
+        return if (response.result == SUCCESS) UseCase.success(response.data) else UseCase.error("Error")
+    }
+
+    override suspend fun postAssignment(
+        lectureId: Int,
+        assignment: AssignmentUpdateRequestDto
+    ): UseCase<Boolean> {
+        var returnValue: UseCase<Boolean>
+        try {
+            withContext(Dispatchers.IO) {
+                val response = apiService.postAssignment(lectureId, assignment)
+                returnValue = if (response.result == SUCCESS)
+                    UseCase.success(true)
+                else
+                    UseCase.success(false)
+            }
+        } catch (e: Exception) {
+            Timber.e(e)
+            returnValue = UseCase.error("Error")
+        }
+
+        return returnValue
+    }
+
+    override suspend fun putAssignment(
+        lectureId: Int,
+        assignmentId: Int,
+        assignment: AssignmentUpdateRequestDto
+    ): UseCase<Boolean> {
+        var returnValue: UseCase<Boolean>
+        try {
+            withContext(Dispatchers.IO) {
+                val response = apiService.putAssignment(lectureId, assignmentId, assignment)
+                returnValue = if (response.result == SUCCESS)
+                    UseCase.success(true)
+                else
+                    UseCase.success(false)
+            }
+        } catch (e: Exception) {
+            returnValue = UseCase.error("Error")
+        }
+
+        return returnValue
+    }
+
+    override suspend fun deleteAssignment(lectureId: Int, assignmentId: Int): UseCase<Boolean> {
+        var returnValue: UseCase<Boolean>
+        try {
+            withContext(Dispatchers.IO) {
+                val response = apiService.deleteAssignment(lectureId, assignmentId)
+                returnValue = if (response.result == SUCCESS)
+                    UseCase.success(true)
+                else
+                    UseCase.success(false)
+            }
+        } catch (e: Exception) {
+            returnValue = UseCase.error("Error")
+        }
+
+        return returnValue
+    }
+
+    override suspend fun getAttendanceList(lectureId: Int): UseCase<List<AttendanceStudent>> {
         val response: Response<List<AttendanceStudent>>
 
         withContext(Dispatchers.IO) {
@@ -70,49 +202,15 @@ class LectureRepositoryImpl @Inject constructor(
                 })
         }
 
-        return response.data
+        return UseCase.success(response.data)
     }
 
-    override suspend fun postAttendanceList(list: List<AttendanceStudent>): Boolean {
+    override suspend fun postAttendanceList(list: List<AttendanceStudent>): UseCase<Boolean> {
         val response: Response<Boolean>
         withContext(Dispatchers.IO) {
 //            response = apiService.postAttendance()
             response = Response(SUCCESS, true)
         }
-        return response.data
-    }
-
-    override suspend fun getAssignmentList(lectureId: Int): List<Assignment> {
-        val response: Response<List<Assignment>>
-        withContext(Dispatchers.IO) {
-//            response = apiService.getAssignmentList(lectureId)
-            response = Response(
-                SUCCESS,
-                (0 until 20)
-                    .map {
-                        Assignment(
-                            it,
-                            it,
-                            "$lectureId - 과제 $it",
-                            "내용 $it",
-                            "노출 날짜 $it",
-                            it.toLong(),
-                            it.toLong(),
-                            "fileUrl",
-                            "시작 날짜 $it",
-                            "마감 날짜 $it"
-                        )
-                    }
-                    .toList()
-            )
-        }
-        return response.data
-    }
-
-    override suspend fun postAssignment(assignment: Assignment): Boolean {
-//        withContext(Dispatchers.IO) {
-//            apiService.postAssignment()
-//        }
-        return true
+        return UseCase.success(response.data)
     }
 }

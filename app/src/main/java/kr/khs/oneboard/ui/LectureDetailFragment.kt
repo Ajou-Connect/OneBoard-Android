@@ -31,6 +31,8 @@ class LectureDetailFragment : BaseFragment<FragmentLectureDetailBinding, Lecture
             binding.temp.text = """
             ${it.title} - ${it.semester}
             ${it.professor}
+            공지사항, 과제 등의 추가적인 정보는
+            추후 추가 예정입니다.
         """.trimIndent()
         }
     }
@@ -48,7 +50,7 @@ class LectureDetailFragment : BaseFragment<FragmentLectureDetailBinding, Lecture
     }
 
     private fun getSafeArgs() {
-        viewModel.setLectureInfo(parentViewModel.getLecture())
+        viewModel.setLectureInfo(parentViewModel.getLecture().id)
     }
 
 }
