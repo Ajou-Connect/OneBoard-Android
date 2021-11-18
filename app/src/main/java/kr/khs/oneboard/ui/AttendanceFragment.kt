@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kr.khs.oneboard.R
+import kr.khs.oneboard.adapters.AttendanceLessonListAdapter
 import kr.khs.oneboard.adapters.AttendanceListAdapter
 import kr.khs.oneboard.core.BaseFragment
 import kr.khs.oneboard.databinding.FragmentAttendanceBinding
@@ -19,6 +20,7 @@ import timber.log.Timber
 class AttendanceFragment : BaseFragment<FragmentAttendanceBinding, AttendanceViewModel>() {
     override val viewModel: AttendanceViewModel by viewModels()
     private lateinit var attendanceListAdapter: AttendanceListAdapter
+    private lateinit var myAttendanceListAdapter: AttendanceLessonListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,22 +38,29 @@ class AttendanceFragment : BaseFragment<FragmentAttendanceBinding, AttendanceVie
 
         viewModel.attendanceList.observe(viewLifecycleOwner) {
             Timber.tag("ChangeAttendance").d("$it")
-            attendanceListAdapter.submitList(it.toMutableList())
+            if (UserInfoUtil.type == TYPE_PROFESSOR)
+                attendanceListAdapter.submitList(it.toMutableList())
+            else
+                myAttendanceListAdapter.submitList(it[0].attendanceList.toMutableList())
         }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.option_menu_in_attendance, menu)
+        if (UserInfoUtil.type == TYPE_PROFESSOR) {
+            super.onCreateOptionsMenu(menu, inflater)
+            inflater.inflate(R.menu.option_menu_in_attendance, menu)
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.attendance_menu_reset -> {
-                viewModel.resetAttendanceList(parentViewModel.getLecture().id)
-            }
-            R.id.attendance_menu_save -> {
-                viewModel.saveAttendanceList(parentViewModel.getLecture().id)
+        if (UserInfoUtil.type == TYPE_PROFESSOR) {
+            when (item.itemId) {
+                R.id.attendance_menu_reset -> {
+                    viewModel.resetAttendanceList(parentViewModel.getLecture().id)
+                }
+                R.id.attendance_menu_save -> {
+                    viewModel.saveAttendanceList(parentViewModel.getLecture().id)
+                }
             }
         }
         return super.onOptionsItemSelected(item)
@@ -68,29 +77,36 @@ class AttendanceFragment : BaseFragment<FragmentAttendanceBinding, AttendanceVie
     }
 
     private fun initData() {
-        viewModel.getAttendanceList(parentViewModel.getLecture().id)
+        if (UserInfoUtil.type == TYPE_PROFESSOR) {
+            viewModel.getAttendanceList(parentViewModel.getLecture().id)
+        } else {
+            viewModel.getMyAttendance(parentViewModel.getLecture().id)
+        }
     }
 
     private fun initAttendanceList() {
-        if (UserInfoUtil.type == TYPE_PROFESSOR) {
-            with(binding.listAttendance) {
+        with(binding.listAttendance) {
+            if (UserInfoUtil.type == TYPE_PROFESSOR) {
                 attendanceListAdapter = AttendanceListAdapter().apply {
                     onStudentStatusChange = { attendanceStudent ->
                         viewModel.updateAttendance(attendanceStudent)
                     }
                 }
                 adapter = attendanceListAdapter
-                layoutManager =
-                    LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-                addItemDecoration(
-                    DividerItemDecoration(
-                        requireContext(),
-                        LinearLayoutManager.VERTICAL
-                    )
-                )
+            } else {
+                myAttendanceListAdapter = AttendanceLessonListAdapter().apply {
+                    onLessonStatusChange = { }
+                }
+                adapter = myAttendanceListAdapter
             }
-        } else {
-
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            addItemDecoration(
+                DividerItemDecoration(
+                    requireContext(),
+                    LinearLayoutManager.VERTICAL
+                )
+            )
         }
     }
 

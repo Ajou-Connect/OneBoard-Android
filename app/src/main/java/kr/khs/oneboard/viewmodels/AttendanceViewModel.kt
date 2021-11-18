@@ -73,4 +73,17 @@ class AttendanceViewModel @Inject constructor(private val lectureRepository: Lec
         _attendanceList.value = listOf()
         getAttendanceList(lectureId)
     }
+
+    fun getMyAttendance(lectureId: Int) {
+        viewModelScope.launch {
+            showProgress()
+            val response = lectureRepository.getMyAttendance(lectureId)
+            if (response.status == UseCase.Status.SUCCESS) {
+                _attendanceList.value = listOf(response.data!!)
+            } else {
+                setErrorMessage("출석 목록을 불러오지 못했습니다.")
+            }
+            hideProgress()
+        }
+    }
 }
