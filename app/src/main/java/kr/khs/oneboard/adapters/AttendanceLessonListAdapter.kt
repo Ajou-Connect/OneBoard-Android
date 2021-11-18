@@ -21,14 +21,14 @@ class AttendanceLessonListAdapter :
         init {
             binding.attendanceLessonCheckbox.onStateChanged = { threeStateCheckBox, state ->
                 binding.item?.let {
-                    onStateChange.invoke(it.apply { check = state })
+                    onStateChange.invoke(it.apply { status = state })
                 }
             }
         }
 
         fun bind(item: AttendanceLesson) {
             binding.item = item
-            binding.attendanceLessonCheckbox.state = item.check
+            binding.attendanceLessonCheckbox.state = item.status
             binding.executePendingBindings()
         }
 
@@ -50,7 +50,7 @@ class AttendanceLessonListAdapter :
     }
 
     override fun submitList(list: MutableList<AttendanceLesson>?) {
-        super.submitList(list?.map { it.copy() })
+        super.submitList(list?.let { it.map { item -> item.copy() } })
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -65,11 +65,11 @@ class AttendanceLessonListAdapter :
 
 class AttendanceLessonDiffUtil : DiffUtil.ItemCallback<AttendanceLesson>() {
     override fun areItemsTheSame(oldItem: AttendanceLesson, newItem: AttendanceLesson): Boolean {
-        return oldItem.id == newItem.id
+        return oldItem.lessonId == newItem.lessonId
     }
 
     override fun areContentsTheSame(oldItem: AttendanceLesson, newItem: AttendanceLesson): Boolean {
-        return oldItem.check == newItem.check
+        return oldItem.status == newItem.status
     }
 
 }
