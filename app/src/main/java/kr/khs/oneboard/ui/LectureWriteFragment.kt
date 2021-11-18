@@ -1,11 +1,14 @@
 package kr.khs.oneboard.ui
 
+import android.app.Activity
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import com.noowenz.customdatetimepicker.CustomDateTimePicker
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,7 +23,9 @@ import kr.khs.oneboard.extensions.toTimeInMillis
 import kr.khs.oneboard.utils.TYPE_ASSIGNMENT
 import kr.khs.oneboard.utils.TYPE_NOTICE
 import kr.khs.oneboard.utils.ToastUtil
+import kr.khs.oneboard.utils.asMultipart
 import kr.khs.oneboard.viewmodels.LectureWriteViewModel
+import okhttp3.MultipartBody
 import timber.log.Timber
 import java.util.*
 import kotlin.properties.Delegates
@@ -32,6 +37,17 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
     private var isEdit = false
     private var notice: Notice? = null
     private var assignment: Assignment? = null
+    private var assignmentFile: MultipartBody.Part? = null
+
+    private val fileResultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val data = result.data
+                assignmentFile = data?.data?.asMultipart("filename", requireContext().contentResolver)
+                binding.writeFileDescription.text = data?.data?.lastPathSegment
+            }
+        }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -254,7 +270,9 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
             TYPE_ASSIGNMENT -> {
                 binding.writeFileLayout.visibility = View.VISIBLE
                 binding.writeFileAddButton.setOnClickListener {
-                    // todo : File Add, if success -> binding.writeFileDescription update
+                    fileResultLauncher.launch(
+                        Intent(Intent.ACTION_GET_CONTENT).setType("*/*")
+                    )
                 }
             }
         }
