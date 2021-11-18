@@ -61,6 +61,9 @@ interface ApiService {
         @Body dto: AttendanceUpdateRequestDto
     ): BasicResponseImpl
 
+    @GET("lecture/{lectureId}/attendance/my")
+    suspend fun getMyAttendanceList(@Path("lectureId") lectureId: Int): Response<AttendanceStudent>
+
     @GET("lecture/{lectureId}/assignments")
     suspend fun getAssignmentList(@Path("lectureId") lectureId: Int): Response<List<Assignment>>
 

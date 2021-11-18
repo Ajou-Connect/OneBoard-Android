@@ -45,4 +45,6 @@ interface LectureRepository {
         lectureId: Int,
         dto: AttendanceUpdateRequestDto
     ): UseCase<Boolean>
+
+    suspend fun getMyAttendance(lectureId: Int): UseCase<AttendanceStudent>
 }
