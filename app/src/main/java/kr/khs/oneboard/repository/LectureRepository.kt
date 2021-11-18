@@ -6,6 +6,7 @@ import kr.khs.oneboard.data.AttendanceStudent
 import kr.khs.oneboard.data.Lecture
 import kr.khs.oneboard.data.Notice
 import kr.khs.oneboard.data.request.AssignmentUpdateRequestDto
+import kr.khs.oneboard.data.request.AttendanceUpdateRequestDto
 import kr.khs.oneboard.data.request.NoticeUpdateRequestDto
 
 interface LectureRepository {
@@ -40,5 +41,8 @@ interface LectureRepository {
 
     suspend fun getAttendanceList(lectureId: Int): UseCase<List<AttendanceStudent>>
 
-    suspend fun postAttendanceList(list: List<AttendanceStudent>): UseCase<Boolean>
+    suspend fun postAttendanceList(
+        lectureId: Int,
+        dto: AttendanceUpdateRequestDto
+    ): UseCase<Boolean>
 }

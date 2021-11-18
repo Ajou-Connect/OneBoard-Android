@@ -4,9 +4,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kr.khs.oneboard.api.ApiService
 import kr.khs.oneboard.core.UseCase
-import kr.khs.oneboard.data.*
+import kr.khs.oneboard.data.Assignment
+import kr.khs.oneboard.data.AttendanceStudent
+import kr.khs.oneboard.data.Lecture
+import kr.khs.oneboard.data.Notice
 import kr.khs.oneboard.data.api.Response
 import kr.khs.oneboard.data.request.AssignmentUpdateRequestDto
+import kr.khs.oneboard.data.request.AttendanceUpdateRequestDto
 import kr.khs.oneboard.data.request.NoticeUpdateRequestDto
 import kr.khs.oneboard.utils.SUCCESS
 import timber.log.Timber
@@ -178,39 +182,38 @@ class LectureRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getAttendanceList(lectureId: Int): UseCase<List<AttendanceStudent>> {
-        val response: Response<List<AttendanceStudent>>
+        var returnValue: UseCase<List<AttendanceStudent>>
 
-        withContext(Dispatchers.IO) {
-//            response = apiService.getAttendanceList(lectureId)
-            response = Response(SUCCESS, (0 until 20)
-                .map { a ->
-                    AttendanceStudent(
-                        a,
-                        "2015209$a".toInt(),
-                        "사이버보안학과 $a",
-                        "김희승 $a",
-                        (0 until 16).map { b ->
-                            AttendanceLesson(
-                                10 * a + b,
-                                "20201028 $b",
-                                description = "${b}주차 - 목 (16:30~21:00)",
-                                check = (0 until 3).random()
-                            )
-                        },
-                        false
-                    )
-                })
+        try {
+            withContext(Dispatchers.IO) {
+                val response = apiService.getAttendanceList(lectureId)
+                returnValue = if (response.result == SUCCESS)
+                    UseCase.success(response.data)
+                else
+                    UseCase.success(listOf())
+            }
+        } catch (e: Exception) {
+            returnValue = UseCase.error("Error")
         }
 
-        return UseCase.success(response.data)
+        return returnValue
     }
 
-    override suspend fun postAttendanceList(list: List<AttendanceStudent>): UseCase<Boolean> {
-        val response: Response<Boolean>
-        withContext(Dispatchers.IO) {
-//            response = apiService.postAttendance()
-            response = Response(SUCCESS, true)
+    override suspend fun postAttendanceList(
+        lectureId: Int,
+        dto: AttendanceUpdateRequestDto
+    ): UseCase<Boolean> {
+        var returnValue: UseCase<Boolean>
+
+        try {
+            withContext(Dispatchers.IO) {
+                val response = apiService.putAttendance(lectureId, dto)
+                returnValue = UseCase.success(response.result == SUCCESS)
+            }
+        } catch (e: Exception) {
+            returnValue = UseCase.error("Error")
         }
-        return UseCase.success(response.data)
+
+        return returnValue
     }
 }
