@@ -13,4 +13,5 @@ data class Assignment(
     val fileUrl: String,
     val startDt: String,
     val endDt: String,
+    val score: Float
 ) : LectureBase(), Parcelable
