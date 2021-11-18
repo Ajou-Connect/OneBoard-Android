@@ -17,25 +17,14 @@
 
         <TextView
             android:id="@+id/attendanceLessonDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:text="@{item.date}"
-            app:layout_constraintBottom_toTopOf="@+id/attendanceLessonDescription"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="10/28" />
-
-        <TextView
-            android:id="@+id/attendanceLessonDescription"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{item.description}"
+            android:layout_margin="8dp"
+            android:text="@{item.lessonDate}"
+            android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/attendanceLessonCheckbox"
-            app:layout_constraintStart_toStartOf="@+id/attendanceLessonDate"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="1주차 - 목 (16:30~21:00)" />
 
@@ -44,12 +33,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            app:text_state_unchecked="결석"
-            app:text_state_indeterminate="지각"
-            app:text_state_checked="출석"
-            app:layout_constraintBottom_toBottomOf="@+id/attendanceLessonDescription"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="@+id/attendanceLessonDate"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/attendanceLessonDescription"
+            app:layout_constraintTop_toTopOf="@+id/attendanceLessonDate"
+            app:text_state_checked="출석"
+            app:text_state_indeterminate="지각"
+            app:text_state_unchecked="결석"
             tools:state="checked"
             tools:text="출석" />
     </androidx.constraintlayout.widget.ConstraintLayout>
