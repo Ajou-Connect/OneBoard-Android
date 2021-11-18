@@ -55,7 +55,7 @@ interface ApiService {
     @GET("lecture/{lectureId}/attendance")
     suspend fun getAttendanceList(@Path("lectureId") lectureId: Int): Response<List<AttendanceStudent>>
 
-    @PUT("lecture/{lectureId}attendance")
+    @PUT("lecture/{lectureId}/attendance")
     suspend fun putAttendance(
         @Path("lectureId") lectureId: Int,
         @Body dto: AttendanceUpdateRequestDto
