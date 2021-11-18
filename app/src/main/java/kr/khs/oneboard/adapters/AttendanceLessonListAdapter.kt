@@ -8,14 +8,15 @@ import androidx.recyclerview.widget.RecyclerView
 import kr.khs.oneboard.data.AttendanceLesson
 import kr.khs.oneboard.databinding.ListItemAttendanceLessonBinding
 
-class AttendanceLessonListAdapter :
+class AttendanceLessonListAdapter(private val clickable: Boolean = false) :
     ListAdapter<AttendanceLesson, RecyclerView.ViewHolder>(AttendanceLessonDiffUtil()) {
 
     lateinit var onLessonStatusChange: (AttendanceLesson) -> Unit
 
     class AttendanceLessonViewHolder(
         private val binding: ListItemAttendanceLessonBinding,
-        private val onLessonStatusChange: (AttendanceLesson) -> Unit
+        private val onLessonStatusChange: (AttendanceLesson) -> Unit,
+        private val clickable: Boolean
     ) :
         RecyclerView.ViewHolder(binding.root) {
         init {
@@ -24,6 +25,7 @@ class AttendanceLessonListAdapter :
                     onLessonStatusChange.invoke(item.apply { status = state })
                 }
             }
+            binding.attendanceLessonCheckbox.isClickable = clickable
         }
 
         fun bind(item: AttendanceLesson) {
@@ -35,7 +37,8 @@ class AttendanceLessonListAdapter :
         companion object {
             fun from(
                 parent: ViewGroup,
-                onLessonStatusChange: (AttendanceLesson) -> Unit
+                onLessonStatusChange: (AttendanceLesson) -> Unit,
+                clickable: Boolean
             ): AttendanceLessonViewHolder {
                 return AttendanceLessonViewHolder(
                     ListItemAttendanceLessonBinding.inflate(
@@ -43,7 +46,8 @@ class AttendanceLessonListAdapter :
                         parent,
                         false
                     ),
-                    onLessonStatusChange
+                    onLessonStatusChange,
+                    clickable
                 )
             }
         }
@@ -56,7 +60,8 @@ class AttendanceLessonListAdapter :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return AttendanceLessonListAdapter.AttendanceLessonViewHolder.from(
             parent,
-            onLessonStatusChange
+            onLessonStatusChange,
+            clickable
         )
     }
 

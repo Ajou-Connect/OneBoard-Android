@@ -11,5 +11,6 @@
         <attr name="text_state_unchecked" format="string" />
         <attr name="text_state_indeterminate" format="string" />
         <attr name="text_state_checked" format="string" />
+        <attr name="clickable" format="boolean" />
     </declare-styleable>
 </resources>

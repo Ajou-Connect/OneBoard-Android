@@ -22,7 +22,7 @@ class AttendanceListAdapter :
         RecyclerView.ViewHolder(binding.root) {
         init {
             with(binding.attendanceList) {
-                adapter = AttendanceLessonListAdapter().apply {
+                adapter = AttendanceLessonListAdapter(clickable = true).apply {
                     onLessonStatusChange = { item ->
                         binding.item?.let { list ->
                             for (attendance in list.attendanceList) {

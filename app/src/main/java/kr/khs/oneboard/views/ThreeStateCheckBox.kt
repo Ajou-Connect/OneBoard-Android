@@ -32,6 +32,7 @@ class ThreeStateCheckBox @JvmOverloads constructor(
             textIndeterminate =
                 typedArray.getString(R.styleable.ThreeStateCheckBox_text_state_indeterminate)
             textChecked = typedArray.getString(R.styleable.ThreeStateCheckBox_text_state_checked)
+            isClickable = typedArray.getBoolean(R.styleable.ThreeStateCheckBox_clickable, false)
 
             changeText(state)
             changeDrawable(state)
@@ -40,8 +41,6 @@ class ThreeStateCheckBox @JvmOverloads constructor(
             Timber.d("textUnChecked : $textUnchecked")
             Timber.d("textIndeterminate: $textIndeterminate")
             Timber.d("textChecked : $textChecked")
-
-            isClickable = true
 
             typedArray.recycle()
 
