@@ -3,7 +3,6 @@ package kr.khs.oneboard.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.*
-import kr.khs.oneboard.data.AttendanceLesson
 import kr.khs.oneboard.data.AttendanceStudent
 import kr.khs.oneboard.databinding.ListItemAttendanceStudentBinding
 import kr.khs.oneboard.utils.collapse
@@ -14,18 +13,25 @@ import timber.log.Timber
 class AttendanceListAdapter :
     ListAdapter<AttendanceStudent, RecyclerView.ViewHolder>(AttendanceDiffUtil()) {
 
-    lateinit var onStateChange: (AttendanceLesson) -> Unit
+    lateinit var onStudentStatusChange: (AttendanceStudent) -> Unit
 
     class AttendanceViewHolder(
         private val binding: ListItemAttendanceStudentBinding,
-        private val onStateChange: (AttendanceLesson) -> Unit
+        private val onStudentStatusChange: (AttendanceStudent) -> Unit
     ) :
         RecyclerView.ViewHolder(binding.root) {
         init {
             with(binding.attendanceList) {
                 adapter = AttendanceLessonListAdapter().apply {
-                    onStateChange =
-                        this@AttendanceViewHolder.onStateChange
+                    onLessonStatusChange = { item ->
+                        binding.item?.let { list ->
+                            for (attendance in list.attendanceList) {
+                                if (attendance.lessonId == item.lessonId)
+                                    attendance.status = item.status
+                            }
+                            onStudentStatusChange.invoke(list)
+                        }
+                    }
                 }
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                 addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
@@ -78,7 +84,7 @@ class AttendanceListAdapter :
         companion object {
             fun from(
                 parent: ViewGroup,
-                onStateChange: (AttendanceLesson) -> Unit
+                onStudentStatusChange: (AttendanceStudent) -> Unit
             ): AttendanceViewHolder {
                 return AttendanceViewHolder(
                     ListItemAttendanceStudentBinding.inflate(
@@ -86,18 +92,18 @@ class AttendanceListAdapter :
                             parent.context
                         ), parent, false
                     ),
-                    onStateChange
+                    onStudentStatusChange
                 )
             }
         }
     }
 
     override fun submitList(list: MutableList<AttendanceStudent>?) {
-        super.submitList(list?.let { it.map { item -> item.copy() } })
+        super.submitList(list?.let { it.map { item -> item.deepCopy() } })
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return AttendanceViewHolder.from(parent, onStateChange)
+        return AttendanceViewHolder.from(parent, onStudentStatusChange)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -114,7 +120,7 @@ class AttendanceDiffUtil : DiffUtil.ItemCallback<AttendanceStudent>() {
         oldItem: AttendanceStudent,
         newItem: AttendanceStudent
     ): Boolean {
-        return oldItem == newItem
+        return oldItem.attendanceList == newItem.attendanceList
     }
 
 }

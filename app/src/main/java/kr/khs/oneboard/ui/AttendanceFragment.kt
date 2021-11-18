@@ -75,8 +75,8 @@ class AttendanceFragment : BaseFragment<FragmentAttendanceBinding, AttendanceVie
         if (UserInfoUtil.type == TYPE_PROFESSOR) {
             with(binding.listAttendance) {
                 attendanceListAdapter = AttendanceListAdapter().apply {
-                    onStateChange = { attendanceLesson ->
-                        viewModel.updateAttendance(attendanceLesson)
+                    onStudentStatusChange = { attendanceStudent ->
+                        viewModel.updateAttendance(attendanceStudent)
                     }
                 }
                 adapter = attendanceListAdapter

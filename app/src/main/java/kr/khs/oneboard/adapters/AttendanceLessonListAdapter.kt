@@ -11,17 +11,17 @@ import kr.khs.oneboard.databinding.ListItemAttendanceLessonBinding
 class AttendanceLessonListAdapter :
     ListAdapter<AttendanceLesson, RecyclerView.ViewHolder>(AttendanceLessonDiffUtil()) {
 
-    lateinit var onStateChange: (AttendanceLesson) -> Unit
+    lateinit var onLessonStatusChange: (AttendanceLesson) -> Unit
 
     class AttendanceLessonViewHolder(
         private val binding: ListItemAttendanceLessonBinding,
-        private val onStateChange: (AttendanceLesson) -> Unit
+        private val onLessonStatusChange: (AttendanceLesson) -> Unit
     ) :
         RecyclerView.ViewHolder(binding.root) {
         init {
-            binding.attendanceLessonCheckbox.onStateChanged = { threeStateCheckBox, state ->
-                binding.item?.let {
-                    onStateChange.invoke(it.apply { status = state })
+            binding.attendanceLessonCheckbox.onStateChanged = { _, state ->
+                binding.item?.let { item ->
+                    onLessonStatusChange.invoke(item.apply { status = state })
                 }
             }
         }
@@ -35,7 +35,7 @@ class AttendanceLessonListAdapter :
         companion object {
             fun from(
                 parent: ViewGroup,
-                onStateChange: (AttendanceLesson) -> Unit
+                onLessonStatusChange: (AttendanceLesson) -> Unit
             ): AttendanceLessonViewHolder {
                 return AttendanceLessonViewHolder(
                     ListItemAttendanceLessonBinding.inflate(
@@ -43,7 +43,7 @@ class AttendanceLessonListAdapter :
                         parent,
                         false
                     ),
-                    onStateChange
+                    onLessonStatusChange
                 )
             }
         }
@@ -54,7 +54,10 @@ class AttendanceLessonListAdapter :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return AttendanceLessonListAdapter.AttendanceLessonViewHolder.from(parent, onStateChange)
+        return AttendanceLessonListAdapter.AttendanceLessonViewHolder.from(
+            parent,
+            onLessonStatusChange
+        )
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
