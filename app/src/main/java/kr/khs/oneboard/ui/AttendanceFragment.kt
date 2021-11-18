@@ -48,10 +48,10 @@ class AttendanceFragment : BaseFragment<FragmentAttendanceBinding, AttendanceVie
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.attendance_menu_reset -> {
-                viewModel.getAttendanceList(parentViewModel.getLecture().id)
+                viewModel.resetAttendanceList()
             }
             R.id.attendance_menu_save -> {
-                viewModel.saveAttendanceList()
+                viewModel.saveAttendanceList(parentViewModel.getLecture().id)
             }
         }
         return super.onOptionsItemSelected(item)
