@@ -33,9 +33,6 @@
             android:id="@+id/action_noticeFragment_to_lectureWriteFragment"
             app:destination="@id/lectureWriteFragment" />
         <action
-            android:id="@+id/action_noticeFragment_to_contentDetailFragment"
-            app:destination="@id/contentDetailFragment" />
-        <action
             android:id="@+id/action_noticeFragment_to_lectureReadFragment"
             app:destination="@id/lectureReadFragment" />
     </fragment>
@@ -47,9 +44,6 @@
         <action
             android:id="@+id/action_assignmentFragment_to_lectureWriteFragment"
             app:destination="@id/lectureWriteFragment" />
-        <action
-            android:id="@+id/action_assignmentFragment_to_contentDetailFragment"
-            app:destination="@id/contentDetailFragment" />
         <action
             android:id="@+id/action_assignmentFragment_to_lectureReadFragment"
             app:destination="@id/lectureReadFragment" />
