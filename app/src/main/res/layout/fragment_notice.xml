@@ -30,5 +30,5 @@
         android:layout_marginBottom="32dp"
         android:contentDescription="Add Notice"
         android:src="@android:drawable/ic_input_add"
-        app:backgroundTint="@color/primaryColor" />
+        app:backgroundTint="@color/fabColor" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

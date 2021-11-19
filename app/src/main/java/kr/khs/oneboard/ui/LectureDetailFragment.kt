@@ -27,13 +27,13 @@ class LectureDetailFragment : BaseFragment<FragmentLectureDetailBinding, Lecture
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.lectureInfo.observe(viewLifecycleOwner) {
-            // sample
-            binding.temp.text = """
-            ${it.title} - ${it.semester}
-            ${it.professor}
-            공지사항, 과제 등의 추가적인 정보는
-            추후 추가 예정입니다.
-        """.trimIndent()
+            binding.lectureDetailTitle.text = it.title
+            binding.lectureDetailSemester.text = it.semester
+            binding.lectureDetailProfessor.text = it.professor
+            binding.lectureDetailNoticeTitle.text = "중간 발표 공지사항"
+            binding.lectureDetailNotice.text = "11월 22일 발표!!"
+            binding.lectureDetailLesson.text = "2021-11-22 16:30\n내일 오후 4시 30분"
+            binding.lectureDetailAssignment.text = "과제가 없습니다."
         }
     }
 

@@ -62,7 +62,8 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="4dp">
 
             <ImageButton
                 android:id="@+id/action_undo"
@@ -334,6 +335,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
+            android:textColor="@color/black"
             android:text="파일 설명 들어갈 곳" />
 
         <com.google.android.material.button.MaterialButton
@@ -341,6 +343,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColor="@color/white"
             android:text="파일 추가" />
 
     </LinearLayout>
@@ -359,7 +362,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:text="시작 시간" />
+            android:text="시작 시간"
+            android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/writeStartDt"
@@ -367,6 +371,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="2"
+            android:textColor="@color/black"
             android:text="2021-11-12 12:43" />
 
         <TextView
@@ -374,6 +379,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
+            android:textColor="@color/black"
             android:text="마감 시간" />
 
         <TextView
@@ -382,6 +388,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="2"
+            android:textColor="@color/black"
             android:text="2021-11-12 12:43" />
 
     </LinearLayout>
