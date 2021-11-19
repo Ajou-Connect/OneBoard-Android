@@ -5,6 +5,7 @@ import kr.khs.oneboard.data.api.BasicResponseImpl
 import kr.khs.oneboard.data.api.Response
 import kr.khs.oneboard.data.request.AssignmentUpdateRequestDto
 import kr.khs.oneboard.data.request.AttendanceUpdateRequestDto
+import kr.khs.oneboard.data.request.LessonUpdateRequestDto
 import kr.khs.oneboard.data.request.NoticeUpdateRequestDto
 import retrofit2.http.*
 
@@ -101,11 +102,19 @@ interface ApiService {
     @GET("lecture/grade/ratio")
     suspend fun getGradeRatio(lectureId: Int): Response<HashMap<String, Int>>
 
-    @GET("lecture/lesson")
-    suspend fun getLessonList(id: Int): Response<List<Lesson>>
+    @GET("lecture/{lectureId}/lessons")
+    suspend fun getLessonList(@Path("lectureId") lectureId: Int): Response<List<Lesson>>
 
-    @POST("lecture/lesson")
-    suspend fun postLesson(id: Int): Response<Boolean>
+    @GET("lecture/{lectureId}/lesson/{lessonId}")
+    suspend fun getLesson(@Path("lectureId") lectureId: Int, @Path("lessonId") lessonId: Int): Response<Lesson>
 
-    // get lecture/lesson/video 부터
+    @POST("lecture/{lectureId}/lesson")
+    suspend fun postLesson(@Path("lectureId") lectureId: Int, @Body dto: LessonUpdateRequestDto): BasicResponseImpl
+
+    @PUT("lecture/{lectureId}/lesson/{lessonId}")
+    suspend fun putLesson(@Path("lectureId") lectureId: Int, @Path("lessonId") lessonId: Int, @Body dto: LessonUpdateRequestDto): BasicResponseImpl
+
+    @DELETE("lecture/{lectureId}/lesson/{lessonId}")
+    suspend fun deleteLesson(@Path("lectureId") lectureId: Int, @Path("lessonId") lessonId: Int): BasicResponseImpl
+
 }

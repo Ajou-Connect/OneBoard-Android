@@ -3,43 +3,98 @@ package kr.khs.oneboard.repository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kr.khs.oneboard.api.ApiService
+import kr.khs.oneboard.core.UseCase
 import kr.khs.oneboard.data.Lesson
-import kr.khs.oneboard.data.api.Response
+import kr.khs.oneboard.data.request.LessonUpdateRequestDto
 import kr.khs.oneboard.utils.SUCCESS
-import kr.khs.oneboard.utils.TYPE_FACE_TO_FACE
-import kr.khs.oneboard.utils.TYPE_NON_FACE_TO_FACE
-import kr.khs.oneboard.utils.TYPE_RECORDING
 import javax.inject.Inject
-import kotlin.random.Random
+import javax.inject.Named
 
-class LessonRepositoryImpl @Inject constructor(val apiService: ApiService) : LessonRepository {
-    override suspend fun getLessonList(id: Int): List<Lesson> {
-        val response: Response<List<Lesson>>
-        withContext(Dispatchers.IO) {
-//            response = apiService.getLessonList(id)
-            response = Response(
-                SUCCESS,
-                (0 until 6)
-                    .map {
-                        val random = (0..2).random()
-                        Lesson(
-                            id = it,
-                            title = "수업 $it",
-                            date = "2021-11-$it",
-                            note = if (Random.nextBoolean()) "https://naver.com" else null,
-                            type = random,
-                            room = if (random == TYPE_FACE_TO_FACE) "팔달관 30${it}호" else null,
-                            meetingId = if (random == TYPE_NON_FACE_TO_FACE) String.format(
-                                "%6d",
-                                (0 until 1_000_000).random()
-                            ) else null,
-                            videoUrl = if (random == TYPE_RECORDING) "https://google${it}.com" else null
-                        )
-                    }
-            )
+class LessonRepositoryImpl @Inject constructor(@Named("withJWT") val apiService: ApiService) : LessonRepository {
+    override suspend fun getLessonList(id: Int): UseCase<List<Lesson>> {
+        val returnValue: UseCase<List<Lesson>>
+        try {
+            withContext(Dispatchers.IO) {
+                val response = apiService.getLessonList(id)
+
+                if (response.result == SUCCESS)
+                    returnValue = UseCase.success(
+                        response.data
+                    )
+                else
+                    throw Exception()
+            }
+        } catch (e: Exception) {
+            return UseCase.error("Error")
         }
 
-        return response.data
+        return returnValue
+    }
+
+    override suspend fun getLesson(lectureId: Int, lessonId: Int): UseCase<Lesson> {
+        val returnValue: UseCase<Lesson>
+
+        try {
+            withContext(Dispatchers.IO) {
+                val response = apiService.getLesson(lectureId, lessonId)
+                if (response.result == SUCCESS)
+                    returnValue = UseCase.success(response.data)
+                else
+                    throw Exception()
+            }
+        } catch (e: Exception) {
+            return UseCase.error("Error")
+        }
+
+        return returnValue
+    }
+
+    override suspend fun postLesson(lectureId: Int, dto: LessonUpdateRequestDto): UseCase<Boolean> {
+        val returnValue: UseCase<Boolean>
+
+        try {
+            withContext(Dispatchers.IO) {
+                returnValue = UseCase.success(
+                    apiService.postLesson(lectureId, dto).result == SUCCESS
+                )
+            }
+        } catch (e: Exception) {
+            return UseCase.error("Error")
+        }
+
+        return returnValue
+    }
+
+    override suspend fun putLesson(lectureId: Int, lessonId: Int, dto: LessonUpdateRequestDto): UseCase<Boolean> {
+        val returnValue: UseCase<Boolean>
+
+        try {
+            withContext(Dispatchers.IO) {
+                returnValue = UseCase.success(
+                    apiService.putLesson(lectureId, lessonId, dto).result == SUCCESS
+                )
+            }
+        } catch (e: Exception) {
+            return UseCase.error("Error")
+        }
+
+        return returnValue
+    }
+
+    override suspend fun deleteLesson(lectureId: Int, lessonId: Int): UseCase<Boolean> {
+        val returnValue: UseCase<Boolean>
+
+        try {
+            withContext(Dispatchers.IO) {
+                returnValue = UseCase.success(
+                    apiService.deleteLesson(lectureId, lessonId).result == SUCCESS
+                )
+            }
+        } catch (e: Exception) {
+            return UseCase.error("Error")
+        }
+
+        return returnValue
     }
 
 }
