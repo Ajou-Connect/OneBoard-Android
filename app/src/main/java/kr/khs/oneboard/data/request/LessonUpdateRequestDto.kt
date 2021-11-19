@@ -1,11 +1,9 @@
-package kr.khs.oneboard.data
+package kr.khs.oneboard.data.request
 
-data class Lesson(
-    val id: Int,
-    val lectureId: Int,
+data class LessonUpdateRequestDto(
     val title: String,
     val date: String,
-    val note: String? = null,
+    val note: String,
     val type: Int,
     val room: String? = null,
     val meetingId: String? = null,
