@@ -1,6 +1,7 @@
 package kr.khs.oneboard.ui
 
 import android.os.Bundle
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,7 +53,7 @@ class LectureReadFragment : BaseFragment<FragmentLectureReadBinding, LectureRead
         notice?.let { item ->
             binding.readTitle.text = item.title
             binding.readTime.text = item.exposeDt
-            binding.readContent.text = item.content
+            binding.readContent.text = Html.fromHtml(item.content, Html.FROM_HTML_MODE_LEGACY)
         } ?: assignment?.let { item ->
             binding.readTitle.text = item.title
             binding.readTime.text = item.exposeDt
@@ -64,7 +65,7 @@ class LectureReadFragment : BaseFragment<FragmentLectureReadBinding, LectureRead
                 binding.readFileUrl.visibility = View.VISIBLE
                 binding.readFileUrl.text = item.fileUrl
             }
-            binding.readContent.text = item.content
+            binding.readContent.text = Html.fromHtml(item.content, Html.FROM_HTML_MODE_LEGACY)
         }
     }
 }
