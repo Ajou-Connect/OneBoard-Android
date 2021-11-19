@@ -86,11 +86,19 @@ class AssignmentFragment : BaseFragment<FragmentAssignmentBinding, AssignmentVie
             listAdapter = AssignmentListAdapter().apply {
                 listItemClickListener = { item ->
                     findNavController().navigate(
-                        AssignmentFragmentDirections.actionAssignmentFragmentToLectureWriteFragment(
-                            TYPE_ASSIGNMENT
-                        ).apply {
-                            isEdit = true
-                            assignment = item
+                        if (UserInfoUtil.type == TYPE_PROFESSOR) {
+                            AssignmentFragmentDirections.actionAssignmentFragmentToLectureWriteFragment(
+                                TYPE_ASSIGNMENT
+                            ).apply {
+                                isEdit = true
+                                assignment = item
+                            }
+                        } else {
+                            AssignmentFragmentDirections.actionAssignmentFragmentToLectureReadFragment(
+                                TYPE_ASSIGNMENT
+                            ).apply {
+                                assignment = item
+                            }
                         }
                     )
                 }

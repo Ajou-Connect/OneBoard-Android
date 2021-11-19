@@ -88,11 +88,19 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding, NoticeViewModel>() {
             listAdapter = NoticeListAdapter().apply {
                 listItemClickListener = { item ->
                     findNavController().navigate(
-                        NoticeFragmentDirections.actionNoticeFragmentToLectureWriteFragment(
-                            TYPE_NOTICE
-                        ).apply {
-                            isEdit = true
-                            notice = item
+                        if (UserInfoUtil.type == TYPE_PROFESSOR) {
+                            NoticeFragmentDirections.actionNoticeFragmentToLectureWriteFragment(
+                                TYPE_NOTICE
+                            ).apply {
+                                isEdit = true
+                                notice = item
+                            }
+                        } else {
+                            NoticeFragmentDirections.actionNoticeFragmentToLectureReadFragment(
+                                TYPE_NOTICE
+                            ).apply {
+                                notice = item
+                            }
                         }
                     )
                 }

@@ -202,3 +202,8 @@ class MainActivity : AppCompatActivity() {
         UserInfoUtil.univ = university
     }
 }
+
+// TODO: 2021/11/19 학생, 강의자 모든 화면 구분해주기
+// TODO: 2021/11/19 수업 관련
+// TODO: 2021/11/19 HTML 
+// TODO: 2021/11/19 pdf 뷰어, 파일 다운로드 찾아보기 
