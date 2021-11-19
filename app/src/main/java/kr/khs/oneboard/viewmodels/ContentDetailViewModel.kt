@@ -21,7 +21,7 @@ class ContentDetailViewModel @Inject constructor(private val lectureRepository: 
     fun getSubmitList(assignmentId: Int) {
         viewModelScope.launch {
             showProgress()
-            _assignmentList.value = lectureRepository.getSubmitAssignmentList(assignmentId)
+//            _assignmentList.value = lectureRepository.getSubmitAssignmentList(assignmentId)
             hideProgress()
         }
     }

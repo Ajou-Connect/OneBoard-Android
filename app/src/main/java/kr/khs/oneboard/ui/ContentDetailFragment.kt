@@ -74,13 +74,13 @@ class ContentDetailFragment : BaseFragment<FragmentContentDetailBinding, Content
         if (type == TYPE_NOTICE) {
             binding.contentDetailTitle.text = notice.title
             binding.contentDetailContent.text = notice.content
-            binding.contentDetailWriter.text = notice.writer
-            binding.contentDetailDate.text = notice.exposeDT
+            binding.contentDetailWriter.text = "작성자"
+            binding.contentDetailDate.text = notice.exposeDt
         } else {
             binding.contentDetailTitle.text = assignment.title
             binding.contentDetailContent.text = assignment.content
-            binding.contentDetailWriter.text = assignment.writer
-            binding.contentDetailDate.text = assignment.exposeDT
+            binding.contentDetailWriter.text = "작성자"
+            binding.contentDetailDate.text = assignment.exposeDt
             binding.contentDetailAssignmentList.visibility = View.VISIBLE
             initRecyclerView()
         }

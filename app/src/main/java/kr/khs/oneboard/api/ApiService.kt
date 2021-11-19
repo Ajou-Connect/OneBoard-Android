@@ -1,51 +1,90 @@
 package kr.khs.oneboard.api
 
 import kr.khs.oneboard.data.*
+import kr.khs.oneboard.data.api.BasicResponseImpl
 import kr.khs.oneboard.data.api.Response
-import retrofit2.http.GET
-import retrofit2.http.POST
+import kr.khs.oneboard.data.request.AssignmentUpdateRequestDto
+import kr.khs.oneboard.data.request.AttendanceUpdateRequestDto
+import kr.khs.oneboard.data.request.NoticeUpdateRequestDto
+import retrofit2.http.*
 
 interface ApiService {
     @GET("healthCheck")
     suspend fun healthCheck(): Response<Any>
 
     @POST("auth/login")
-    suspend fun login(): Response<Any>
+    suspend fun login(@Body body: LoginBody): Response<LoginResponse>
 
     @GET("auth/logout")
     suspend fun logout(): Response<Any>
 
-    @POST("auth/check")
-    suspend fun loginCheck(): Response<Any>
+    @GET("auth/check")
+    suspend fun loginCheck(@Header("X-AUTH-TOKEN") token: String): BasicResponseImpl
 
     @GET("user")
-    suspend fun getUserInfo(): Response<Any>
+    suspend fun getUserInfo(): Response<User>
 
-    @GET("user/lectures")
+    @GET("lectures")
     suspend fun getUserLectures(): Response<List<Lecture>>
 
-    @GET("lecture")
-    suspend fun getUserLecture(): Response<Lecture>
+    @GET("lecture/{lectureId}")
+    suspend fun getDetailLecture(@Path("lectureId") lectureId: Int): Response<Lecture>
 
-    @GET("lecture/notice")
-    suspend fun getNoticeList(lectureId: Int): Response<List<Notice>>
+    @GET("lecture/{lectureId}/notices")
+    suspend fun getNoticeList(@Path("lectureId") lectureId: Int): Response<List<Notice>>
 
-    // todo 등록, 수정, 삭제
-    @POST("lecture/notice")
-    suspend fun postNotice()
+    @POST("lecture/{lectureId}/notice")
+    suspend fun postNotice(
+        @Path("lectureId") lectureId: Int,
+        @Body dto: NoticeUpdateRequestDto
+    ): BasicResponseImpl
 
-    @GET("lecture/attendance")
-    suspend fun getAttendanceList(lectureId: Int): Response<List<AttendanceStudent>>
+    @PUT("/lecture/{lectureId}/notice/{noticeId}")
+    suspend fun putNotice(
+        @Path("lectureId") lectureId: Int,
+        @Path("noticeId") noticeId: Int,
+        @Body dto: NoticeUpdateRequestDto
+    ): BasicResponseImpl
 
-    @POST("lecture/attendance")
-    suspend fun postAttendance(): Response<Boolean>
+    @DELETE("/lecture/{lectureId}/notice/{noticeId}")
+    suspend fun deleteNotice(
+        @Path("lectureId") lectureId: Int,
+        @Path("noticeId") noticeId: Int
+    ): BasicResponseImpl
 
-    @GET("lecture/assignment")
-    suspend fun getAssignmentList(lectureId: Int): Response<List<Assignment>>
+    @GET("lecture/{lectureId}/attendance")
+    suspend fun getAttendanceList(@Path("lectureId") lectureId: Int): Response<List<AttendanceStudent>>
 
-    // todo 등록, 수정, 삭제
-    @POST("lecture/assignment")
-    suspend fun postAssignment()
+    @PUT("lecture/{lectureId}/attendance")
+    suspend fun putAttendance(
+        @Path("lectureId") lectureId: Int,
+        @Body dto: AttendanceUpdateRequestDto
+    ): BasicResponseImpl
+
+    @GET("lecture/{lectureId}/attendance/my")
+    suspend fun getMyAttendanceList(@Path("lectureId") lectureId: Int): Response<AttendanceStudent>
+
+    @GET("lecture/{lectureId}/assignments")
+    suspend fun getAssignmentList(@Path("lectureId") lectureId: Int): Response<List<Assignment>>
+
+    @POST("lecture/{lectureId}/assignment")
+    suspend fun postAssignment(
+        @Path("lectureId") lectureId: Int,
+        @Body dto: AssignmentUpdateRequestDto
+    ): BasicResponseImpl
+
+    @PUT("lecture/{lectureId}/assignment/{assignmentId}")
+    suspend fun putAssignment(
+        @Path("lectureId") lectureId: Int,
+        @Path("assignmentId") assignmentId: Int,
+        @Body dto: AssignmentUpdateRequestDto
+    ): BasicResponseImpl
+
+    @DELETE("lecture/{lectureId}/assignment/{assignmentId}")
+    suspend fun deleteAssignment(
+        @Path("lectureId") lectureId: Int,
+        @Path("assignmentId") assignmentId: Int
+    ): BasicResponseImpl
 
     @POST("lecture/assignment/result")
     suspend fun postAssignmentFeedBack(): Response<Boolean>

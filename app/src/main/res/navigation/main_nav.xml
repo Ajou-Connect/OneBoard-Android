@@ -35,6 +35,9 @@
         <action
             android:id="@+id/action_noticeFragment_to_contentDetailFragment"
             app:destination="@id/contentDetailFragment" />
+        <action
+            android:id="@+id/action_noticeFragment_to_lectureReadFragment"
+            app:destination="@id/lectureReadFragment" />
     </fragment>
     <fragment
         android:id="@+id/assignmentFragment"
@@ -47,6 +50,9 @@
         <action
             android:id="@+id/action_assignmentFragment_to_contentDetailFragment"
             app:destination="@id/contentDetailFragment" />
+        <action
+            android:id="@+id/action_assignmentFragment_to_lectureReadFragment"
+            app:destination="@id/lectureReadFragment" />
     </fragment>
     <fragment
         android:id="@+id/lectureWriteFragment"
@@ -56,6 +62,20 @@
         <argument
             android:name="type"
             app:argType="boolean" />
+        <argument
+            android:name="isEdit"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <argument
+            android:name="notice"
+            app:argType="kr.khs.oneboard.data.Notice"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <argument
+            android:name="assignment"
+            app:argType="kr.khs.oneboard.data.Assignment"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
     <fragment
         android:id="@+id/attendanceFragment"
@@ -109,4 +129,25 @@
         android:name="kr.khs.oneboard.ui.LessonWriteFragment"
         android:label="fragment_lesson_write"
         tools:layout="@layout/fragment_lesson_write" />
+
+    <fragment
+        android:id="@+id/lectureReadFragment"
+        android:name="kr.khs.oneboard.ui.LectureReadFragment"
+        android:label="fragment_lecture_read"
+        tools:layout="@layout/fragment_lecture_read">
+
+        <argument
+            android:name="type"
+            app:argType="boolean" />
+        <argument
+            android:name="notice"
+            app:argType="kr.khs.oneboard.data.Notice"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <argument
+            android:name="assignment"
+            app:argType="kr.khs.oneboard.data.Assignment"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
 </navigation>

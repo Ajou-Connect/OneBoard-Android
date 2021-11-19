@@ -3,14 +3,13 @@ package kr.khs.oneboard.utils
 import android.animation.ValueAnimator
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
-import timber.log.Timber
 
 fun View.expand(duration: Long = 300L) {
     measure(
         View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY),
         View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
     )
-    Timber.tag("yoonseop").d("expand height: ${measuredHeight}")
+
     slideView(measuredHeight, duration)
 }
 

@@ -17,7 +17,7 @@ class SubmitDetailViewModel @Inject constructor(private val lectureRepository: L
     fun saveScoreFeedback(submit: Submit) {
         viewModelScope.launch {
             showProgress()
-            saveResponse.value = lectureRepository.postAssignmentFeedBack(submit)
+//            saveResponse.value = lectureRepository.postAssignmentFeedBack(submit)
             hideProgress()
         }
     }

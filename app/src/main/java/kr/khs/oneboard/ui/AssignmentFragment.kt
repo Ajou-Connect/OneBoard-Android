@@ -86,10 +86,20 @@ class AssignmentFragment : BaseFragment<FragmentAssignmentBinding, AssignmentVie
             listAdapter = AssignmentListAdapter().apply {
                 listItemClickListener = { item ->
                     findNavController().navigate(
-                        AssignmentFragmentDirections.actionAssignmentFragmentToContentDetailFragment()
-                            .apply {
+                        if (UserInfoUtil.type == TYPE_PROFESSOR) {
+                            AssignmentFragmentDirections.actionAssignmentFragmentToLectureWriteFragment(
+                                TYPE_ASSIGNMENT
+                            ).apply {
+                                isEdit = true
                                 assignment = item
                             }
+                        } else {
+                            AssignmentFragmentDirections.actionAssignmentFragmentToLectureReadFragment(
+                                TYPE_ASSIGNMENT
+                            ).apply {
+                                assignment = item
+                            }
+                        }
                     )
                 }
                 listItemDeleteListener = { item ->
@@ -98,7 +108,7 @@ class AssignmentFragment : BaseFragment<FragmentAssignmentBinding, AssignmentVie
                         "삭제하시겠습니까?",
                         "네",
                         "아니오",
-                        { viewModel.deleteItem(item) },
+                        { viewModel.deleteItem(parentViewModel.getLecture().id, item) },
                         { }
                     )
                 }

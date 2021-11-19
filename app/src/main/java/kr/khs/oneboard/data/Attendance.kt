@@ -1,26 +1,43 @@
 package kr.khs.oneboard.data
 
-import com.squareup.moshi.Json
+import java.util.*
 
 // list가 1이면 바로 확장되도록
 data class AttendanceStudent(
-    @Json(name = "lesson_id")
-    val lessonId: Int,
-    @Json(name = "student_id")
     val studentId: Int,
-    @Json(name = "student_major")
-    val studentMajor: String,
-    @Json(name = "student_name")
+    val studentNumber: String,
     val studentName: String,
-    val lessonList: List<AttendanceLesson>,
-    var isExpand: Boolean
-)
+    val attendanceList: List<AttendanceLesson>
+) {
+    var isExpanded: Boolean = false
+
+    override fun hashCode(): Int {
+        return Objects.hash(studentId, attendanceList)
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as AttendanceStudent
+
+        if (studentId != other.studentId) return false
+        if (studentNumber != other.studentNumber) return false
+        if (studentName != other.studentName) return false
+        for (idx in attendanceList.indices)
+            if (attendanceList[idx] != other.attendanceList[idx])
+                return false
+
+        if (isExpanded != other.isExpanded) return false
+
+        return true
+    }
+}
 
 data class AttendanceLesson(
-    val id: Int,
-    val date: String,
-    val description: String,
-    var check: Int
+    val lessonId: Int,
+    val lessonDate: String,
+    var status: Int
 )
 
 // A 출석, B 지각, F 결석
