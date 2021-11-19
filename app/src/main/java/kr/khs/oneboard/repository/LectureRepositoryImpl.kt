@@ -5,10 +5,12 @@ import kotlinx.coroutines.withContext
 import kr.khs.oneboard.api.ApiService
 import kr.khs.oneboard.core.UseCase
 import kr.khs.oneboard.data.Assignment
+import kr.khs.oneboard.data.AttendanceStudent
 import kr.khs.oneboard.data.Lecture
 import kr.khs.oneboard.data.Notice
 import kr.khs.oneboard.data.api.Response
 import kr.khs.oneboard.data.request.AssignmentUpdateRequestDto
+import kr.khs.oneboard.data.request.AttendanceUpdateRequestDto
 import kr.khs.oneboard.data.request.NoticeUpdateRequestDto
 import kr.khs.oneboard.utils.SUCCESS
 import timber.log.Timber
@@ -179,4 +181,57 @@ class LectureRepositoryImpl @Inject constructor(
         return returnValue
     }
 
+    override suspend fun getAttendanceList(lectureId: Int): UseCase<List<AttendanceStudent>> {
+        var returnValue: UseCase<List<AttendanceStudent>>
+
+        try {
+            withContext(Dispatchers.IO) {
+                val response = apiService.getAttendanceList(lectureId)
+                returnValue = if (response.result == SUCCESS)
+                    UseCase.success(response.data)
+                else
+                    UseCase.success(listOf())
+            }
+        } catch (e: Exception) {
+            returnValue = UseCase.error("Error")
+        }
+
+        return returnValue
+    }
+
+    override suspend fun postAttendanceList(
+        lectureId: Int,
+        dto: AttendanceUpdateRequestDto
+    ): UseCase<Boolean> {
+        var returnValue: UseCase<Boolean>
+
+        try {
+            withContext(Dispatchers.IO) {
+                val response = apiService.putAttendance(lectureId, dto)
+                returnValue = UseCase.success(response.result == SUCCESS)
+            }
+        } catch (e: Exception) {
+            returnValue = UseCase.error("Error")
+        }
+
+        return returnValue
+    }
+
+    override suspend fun getMyAttendance(lectureId: Int): UseCase<AttendanceStudent> {
+        var returnValue: UseCase<AttendanceStudent>
+
+        try {
+            withContext(Dispatchers.IO) {
+                val response = apiService.getMyAttendanceList(lectureId)
+                returnValue = if (response.result == SUCCESS)
+                    UseCase.success(response.data)
+                else
+                    UseCase.error("No Data")
+            }
+        } catch (e: Exception) {
+            returnValue = UseCase.error("Error")
+        }
+
+        return returnValue
+    }
 }

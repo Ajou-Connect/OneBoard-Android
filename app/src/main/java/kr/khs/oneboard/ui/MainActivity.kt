@@ -21,6 +21,7 @@ import kr.khs.oneboard.utils.*
 import kr.khs.oneboard.viewmodels.MainViewModel
 import timber.log.Timber
 
+// todo : return value 간단하게 할 수 있는 것은 = 사용해서 바꿔주기
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private val binding: ActivityMainBinding by lazy {
@@ -147,6 +148,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.lecture_menu_lesson -> {
                 }
                 R.id.lecture_menu_attendance -> {
+                    navController.navigate(R.id.attendanceFragment)
                 }
                 R.id.lecture_menu_assignment -> {
                     navController.navigate(R.id.assignmentFragment)

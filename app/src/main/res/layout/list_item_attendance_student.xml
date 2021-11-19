@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="kr.khs.oneboard.data.AttendanceStudent" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/attendanceMajor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/black"
+            android:text="@{item.studentNumber}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="201520930" />
+
+        <TextView
+            android:id="@+id/attendanceName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="@{item.studentName}"
+            app:layout_constraintEnd_toStartOf="@+id/attendanceRatio"
+            app:layout_constraintStart_toStartOf="@+id/attendanceMajor"
+            app:layout_constraintTop_toBottomOf="@+id/attendanceMajor"
+            tools:text="김희승" />
+
+        <TextView
+            android:id="@+id/attendanceRatio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/attendanceMajor"
+            tools:text="10/16" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/attendanceList"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/attendanceName" />
+
+        <ImageButton
+            android:id="@+id/attendanceExpandButton"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Expand Student's detail attendance"
+            app:layout_constraintBottom_toTopOf="@+id/attendanceList"
+            app:layout_constraintEnd_toEndOf="@+id/attendanceRatio"
+            app:srcCompat="@drawable/ic_expand_more" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
