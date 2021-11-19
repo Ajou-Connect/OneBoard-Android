@@ -31,4 +31,18 @@ class LessonListViewModel @Inject constructor(private val lessonRepository: Less
             hideProgress()
         }
     }
+
+    fun deleteItem(lectureId: Int, lessonId: Int) {
+        viewModelScope.launch {
+            showProgress()
+            val response = lessonRepository.deleteLesson(lectureId, lessonId)
+
+            if (response.status == UseCase.Status.SUCCESS && response.data!!)
+                _lessonList.value = _lessonList.value!!.filter { it.id != lessonId }
+            else
+                setErrorMessage(response.message!!)
+
+            hideProgress()
+        }
+    }
 }

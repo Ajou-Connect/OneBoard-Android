@@ -10,7 +10,8 @@ import kr.khs.oneboard.utils.SUCCESS
 import javax.inject.Inject
 import javax.inject.Named
 
-class LessonRepositoryImpl @Inject constructor(@Named("withJWT") val apiService: ApiService) : LessonRepository {
+class LessonRepositoryImpl @Inject constructor(@Named("withJWT") val apiService: ApiService) :
+    LessonRepository {
     override suspend fun getLessonList(id: Int): UseCase<List<Lesson>> {
         val returnValue: UseCase<List<Lesson>>
         try {
@@ -65,7 +66,11 @@ class LessonRepositoryImpl @Inject constructor(@Named("withJWT") val apiService:
         return returnValue
     }
 
-    override suspend fun putLesson(lectureId: Int, lessonId: Int, dto: LessonUpdateRequestDto): UseCase<Boolean> {
+    override suspend fun putLesson(
+        lectureId: Int,
+        lessonId: Int,
+        dto: LessonUpdateRequestDto
+    ): UseCase<Boolean> {
         val returnValue: UseCase<Boolean>
 
         try {

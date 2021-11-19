@@ -8,18 +8,35 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kr.khs.oneboard.data.Lesson
 import kr.khs.oneboard.databinding.ListItemLessonBinding
-import kr.khs.oneboard.utils.TYPE_FACE_TO_FACE
-import kr.khs.oneboard.utils.TYPE_NON_FACE_TO_FACE
-import kr.khs.oneboard.utils.TYPE_RECORDING
+import kr.khs.oneboard.utils.*
 
 class LessonListAdapter : ListAdapter<Lesson, RecyclerView.ViewHolder>(LessonDiffUtil()) {
 
     lateinit var itemClickListener: (Lesson) -> Unit
+    lateinit var optionClickListener: (Lesson) -> Unit
 
     class LessonViewHolder(
         private val binding: ListItemLessonBinding,
-        private val itemClickListener: (Lesson) -> Unit
+        private val itemClickListener: (Lesson) -> Unit,
+        private val optionClickListener: (Lesson) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.root.setOnClickListener {
+                binding.item?.let { item ->
+                    itemClickListener.invoke(item)
+                }
+            }
+
+            if (UserInfoUtil.type == TYPE_PROFESSOR) {
+                binding.lessonOption.visibility = View.VISIBLE
+                binding.lessonOption.setOnClickListener {
+                    binding.item?.let { item ->
+                        optionClickListener.invoke(item)
+                    }
+                }
+            }
+        }
+
         fun bind(item: Lesson) {
             binding.item = item
             item.note?.let {
@@ -39,21 +56,26 @@ class LessonListAdapter : ListAdapter<Lesson, RecyclerView.ViewHolder>(LessonDif
         }
 
         companion object {
-            fun from(parent: ViewGroup, itemClickListener: (Lesson) -> Unit): LessonViewHolder {
+            fun from(
+                parent: ViewGroup,
+                itemClickListener: (Lesson) -> Unit,
+                optionClickListener: (Lesson) -> Unit
+            ): LessonViewHolder {
                 return LessonViewHolder(
                     ListItemLessonBinding.inflate(
                         LayoutInflater.from(parent.context),
                         parent,
                         false
                     ),
-                    itemClickListener
+                    itemClickListener,
+                    optionClickListener
                 )
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return LessonViewHolder.from(parent, itemClickListener)
+        return LessonViewHolder.from(parent, itemClickListener, optionClickListener)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

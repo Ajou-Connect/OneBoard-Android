@@ -106,15 +106,28 @@ interface ApiService {
     suspend fun getLessonList(@Path("lectureId") lectureId: Int): Response<List<Lesson>>
 
     @GET("lecture/{lectureId}/lesson/{lessonId}")
-    suspend fun getLesson(@Path("lectureId") lectureId: Int, @Path("lessonId") lessonId: Int): Response<Lesson>
+    suspend fun getLesson(
+        @Path("lectureId") lectureId: Int,
+        @Path("lessonId") lessonId: Int
+    ): Response<Lesson>
 
     @POST("lecture/{lectureId}/lesson")
-    suspend fun postLesson(@Path("lectureId") lectureId: Int, @Body dto: LessonUpdateRequestDto): BasicResponseImpl
+    suspend fun postLesson(
+        @Path("lectureId") lectureId: Int,
+        @Body dto: LessonUpdateRequestDto
+    ): BasicResponseImpl
 
     @PUT("lecture/{lectureId}/lesson/{lessonId}")
-    suspend fun putLesson(@Path("lectureId") lectureId: Int, @Path("lessonId") lessonId: Int, @Body dto: LessonUpdateRequestDto): BasicResponseImpl
+    suspend fun putLesson(
+        @Path("lectureId") lectureId: Int,
+        @Path("lessonId") lessonId: Int,
+        @Body dto: LessonUpdateRequestDto
+    ): BasicResponseImpl
 
     @DELETE("lecture/{lectureId}/lesson/{lessonId}")
-    suspend fun deleteLesson(@Path("lectureId") lectureId: Int, @Path("lessonId") lessonId: Int): BasicResponseImpl
+    suspend fun deleteLesson(
+        @Path("lectureId") lectureId: Int,
+        @Path("lessonId") lessonId: Int
+    ): BasicResponseImpl
 
 }

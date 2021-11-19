@@ -13,6 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kr.khs.oneboard.adapters.LessonListAdapter
 import kr.khs.oneboard.core.BaseFragment
 import kr.khs.oneboard.databinding.FragmentLessonListBinding
+import kr.khs.oneboard.utils.DialogUtil
 import kr.khs.oneboard.utils.TYPE_STUDENT
 import kr.khs.oneboard.utils.UserInfoUtil
 import kr.khs.oneboard.viewmodels.LessonListViewModel
@@ -76,6 +77,17 @@ class LessonListFragment : BaseFragment<FragmentLessonListBinding, LessonListVie
         with(binding.rvLessonList) {
             lessonListAdapter = LessonListAdapter().apply {
                 itemClickListener = { item ->
+
+                }
+                optionClickListener = { item ->
+                    DialogUtil.createDialog(
+                        requireContext(),
+                        "수정, 삭제 선택해주세요.\n(취소 : 외부 클릭)",
+                        "수정",
+                        "삭제",
+                        { },
+                        { viewModel.deleteItem(parentViewModel.getLecture().id, item.id) }
+                    )
 
                 }
             }
