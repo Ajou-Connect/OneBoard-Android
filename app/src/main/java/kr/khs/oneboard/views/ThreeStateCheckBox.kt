@@ -44,7 +44,7 @@ class ThreeStateCheckBox @JvmOverloads constructor(
 
             typedArray.recycle()
 
-            initComponent()
+//            initComponent()
         }
     }
 
@@ -72,17 +72,17 @@ class ThreeStateCheckBox @JvmOverloads constructor(
 
     var onStateChanged: ((ThreeStateCheckBox, Int) -> Unit)? = null
 
-    private fun initComponent() {
-        Timber.d("initComponent()")
-        setOnCheckedChangeListener { _, _ ->
-            state = when (state) {
-                STATE_UNCHECKED -> STATE_CHECKED
-                STATE_CHECKED -> STATE_INDETERMINATE
-                STATE_INDETERMINATE -> STATE_UNCHECKED
-                else -> -1
-            }
-        }
-    }
+//    private fun initComponent() {
+//        Timber.d("initComponent()")
+//        setOnCheckedChangeListener { _, _ ->
+//            state = when (state) {
+//                STATE_UNCHECKED -> STATE_CHECKED
+//                STATE_CHECKED -> STATE_INDETERMINATE
+//                STATE_INDETERMINATE -> STATE_UNCHECKED
+//                else -> -1
+//            }
+//        }
+//    }
 
     private fun changeText(state: Int) {
         text = when (state) {
