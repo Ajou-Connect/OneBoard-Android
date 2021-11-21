@@ -40,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@{@string/semester(item.semester)"
+            android:text="@{@string/semester(item.semester)}"
             android:textColor="@color/colorBlack"
             android:textSize="13sp"
             app:layout_constraintBottom_toTopOf="@+id/listItemLectureTitle"
