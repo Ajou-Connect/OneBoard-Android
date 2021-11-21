@@ -4,15 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primaryBackgroundColor"
-    tools:context=".ui.AssignmentFragment">
+    tools:context=".ui.LessonListFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/primaryBackgroundColor">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvAssignments"
+            android:id="@+id/rvLessonList"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -28,7 +28,8 @@
         android:layout_gravity="end|bottom"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="32dp"
-        android:contentDescription="Add Assignment"
+        android:contentDescription="Add Lesson"
         android:src="@android:drawable/ic_input_add"
-        app:backgroundTint="@color/fabColor" />
+        android:backgroundTint="@color/fabColor" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

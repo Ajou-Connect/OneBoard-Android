@@ -62,7 +62,8 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="4dp">
 
             <ImageButton
                 android:id="@+id/action_undo"
@@ -73,7 +74,7 @@
                 android:background="@null"
                 android:contentDescription="@null"
                 android:scaleType="fitXY"
-                app:srcCompat="@drawable/undo" />
+                app:srcCompat="@drawable/ic_undo" />
 
             <ImageButton
                 android:id="@+id/action_redo"
@@ -84,7 +85,7 @@
                 android:background="@null"
                 android:contentDescription="@null"
                 android:scaleType="fitXY"
-                app:srcCompat="@drawable/redo" />
+                app:srcCompat="@drawable/ic_redo" />
 
             <ImageButton
                 android:id="@+id/action_bold"
@@ -95,7 +96,7 @@
                 android:background="@null"
                 android:contentDescription="@null"
                 android:scaleType="fitXY"
-                app:srcCompat="@drawable/bold" />
+                app:srcCompat="@drawable/ic_bold" />
 
             <ImageButton
                 android:id="@+id/action_italic"
@@ -106,7 +107,7 @@
                 android:background="@null"
                 android:contentDescription="@null"
                 android:scaleType="fitXY"
-                app:srcCompat="@drawable/italic" />
+                app:srcCompat="@drawable/ic_italic" />
 
             <ImageButton
                 android:id="@+id/action_strikethrough"
@@ -117,7 +118,7 @@
                 android:background="@null"
                 android:contentDescription="@null"
                 android:scaleType="fitXY"
-                app:srcCompat="@drawable/strikethrough" />
+                app:srcCompat="@drawable/ic_strikethrough" />
 
             <ImageButton
                 android:id="@+id/action_underline"
@@ -128,7 +129,7 @@
                 android:background="@null"
                 android:contentDescription="@null"
                 android:scaleType="fitXY"
-                app:srcCompat="@drawable/underline" />
+                app:srcCompat="@drawable/ic_underline" />
 
             <ImageButton
                 android:id="@+id/action_heading1"
@@ -139,7 +140,7 @@
                 android:background="@null"
                 android:contentDescription="@null"
                 android:scaleType="fitXY"
-                app:srcCompat="@drawable/h1" />
+                app:srcCompat="@drawable/ic_h1" />
 
             <ImageButton
                 android:id="@+id/action_heading2"
@@ -150,7 +151,7 @@
                 android:background="@null"
                 android:contentDescription="@null"
                 android:scaleType="fitXY"
-                app:srcCompat="@drawable/h2" />
+                app:srcCompat="@drawable/ic_h2" />
 
             <ImageButton
                 android:id="@+id/action_heading3"
@@ -161,7 +162,7 @@
                 android:background="@null"
                 android:contentDescription="@null"
                 android:scaleType="fitXY"
-                app:srcCompat="@drawable/h3" />
+                app:srcCompat="@drawable/ic_h3" />
 
             <ImageButton
                 android:id="@+id/action_heading4"
@@ -172,7 +173,7 @@
                 android:background="@null"
                 android:contentDescription="@null"
                 android:scaleType="fitXY"
-                app:srcCompat="@drawable/h4" />
+                app:srcCompat="@drawable/ic_h4" />
 
             <ImageButton
                 android:id="@+id/action_heading5"
@@ -183,7 +184,7 @@
                 android:background="@null"
                 android:contentDescription="@null"
                 android:scaleType="fitXY"
-                app:srcCompat="@drawable/h5" />
+                app:srcCompat="@drawable/ic_h5" />
 
             <ImageButton
                 android:id="@+id/action_heading6"
@@ -194,7 +195,7 @@
                 android:background="@null"
                 android:contentDescription="@null"
                 android:scaleType="fitXY"
-                app:srcCompat="@drawable/h6" />
+                app:srcCompat="@drawable/ic_h6" />
 
             <ImageButton
                 android:id="@+id/action_txt_color"
@@ -205,7 +206,7 @@
                 android:background="@null"
                 android:contentDescription="@null"
                 android:scaleType="fitXY"
-                app:srcCompat="@drawable/txt_color" />
+                app:srcCompat="@drawable/ic_txt_color" />
 
             <ImageButton
                 android:id="@+id/action_indent"
@@ -216,7 +217,7 @@
                 android:background="@null"
                 android:contentDescription="@null"
                 android:scaleType="fitXY"
-                app:srcCompat="@drawable/indent" />
+                app:srcCompat="@drawable/ic_indent" />
 
             <ImageButton
                 android:id="@+id/action_outdent"
@@ -227,7 +228,7 @@
                 android:background="@null"
                 android:contentDescription="@null"
                 android:scaleType="fitXY"
-                app:srcCompat="@drawable/outdent" />
+                app:srcCompat="@drawable/ic_outdent" />
 
             <ImageButton
                 android:id="@+id/action_align_left"
@@ -238,7 +239,7 @@
                 android:background="@null"
                 android:contentDescription="@null"
                 android:scaleType="fitXY"
-                app:srcCompat="@drawable/justify_left" />
+                app:srcCompat="@drawable/ic_justify_left" />
 
             <ImageButton
                 android:id="@+id/action_align_center"
@@ -249,7 +250,7 @@
                 android:background="@null"
                 android:contentDescription="@null"
                 android:scaleType="fitXY"
-                app:srcCompat="@drawable/justify_center" />
+                app:srcCompat="@drawable/ic_justify_center" />
 
             <ImageButton
                 android:id="@+id/action_align_right"
@@ -260,7 +261,7 @@
                 android:background="@null"
                 android:contentDescription="@null"
                 android:scaleType="fitXY"
-                app:srcCompat="@drawable/justify_right" />
+                app:srcCompat="@drawable/ic_justify_right" />
 
             <ImageButton
                 android:id="@+id/action_insert_bullets"
@@ -271,7 +272,7 @@
                 android:background="@null"
                 android:contentDescription="@null"
                 android:scaleType="fitXY"
-                app:srcCompat="@drawable/bullets" />
+                app:srcCompat="@drawable/ic_bullets" />
 
             <ImageButton
                 android:id="@+id/action_blockquote"
@@ -282,7 +283,7 @@
                 android:background="@null"
                 android:contentDescription="@null"
                 android:scaleType="fitXY"
-                app:srcCompat="@drawable/blockquote" />
+                app:srcCompat="@drawable/ic_blockquote" />
 
             <ImageButton
                 android:id="@+id/action_insert_checkbox"
@@ -334,6 +335,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
+            android:textColor="@color/black"
             android:text="파일 설명 들어갈 곳" />
 
         <com.google.android.material.button.MaterialButton
@@ -341,6 +343,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColor="@color/white"
             android:text="파일 추가" />
 
     </LinearLayout>
@@ -359,7 +362,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:text="시작 시간" />
+            android:text="시작 시간"
+            android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/writeStartDt"
@@ -367,6 +371,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="2"
+            android:textColor="@color/black"
             android:text="2021-11-12 12:43" />
 
         <TextView
@@ -374,6 +379,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
+            android:textColor="@color/black"
             android:text="마감 시간" />
 
         <TextView
@@ -382,6 +388,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="2"
+            android:textColor="@color/black"
             android:text="2021-11-12 12:43" />
 
     </LinearLayout>

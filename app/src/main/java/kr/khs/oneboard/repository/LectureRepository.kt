@@ -1,10 +1,7 @@
 package kr.khs.oneboard.repository
 
 import kr.khs.oneboard.core.UseCase
-import kr.khs.oneboard.data.Assignment
-import kr.khs.oneboard.data.AttendanceStudent
-import kr.khs.oneboard.data.Lecture
-import kr.khs.oneboard.data.Notice
+import kr.khs.oneboard.data.*
 import kr.khs.oneboard.data.request.AssignmentUpdateRequestDto
 import kr.khs.oneboard.data.request.AttendanceUpdateRequestDto
 import kr.khs.oneboard.data.request.NoticeUpdateRequestDto
@@ -47,4 +44,8 @@ interface LectureRepository {
     ): UseCase<Boolean>
 
     suspend fun getMyAttendance(lectureId: Int): UseCase<AttendanceStudent>
+
+    suspend fun getGradeList(lectureId: Int): List<GradeStudent>
+
+    suspend fun getGradeRatio(lectureId: Int): HashMap<String, Int>
 }

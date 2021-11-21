@@ -4,10 +4,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kr.khs.oneboard.api.ApiService
 import kr.khs.oneboard.core.UseCase
-import kr.khs.oneboard.data.Assignment
-import kr.khs.oneboard.data.AttendanceStudent
-import kr.khs.oneboard.data.Lecture
-import kr.khs.oneboard.data.Notice
+import kr.khs.oneboard.data.*
 import kr.khs.oneboard.data.api.Response
 import kr.khs.oneboard.data.request.AssignmentUpdateRequestDto
 import kr.khs.oneboard.data.request.AttendanceUpdateRequestDto
@@ -233,5 +230,43 @@ class LectureRepositoryImpl @Inject constructor(
         }
 
         return returnValue
+    }
+
+    override suspend fun getGradeList(lectureId: Int): List<GradeStudent> {
+        val response: Response<List<GradeStudent>>
+        withContext(Dispatchers.IO) {
+//            response = apiService.getGradeList(lectureId)
+            response = Response(
+                SUCCESS,
+                (0 until 20)
+                    .map {
+                        GradeStudent(
+                            lectureId = lectureId,
+                            studentId = "201520930$it",
+                            studentName = "김희승$it",
+                            studentMajor = "사이버보안학과",
+                            assignmentList = (0 until 5).map {
+                                Pair("과제 $it", (0 until 100).random())
+                            }.toList(),
+                            score = (1..4).random() + (0..1).random() / 2f
+                        )
+                    }
+            )
+        }
+
+        return response.data
+    }
+
+    override suspend fun getGradeRatio(lectureId: Int): HashMap<String, Int> {
+        val response: Response<HashMap<String, Int>>
+        withContext(Dispatchers.IO) {
+//            response = apiService.getGradeRatio(lectureId)
+            response = Response(
+                SUCCESS,
+                hashMapOf("A" to 30, "B" to 70)
+            )
+        }
+
+        return response.data
     }
 }

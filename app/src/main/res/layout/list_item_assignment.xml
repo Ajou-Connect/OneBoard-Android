@@ -17,9 +17,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:backgroundTint="@color/white"
         android:onClick="@{clickListener}"
-        android:layout_margin="8dp">
+        android:layout_margin="8dp"
+        android:background="@drawable/round_corner">
 
         <TextView
             android:id="@+id/listItemAssignmentTitle"

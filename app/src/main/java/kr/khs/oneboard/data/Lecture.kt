@@ -9,5 +9,6 @@ data class Lecture(
     val title: String,
     val semester: String,
     val professor: String,
-    val lecturePlan: String? = null,
+    val defaultDateTime: String?,
+    val defaultRoom: String?
 ) : Parcelable

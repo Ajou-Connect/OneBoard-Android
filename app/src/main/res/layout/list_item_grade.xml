@@ -7,7 +7,11 @@
 
         <variable
             name="item"
-            type="kr.khs.oneboard.data.AttendanceStudent" />
+            type="kr.khs.oneboard.data.GradeStudent" />
+
+        <variable
+            name="View"
+            type="android.view.View" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -16,56 +20,69 @@
         android:background="@drawable/round_corner">
 
         <TextView
-            android:id="@+id/attendanceMajor"
+            android:id="@+id/gradeMajor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:text="@{item.studentMajor}"
             android:textColor="@color/black"
-            android:text="@{item.studentNumber}"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="사이버보안학과" />
+
+        <TextView
+            android:id="@+id/gradeStudentId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@{String.valueOf(item.studentId)}"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="@+id/gradeMajor"
+            app:layout_constraintStart_toEndOf="@+id/gradeMajor"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="201520930" />
 
         <TextView
-            android:id="@+id/attendanceName"
+            android:id="@+id/gradeName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
             android:text="@{item.studentName}"
-            app:layout_constraintEnd_toStartOf="@+id/attendanceRatio"
-            app:layout_constraintStart_toStartOf="@+id/attendanceMajor"
-            app:layout_constraintTop_toBottomOf="@+id/attendanceMajor"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toStartOf="@+id/gradeScore"
+            app:layout_constraintStart_toStartOf="@+id/gradeMajor"
+            app:layout_constraintTop_toBottomOf="@+id/gradeMajor"
             tools:text="김희승" />
 
         <TextView
-            android:id="@+id/attendanceRatio"
+            android:id="@+id/gradeScore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="@+id/gradeStudentId"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/attendanceMajor"
-            tools:text="10/16" />
+            app:layout_constraintTop_toTopOf="@+id/gradeStudentId"
+            tools:text="4.5" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/attendanceList"
+            android:id="@+id/gradeList"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_margin="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/attendanceName" />
+            app:layout_constraintTop_toBottomOf="@+id/gradeName" />
 
         <ImageButton
-            android:id="@+id/attendanceExpandButton"
+            android:id="@+id/gradeExpandButton"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Expand Student's detail attendance"
-            app:layout_constraintBottom_toTopOf="@+id/attendanceList"
-            app:layout_constraintEnd_toEndOf="@+id/attendanceRatio"
+            android:contentDescription="Expand Student's detail grade"
+            app:layout_constraintBottom_toTopOf="@+id/gradeList"
+            app:layout_constraintEnd_toEndOf="@+id/gradeScore"
             app:srcCompat="@drawable/ic_expand_more" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

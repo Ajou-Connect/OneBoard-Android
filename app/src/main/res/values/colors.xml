@@ -18,4 +18,6 @@
     <color name="naturePalette2">#7F90BC</color>
     <color name="naturePalette3">#F4F9FF</color>
     <color name="naturePalette4">#E6F4F1</color>
+
+    <color name="fabColor">#5a87d6</color>
 </resources>
