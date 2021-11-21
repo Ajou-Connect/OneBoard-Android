@@ -11,6 +11,6 @@ const val TYPE_STUDENT = false
 const val TYPE_NOTICE = true
 const val TYPE_ASSIGNMENT = false
 
-const val TYPE_FACE_TO_FACE = 0
+const val TYPE_RECORDING = 0
 const val TYPE_NON_FACE_TO_FACE = 1
-const val TYPE_RECORDING = 2
+const val TYPE_FACE_TO_FACE = 2
