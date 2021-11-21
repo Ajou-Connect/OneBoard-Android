@@ -180,7 +180,7 @@ class LessonWriteFragment : BaseFragment<FragmentLessonWriteBinding, LessonWrite
         with(binding.lessonWriteSpinner) {
             adapter = ArrayAdapter(
                 requireContext(),
-                android.R.layout.simple_spinner_dropdown_item,
+                R.layout.spinner_item,
                 resources.getStringArray(R.array.spinner_type_array)
             )
             onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
