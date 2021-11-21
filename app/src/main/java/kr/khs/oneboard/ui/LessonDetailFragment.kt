@@ -43,7 +43,7 @@ class LessonDetailFragment : BaseFragment<FragmentLessonDetailBinding, LessonDet
         binding.lessonDetailInfo.text = when (item.type) {
             TYPE_FACE_TO_FACE -> {
                 binding.lessonDetailLessonBtn.visibility = View.INVISIBLE
-                "대면 강의, 강의실 : ${item.room}"
+                "대면 강의, 강의실 : ${item.room ?: "미정"}"
             }
             TYPE_NON_FACE_TO_FACE -> {
                 binding.lessonDetailLessonBtn.text = "수업 입장"
@@ -51,14 +51,14 @@ class LessonDetailFragment : BaseFragment<FragmentLessonDetailBinding, LessonDet
             }
             TYPE_RECORDING -> {
                 binding.lessonDetailLessonBtn.text = "녹화 강의 시청"
-                "녹화강의 : ${item.videoUrl}"
+                "녹화강의 : ${item.videoUrl ?: "아직 영상이 올라오지 않았습니다."}"
             }
             else -> ""
         }
 
         with(binding.lessonDetailWebView) {
             val url =
-                "https://docs.google.com/gview?embedded=true&url=http://115.85.182.194:8080/lecture/${parentViewModel.getLecture().id}/lesson/${item.id}"
+                "https://docs.google.com/gview?embedded=true&url=http://115.85.182.194:8080/lecture/${parentViewModel.getLecture().id}/lesson/${item.id}/note"
             webViewClient = WebViewClient() // 클릭 시 새창 안뜨게
             with(this.settings) {
                 javaScriptEnabled = true

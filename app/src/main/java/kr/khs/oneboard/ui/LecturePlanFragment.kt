@@ -34,7 +34,8 @@ class LecturePlanFragment : BaseFragment<FragmentLecturePlanBinding, LecturePlan
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun init() {
-        val url = "https://docs.google.com/gview?embedded=true&url=http://115.85.182.194:8080/lecture/${parentViewModel.getLecture().id}/plan"
+        val url =
+            "https://docs.google.com/gview?embedded=true&url=http://115.85.182.194:8080/lecture/${parentViewModel.getLecture().id}/plan"
         Timber.tag("PlanUrl").d(url)
 
         if (url == "") goBackWhenError()

@@ -44,7 +44,7 @@ class LessonListAdapter : ListAdapter<Lesson, RecyclerView.ViewHolder>(LessonDif
                 binding.lessonNote.text = it
             }
             binding.lessonInfo.text = when (item.type) {
-                TYPE_NON_FACE_TO_FACE -> item.meetingId ?: ""
+                TYPE_NON_FACE_TO_FACE -> "비대면 실시간 수업"
                 TYPE_FACE_TO_FACE -> item.room ?: "아직 강의실이 정해지지 않았습니다."
                 TYPE_RECORDING -> item.videoUrl ?: "아직 녹화 강의 주소가 올라오지 않았습니다."
                 else -> {
