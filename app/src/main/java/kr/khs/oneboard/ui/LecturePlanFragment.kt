@@ -12,6 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kr.khs.oneboard.core.BaseFragment
 import kr.khs.oneboard.databinding.FragmentLecturePlanBinding
 import kr.khs.oneboard.viewmodels.LecturePlanViewModel
+import timber.log.Timber
 
 @AndroidEntryPoint
 class LecturePlanFragment : BaseFragment<FragmentLecturePlanBinding, LecturePlanViewModel>() {
@@ -33,9 +34,8 @@ class LecturePlanFragment : BaseFragment<FragmentLecturePlanBinding, LecturePlan
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun init() {
-        // TODO: 2021/10/26 url 수정하기 
-//        val url = parentViewModel.getLecture().lecturePlan
-        val url = "https://naver.com"
+        val url = "https://docs.google.com/gview?embedded=true&url=http://115.85.182.194:8080/lecture/${parentViewModel.getLecture().id}/plan"
+        Timber.tag("PlanUrl").d(url)
 
         if (url == "") goBackWhenError()
 
