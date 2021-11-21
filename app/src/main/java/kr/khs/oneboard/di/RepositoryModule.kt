@@ -30,4 +30,10 @@ class RepositoryModule {
     fun provideLectureRepository(
         @Named("withJWT") jwtApiService: ApiService
     ): LectureRepository = LectureRepositoryImpl(jwtApiService)
+
+    @Singleton
+    @Provides
+    fun provideLessonRepository(
+        @Named("withJWT") jwtApiService: ApiService
+    ): LessonRepository = LessonRepositoryImpl(jwtApiService)
 }

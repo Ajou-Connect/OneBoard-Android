@@ -4,6 +4,8 @@ import kr.khs.oneboard.data.*
 import kr.khs.oneboard.data.api.BasicResponseImpl
 import kr.khs.oneboard.data.api.Response
 import kr.khs.oneboard.data.request.AssignmentUpdateRequestDto
+import kr.khs.oneboard.data.request.AttendanceUpdateRequestDto
+import kr.khs.oneboard.data.request.LessonUpdateRequestDto
 import kr.khs.oneboard.data.request.NoticeUpdateRequestDto
 import retrofit2.http.*
 
@@ -51,11 +53,17 @@ interface ApiService {
         @Path("noticeId") noticeId: Int
     ): BasicResponseImpl
 
-//    @GET("lecture/attendance")
-//    suspend fun getAttendance()
-//
-//    @POST("lecture/attendance")
-//    suspend fun postAttendance()
+    @GET("lecture/{lectureId}/attendance")
+    suspend fun getAttendanceList(@Path("lectureId") lectureId: Int): Response<List<AttendanceStudent>>
+
+    @PUT("lecture/{lectureId}/attendance")
+    suspend fun putAttendance(
+        @Path("lectureId") lectureId: Int,
+        @Body dto: AttendanceUpdateRequestDto
+    ): BasicResponseImpl
+
+    @GET("lecture/{lectureId}/attendance/my")
+    suspend fun getMyAttendanceList(@Path("lectureId") lectureId: Int): Response<AttendanceStudent>
 
     @GET("lecture/{lectureId}/assignments")
     suspend fun getAssignmentList(@Path("lectureId") lectureId: Int): Response<List<Assignment>>
@@ -79,5 +87,47 @@ interface ApiService {
         @Path("assignmentId") assignmentId: Int
     ): BasicResponseImpl
 
-    // todo lecture/assignment/result부터
+    @POST("lecture/assignment/result")
+    suspend fun postAssignmentFeedBack(): Response<Boolean>
+
+    @GET("lecture/assignment/list")
+    suspend fun getSubmitAssignmentList(assignmentId: Int): Response<List<Submit>>
+
+    @GET("lecture/grade")
+    suspend fun getGrade()
+
+    @POST("lecture/grade/list")
+    suspend fun getGradeList(lectureId: Int): Response<List<GradeStudent>>
+
+    @GET("lecture/grade/ratio")
+    suspend fun getGradeRatio(lectureId: Int): Response<HashMap<String, Int>>
+
+    @GET("lecture/{lectureId}/lessons")
+    suspend fun getLessonList(@Path("lectureId") lectureId: Int): Response<List<Lesson>>
+
+    @GET("lecture/{lectureId}/lesson/{lessonId}")
+    suspend fun getLesson(
+        @Path("lectureId") lectureId: Int,
+        @Path("lessonId") lessonId: Int
+    ): Response<Lesson>
+
+    @POST("lecture/{lectureId}/lesson")
+    suspend fun postLesson(
+        @Path("lectureId") lectureId: Int,
+        @Body dto: LessonUpdateRequestDto
+    ): BasicResponseImpl
+
+    @PUT("lecture/{lectureId}/lesson/{lessonId}")
+    suspend fun putLesson(
+        @Path("lectureId") lectureId: Int,
+        @Path("lessonId") lessonId: Int,
+        @Body dto: LessonUpdateRequestDto
+    ): BasicResponseImpl
+
+    @DELETE("lecture/{lectureId}/lesson/{lessonId}")
+    suspend fun deleteLesson(
+        @Path("lectureId") lectureId: Int,
+        @Path("lessonId") lessonId: Int
+    ): BasicResponseImpl
+
 }

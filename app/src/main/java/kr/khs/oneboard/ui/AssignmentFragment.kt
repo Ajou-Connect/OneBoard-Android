@@ -61,7 +61,7 @@ class AssignmentFragment : BaseFragment<FragmentAssignmentBinding, AssignmentVie
         if (UserInfoUtil.type == TYPE_PROFESSOR) {
             binding.rvAssignments.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    if (dy < 0)
+                    if (dy <= 0)
                         binding.fab.show()
                     else if (dy > 0)
                         binding.fab.hide()
@@ -86,11 +86,19 @@ class AssignmentFragment : BaseFragment<FragmentAssignmentBinding, AssignmentVie
             listAdapter = AssignmentListAdapter().apply {
                 listItemClickListener = { item ->
                     findNavController().navigate(
-                        AssignmentFragmentDirections.actionAssignmentFragmentToLectureWriteFragment(
-                            TYPE_ASSIGNMENT
-                        ).apply {
-                            isEdit = true
-                            assignment = item
+                        if (UserInfoUtil.type == TYPE_PROFESSOR) {
+                            AssignmentFragmentDirections.actionAssignmentFragmentToLectureWriteFragment(
+                                TYPE_ASSIGNMENT
+                            ).apply {
+                                isEdit = true
+                                assignment = item
+                            }
+                        } else {
+                            AssignmentFragmentDirections.actionAssignmentFragmentToLectureReadFragment(
+                                TYPE_ASSIGNMENT
+                            ).apply {
+                                assignment = item
+                            }
                         }
                     )
                 }

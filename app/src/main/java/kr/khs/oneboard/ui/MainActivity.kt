@@ -21,6 +21,7 @@ import kr.khs.oneboard.utils.*
 import kr.khs.oneboard.viewmodels.MainViewModel
 import timber.log.Timber
 
+// todo : return value 간단하게 할 수 있는 것은 = 사용해서 바꿔주기
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private val binding: ActivityMainBinding by lazy {
@@ -145,13 +146,16 @@ class MainActivity : AppCompatActivity() {
                     navController.navigate(R.id.noticeFragment)
                 }
                 R.id.lecture_menu_lesson -> {
+                    navController.navigate(R.id.lessonListFragment)
                 }
                 R.id.lecture_menu_attendance -> {
+                    navController.navigate(R.id.attendanceFragment)
                 }
                 R.id.lecture_menu_assignment -> {
                     navController.navigate(R.id.assignmentFragment)
                 }
                 R.id.lecture_menu_grade -> {
+                    navController.navigate(R.id.gradeFragment)
                 }
                 R.id.lecture_menu_understanding -> {
                 }
@@ -200,3 +204,8 @@ class MainActivity : AppCompatActivity() {
         UserInfoUtil.univ = university
     }
 }
+
+// TODO: 2021/11/19 학생, 강의자 모든 화면 구분해주기
+// TODO: 2021/11/19 수업 관련
+// TODO: 2021/11/19 HTML 
+// TODO: 2021/11/19 pdf 뷰어, 파일 다운로드 찾아보기 

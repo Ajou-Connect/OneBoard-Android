@@ -1,5 +1,6 @@
 package kr.khs.oneboard.adapters
 
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,6 +45,8 @@ class NoticeListAdapter :
 
         fun bind(item: Notice) {
             binding.item = item
+            binding.listItemNoticeContent.text =
+                Html.fromHtml(item.content, Html.FROM_HTML_MODE_LEGACY)
             binding.executePendingBindings()
         }
 

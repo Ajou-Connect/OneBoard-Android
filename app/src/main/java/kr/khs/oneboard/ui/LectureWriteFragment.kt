@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.setPadding
 import androidx.fragment.app.viewModels
 import com.noowenz.customdatetimepicker.CustomDateTimePicker
 import dagger.hilt.android.AndroidEntryPoint
@@ -43,7 +44,8 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val data = result.data
-                assignmentFile = data?.data?.asMultipart("filename", requireContext().contentResolver)
+                assignmentFile =
+                    data?.data?.asMultipart("filename", requireContext().contentResolver)
                 binding.writeFileDescription.text = data?.data?.lastPathSegment
             }
         }
@@ -89,11 +91,41 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
                 assignment = it.getParcelable("assignment")
         } ?: goBackWhenError()
 
+        initHtmlEditor()
         initExposeTime()
         initStartEndDtLayout()
         initFileAddButton()
         initWriteArticleButton()
         initDefaultData()
+    }
+
+    private fun initHtmlEditor() {
+        binding.writeContentEditText.apply {
+            setPadding(10)
+            setPlaceholder("내용을 입력해주세요.")
+            binding.actionUndo.setOnClickListener { this.undo() }
+            binding.actionRedo.setOnClickListener { this.redo() }
+            binding.actionBold.setOnClickListener { this.setBold() }
+            binding.actionItalic.setOnClickListener { this.setItalic() }
+            binding.actionStrikethrough.setOnClickListener { this.setStrikeThrough() }
+            binding.actionUnderline.setOnClickListener { this.setUnderline() }
+            binding.actionHeading1.setOnClickListener { this.setHeading(1) }
+            binding.actionHeading2.setOnClickListener { this.setHeading(2) }
+            binding.actionHeading3.setOnClickListener { this.setHeading(3) }
+            binding.actionHeading4.setOnClickListener { this.setHeading(4) }
+            binding.actionHeading5.setOnClickListener { this.setHeading(5) }
+            binding.actionHeading6.setOnClickListener { this.setHeading(6) }
+            binding.actionTxtColor.setOnClickListener { }
+            binding.actionIndent.setOnClickListener { this.setIndent() }
+            binding.actionOutdent.setOnClickListener { this.setOutdent() }
+            binding.actionAlignLeft.setOnClickListener { this.setAlignLeft() }
+            binding.actionAlignCenter.setOnClickListener { this.setAlignCenter() }
+            binding.actionAlignRight.setOnClickListener { this.setAlignRight() }
+            binding.actionBlockquote.setOnClickListener { this.setBlockquote() }
+            binding.actionInsertBullets.setOnClickListener { this.setBullets() }
+            binding.actionInsertCheckbox.setOnClickListener { this.insertTodo() }
+
+        }
     }
 
     private fun initDefaultData() {
@@ -106,12 +138,11 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
                 assignment?.title
         )
 
-        binding.writeContentEditText.setText(
+        binding.writeContentEditText.html =
             if (type == TYPE_NOTICE)
                 notice?.content
             else
                 assignment?.content
-        )
 
         binding.writeExposeTimeCheckBox.isChecked = false
         binding.writeExposeTimeTextView.text =
@@ -189,7 +220,7 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
                     if (type == TYPE_NOTICE) {
                         NoticeUpdateRequestDto(
                             binding.writeTitleEditText.text.toString(),
-                            binding.writeContentEditText.text.toString(),
+                            binding.writeContentEditText.html,
                             if (binding.writeExposeTimeCheckBox.isChecked)
                                 System.currentTimeMillis().toDateTime()
                             else
@@ -207,7 +238,7 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
                         }
                         AssignmentUpdateRequestDto(
                             binding.writeTitleEditText.text.toString(),
-                            binding.writeContentEditText.text.toString(),
+                            binding.writeContentEditText.html,
                             "",
                             binding.writeStartDt.text.toString(),
                             binding.writeEndDt.text.toString(),
@@ -227,7 +258,7 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
                     if (type == TYPE_NOTICE) {
                         NoticeUpdateRequestDto(
                             binding.writeTitleEditText.text.toString(),
-                            binding.writeContentEditText.text.toString(),
+                            binding.writeContentEditText.html,
                             if (binding.writeExposeTimeCheckBox.isChecked)
                                 System.currentTimeMillis().toDateTime()
                             else
@@ -245,7 +276,7 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
                         }
                         AssignmentUpdateRequestDto(
                             binding.writeTitleEditText.text.toString(),
-                            binding.writeContentEditText.text.toString(),
+                            binding.writeContentEditText.html,
                             "",
                             binding.writeStartDt.text.toString(),
                             binding.writeEndDt.text.toString(),

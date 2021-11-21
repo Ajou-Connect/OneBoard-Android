@@ -55,6 +55,7 @@ class LectureWriteViewModel @Inject constructor(private val repository: LectureR
     ) {
         var result: UseCase<Boolean>
         viewModelScope.launch {
+            showProgress()
             result = when (type) {
                 TYPE_NOTICE -> {
                     Timber.tag("Write").d("$notice")
@@ -68,6 +69,7 @@ class LectureWriteViewModel @Inject constructor(private val repository: LectureR
             }
 
             status.value = if (result.status == UseCase.Status.SUCCESS) result.data!! else false
+            hideProgress()
         }
     }
 }

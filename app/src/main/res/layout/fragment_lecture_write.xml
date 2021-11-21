@@ -45,12 +45,261 @@
         android:ems="10"
         android:inputType="text"
         android:minHeight="48dp"
-        android:text="Name"
+        android:hint="제목을 입력하세요."
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/black"
+        app:layout_constraintEnd_toEndOf="@+id/writeTitleEditText"
+        app:layout_constraintStart_toStartOf="@+id/writeTitleEditText"
+        app:layout_constraintTop_toBottomOf="@+id/writeFileLayout">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="4dp">
+
+            <ImageButton
+                android:id="@+id/action_undo"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginVertical="6dp"
+                android:layout_marginHorizontal="3dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/ic_undo" />
+
+            <ImageButton
+                android:id="@+id/action_redo"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginVertical="6dp"
+                android:layout_marginHorizontal="3dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/ic_redo" />
+
+            <ImageButton
+                android:id="@+id/action_bold"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginVertical="6dp"
+                android:layout_marginHorizontal="3dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/ic_bold" />
+
+            <ImageButton
+                android:id="@+id/action_italic"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginVertical="6dp"
+                android:layout_marginHorizontal="3dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/ic_italic" />
+
+            <ImageButton
+                android:id="@+id/action_strikethrough"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginVertical="6dp"
+                android:layout_marginHorizontal="3dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/ic_strikethrough" />
+
+            <ImageButton
+                android:id="@+id/action_underline"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginVertical="6dp"
+                android:layout_marginHorizontal="3dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/ic_underline" />
+
+            <ImageButton
+                android:id="@+id/action_heading1"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginVertical="6dp"
+                android:layout_marginHorizontal="3dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/ic_h1" />
+
+            <ImageButton
+                android:id="@+id/action_heading2"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginVertical="6dp"
+                android:layout_marginHorizontal="3dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/ic_h2" />
+
+            <ImageButton
+                android:id="@+id/action_heading3"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginVertical="6dp"
+                android:layout_marginHorizontal="3dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/ic_h3" />
+
+            <ImageButton
+                android:id="@+id/action_heading4"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginVertical="6dp"
+                android:layout_marginHorizontal="3dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/ic_h4" />
+
+            <ImageButton
+                android:id="@+id/action_heading5"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginVertical="6dp"
+                android:layout_marginHorizontal="3dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/ic_h5" />
+
+            <ImageButton
+                android:id="@+id/action_heading6"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginVertical="6dp"
+                android:layout_marginHorizontal="3dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/ic_h6" />
+
+            <ImageButton
+                android:id="@+id/action_txt_color"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginVertical="6dp"
+                android:layout_marginHorizontal="3dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/ic_txt_color" />
+
+            <ImageButton
+                android:id="@+id/action_indent"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginVertical="6dp"
+                android:layout_marginHorizontal="3dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/ic_indent" />
+
+            <ImageButton
+                android:id="@+id/action_outdent"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginVertical="6dp"
+                android:layout_marginHorizontal="3dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/ic_outdent" />
+
+            <ImageButton
+                android:id="@+id/action_align_left"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginVertical="6dp"
+                android:layout_marginHorizontal="3dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/ic_justify_left" />
+
+            <ImageButton
+                android:id="@+id/action_align_center"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginVertical="6dp"
+                android:layout_marginHorizontal="3dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/ic_justify_center" />
+
+            <ImageButton
+                android:id="@+id/action_align_right"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginVertical="6dp"
+                android:layout_marginHorizontal="3dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/ic_justify_right" />
+
+            <ImageButton
+                android:id="@+id/action_insert_bullets"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginVertical="6dp"
+                android:layout_marginHorizontal="3dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/ic_bullets" />
+
+            <ImageButton
+                android:id="@+id/action_blockquote"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginVertical="6dp"
+                android:layout_marginHorizontal="3dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/ic_blockquote" />
+
+            <ImageButton
+                android:id="@+id/action_insert_checkbox"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginVertical="6dp"
+                android:layout_marginHorizontal="3dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:scaleType="fitXY"
+                app:srcCompat="@android:drawable/checkbox_on_background" />
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <jp.wasabeef.richeditor.RichEditor
         android:id="@+id/writeContentEditText"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -58,11 +307,10 @@
         android:ems="10"
         android:gravity="top"
         android:inputType="text"
-        android:text="Name"
         app:layout_constraintBottom_toTopOf="@+id/writeButton"
         app:layout_constraintEnd_toEndOf="@+id/writeTitleEditText"
         app:layout_constraintStart_toStartOf="@+id/writeTitleEditText"
-        app:layout_constraintTop_toBottomOf="@+id/writeFileLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/writeButton"
@@ -88,8 +336,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="파일 설명 들어갈 곳"
-            android:textColor="#000000" />
+            android:textColor="@color/black"
+            android:text="파일 설명 들어갈 곳" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/writeFileAddButton"
@@ -133,16 +381,16 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="2"
-            android:text="2021-11-12 12:43"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:text="2021-11-12 12:43" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:text="마감 시간"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:text="마감 시간" />
 
         <TextView
             android:id="@+id/writeEndDt"
@@ -150,8 +398,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="2"
-            android:text="2021-11-12 12:43"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:text="2021-11-12 12:43" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

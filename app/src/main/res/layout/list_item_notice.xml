@@ -17,9 +17,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:backgroundTint="@color/white"
         android:onClick="@{clickListener}"
-        android:layout_margin="8dp">
+        android:layout_margin="8dp"
+        android:background="@drawable/round_corner">
 
         <TextView
             android:id="@+id/listItemNoticeTitle"
@@ -44,7 +45,6 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:textColor="@color/colorBlack"
-            android:text="@{item.content}"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -71,6 +71,7 @@
             android:layout_width="12dp"
             android:layout_height="12dp"
             android:layout_marginEnd="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/listItemNoticeTitle"
             app:layout_constraintEnd_toEndOf="parent"
