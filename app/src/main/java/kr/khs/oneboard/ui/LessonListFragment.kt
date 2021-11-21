@@ -77,7 +77,11 @@ class LessonListFragment : BaseFragment<FragmentLessonListBinding, LessonListVie
         with(binding.rvLessonList) {
             lessonListAdapter = LessonListAdapter().apply {
                 itemClickListener = { item ->
-
+                    findNavController().navigate(
+                        LessonListFragmentDirections.actionLessonListFragmentToLessonDetailFragment(
+                            item
+                        )
+                    )
                 }
                 optionClickListener = { item ->
                     DialogUtil.createDialog(

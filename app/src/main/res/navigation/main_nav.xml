@@ -117,6 +117,9 @@
         <action
             android:id="@+id/action_lessonListFragment_to_lessonWriteFragment"
             app:destination="@id/lessonWriteFragment" />
+        <action
+            android:id="@+id/action_lessonListFragment_to_lessonDetailFragment"
+            app:destination="@id/lessonDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/lessonWriteFragment"
@@ -143,5 +146,14 @@
             app:argType="kr.khs.oneboard.data.Assignment"
             app:nullable="true"
             android:defaultValue="@null" />
+    </fragment>
+    <fragment
+        android:id="@+id/lessonDetailFragment"
+        android:name="kr.khs.oneboard.ui.LessonDetailFragment"
+        android:label="fragment_lesson_detail"
+        tools:layout="@layout/fragment_lesson_detail">
+        <argument
+            android:name="item"
+            app:argType="kr.khs.oneboard.data.Lesson" />
     </fragment>
 </navigation>

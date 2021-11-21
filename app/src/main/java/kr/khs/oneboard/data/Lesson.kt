@@ -1,5 +1,9 @@
 package kr.khs.oneboard.data
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class Lesson(
     val id: Int,
     val lectureId: Int,
@@ -10,4 +14,4 @@ data class Lesson(
     val room: String? = null,
     val meetingId: String? = null,
     val videoUrl: String? = null
-)
+) : Parcelable
