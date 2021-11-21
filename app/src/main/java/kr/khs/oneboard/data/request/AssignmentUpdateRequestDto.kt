@@ -6,5 +6,6 @@ data class AssignmentUpdateRequestDto(
     val fileUrl: String,
     val startDt: String,
     val endDt: String,
-    val exposeDt: String
+    val exposeDt: String,
+    val score: Float
 )

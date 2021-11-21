@@ -29,8 +29,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="@color/black"
-            android:text="2021.10.28-16:30" />
+            android:text="2021.10.28-16:30"
+            android:textColor="@color/black" />
 
 
     </LinearLayout>
@@ -317,6 +317,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="작성"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/writeTitleEditText"
         app:layout_constraintStart_toStartOf="@+id/writeTitleEditText" />
@@ -334,18 +335,27 @@
             android:id="@+id/writeFileDescription"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
+            android:layout_weight="1"
             android:textColor="@color/black"
             android:text="파일 설명 들어갈 곳" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/writeFileAddButton"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textColor="@color/white"
-            android:text="파일 추가" />
+            android:text="파일 추가"
+            android:textColor="#FFFFFF"
+            android:singleLine="true" />
 
+        <EditText
+            android:id="@+id/writeAssignmentScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:hint="배점 입력"
+            android:inputType="numberSigned|numberDecimal"
+            android:singleLine="true"
+            android:textSize="12sp" />
     </LinearLayout>
 
     <LinearLayout
