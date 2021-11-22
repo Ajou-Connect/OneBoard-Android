@@ -31,7 +31,7 @@ class SubmitListAdapter : ListAdapter<Submit, RecyclerView.ViewHolder>(SubmitDif
                 ?: run { binding.submitFileUrl.visibility = View.GONE }
             item.score?.let { binding.submitScore.text = it.toString() }
                 ?: run { binding.submitScore.visibility = View.GONE }
-            item.feedBack?.let { binding.submitFeedback.text = it }
+            item.feedback?.let { binding.submitFeedback.text = it }
                 ?: run { binding.submitFeedback.visibility = View.GONE }
             binding.executePendingBindings()
         }
