@@ -3,6 +3,7 @@ package kr.khs.oneboard.ui
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -102,7 +103,16 @@ class GradeProfessorFragment :
 
     private fun initGradeListRecyclerView() {
         with(binding.gradeStudentList) {
-            gradeListAdapter = GradeListAdapter()
+            gradeListAdapter = GradeListAdapter().apply {
+                itemClickListener = { item ->
+                    findNavController().navigate(
+                        GradeProfessorFragmentDirections.actionGradeProfessorFragmentToGradeStudentFragment()
+                            .apply {
+                                studentId = item.userId
+                            }
+                    )
+                }
+            }
             adapter = gradeListAdapter
             layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)

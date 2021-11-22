@@ -68,7 +68,12 @@ class GradeProfessorViewModel @Inject constructor(private val lectureRepository:
     fun getGradeList(lectureId: Int) {
         viewModelScope.launch {
             showProgress()
-//            _gradeList.value = lectureRepository.get(lectureId)
+            val response = lectureRepository.getStudentGradeList(lectureId)
+            if (response.status == UseCase.Status.SUCCESS) {
+                _gradeList.value = response.data!!
+            } else {
+                setErrorMessage("학생 성적 목록을 불러오지 못했습니다.")
+            }
             hideProgress()
         }
     }
