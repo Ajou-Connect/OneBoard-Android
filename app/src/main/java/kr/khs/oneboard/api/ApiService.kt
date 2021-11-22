@@ -111,7 +111,7 @@ interface ApiService {
         @Path("studentId") studentId: Int
     ): Response<GradeStudent>
 
-    @POST("lecture/{lectureId}/grade/list")
+    @GET("lecture/{lectureId}/grade/list")
     suspend fun getGradeList(@Path("lectureId") lectureId: Int): Response<List<GradeStudent>>
 
     @GET("lecture/{lectureId}/grade/ratio")
