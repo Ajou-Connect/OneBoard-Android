@@ -1,5 +1,6 @@
 package kr.khs.oneboard.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,13 +26,14 @@ class SubmitListAdapter : ListAdapter<Submit, RecyclerView.ViewHolder>(SubmitDif
             }
         }
 
+        @SuppressLint("SetTextI18n")
         fun bind(item: Submit) {
             binding.item = item
             item.fileUrl?.let { binding.submitFileUrl.text = it }
                 ?: run { binding.submitFileUrl.visibility = View.GONE }
-            item.score?.let { binding.submitScore.text = it.toString() }
+            item.score?.let { binding.submitScore.text = String.format("* 점수 : %.1f", it) }
                 ?: run { binding.submitScore.visibility = View.GONE }
-            item.feedback?.let { binding.submitFeedback.text = it }
+            item.feedback?.let { binding.submitFeedback.text = "* 피드백\n$it" }
                 ?: run { binding.submitFeedback.visibility = View.GONE }
             binding.executePendingBindings()
         }
