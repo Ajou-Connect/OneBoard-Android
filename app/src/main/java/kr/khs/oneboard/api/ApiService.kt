@@ -102,14 +102,26 @@ interface ApiService {
         @Path("assignmentId") assignmentId: Int
     ): Response<List<Submit>>
 
-    @GET("lecture/grade")
-    suspend fun getGrade()
+    @GET("lecture/{lectureId}/grade")
+    suspend fun getStudentOwnGrade(@Path("lectureId") lectureId: Int): Response<GradeStudent>
 
-    @POST("lecture/grade/list")
-    suspend fun getGradeList(lectureId: Int): Response<List<GradeStudent>>
+    @GET("lecture/{lectureId}/grade/{studentId}")
+    suspend fun getStudentGrade(
+        @Path("lectureId") lectureId: Int,
+        @Path("studentId") studentId: Int
+    ): Response<GradeStudent>
 
-    @GET("lecture/grade/ratio")
-    suspend fun getGradeRatio(lectureId: Int): Response<HashMap<String, Int>>
+    @POST("lecture/{lectureId}/grade/list")
+    suspend fun getGradeList(@Path("lectureId") lectureId: Int): Response<List<GradeStudent>>
+
+    @GET("lecture/{lectureId}/grade/ratio")
+    suspend fun getGradeRatio(@Path("lectureId") lectureId: Int): Response<GradeRatio>
+
+    @POST("lecture/{lectureId}/grade/ratio")
+    suspend fun postGradeRatio(
+        @Path("lectureId") lectureId: Int,
+        @Body gradeRatio: GradeRatio
+    ): BasicResponseImpl
 
     @GET("lecture/{lectureId}/lessons")
     suspend fun getLessonList(@Path("lectureId") lectureId: Int): Response<List<Lesson>>
