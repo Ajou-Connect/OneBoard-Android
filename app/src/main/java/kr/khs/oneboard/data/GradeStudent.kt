@@ -13,6 +13,7 @@ data class GradeStudent(
     val attendScore: Float,
     val result: String,
     val submitList: List<GradeSubmit>? = null,
+    val attendanceList: List<AttendanceLesson>? = null
 ) {
     data class GradeSubmit(
         val submitId: Int,
