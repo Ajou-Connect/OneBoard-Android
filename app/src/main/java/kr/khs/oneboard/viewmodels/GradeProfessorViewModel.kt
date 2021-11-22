@@ -6,50 +6,50 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kr.khs.oneboard.core.BaseViewModel
+import kr.khs.oneboard.core.UseCase
 import kr.khs.oneboard.data.GradeStudent
 import kr.khs.oneboard.repository.LectureRepository
 import javax.inject.Inject
 
 @HiltViewModel
-class GradeViewModel @Inject constructor(private val lectureRepository: LectureRepository) :
+class GradeProfessorViewModel @Inject constructor(private val lectureRepository: LectureRepository) :
     BaseViewModel() {
 
     private val _gradeList = MutableLiveData<List<GradeStudent>>()
     val gradeList: LiveData<List<GradeStudent>>
         get() = _gradeList
 
-    private val _aRatio = MutableLiveData<Int>()
-    val aRatio: LiveData<Int>
-        get() = _aRatio
+    val aRatio = MutableLiveData<String>()
 
-    private val _bRatio = MutableLiveData<Int>()
-    val bRatio: LiveData<Int>
-        get() = _bRatio
+    val bRatio = MutableLiveData<String>()
 
-    fun getRatio(lectureId: Int, callback: (Int, Int) -> Unit) {
+    fun getRatio(lectureId: Int) {
         viewModelScope.launch {
             showProgress()
             val response = lectureRepository.getGradeRatio(lectureId)
-            _aRatio.value = response["A"] ?: 30
-            _bRatio.value = response["B"] ?: 70
-            callback.invoke(_aRatio.value!!, _bRatio.value!!)
+            if (response.status == UseCase.Status.SUCCESS) {
+                aRatio.value = response.data!!.aRatio.toString()
+                bRatio.value = response.data.bRatio.toString()
+            } else {
+                setErrorMessage("학점 비율을 올바르게 가져오지 못했습니다.")
+            }
             hideProgress()
         }
     }
 
     fun setRatio(a: Int? = null, b: Int? = null) {
         a?.let { a ->
-            _aRatio.value = a
+            aRatio.value = a.toString()
         }
         b?.let { b ->
-            _bRatio.value = b
+            bRatio.value = b.toString()
         }
     }
 
     fun getGradeList(lectureId: Int) {
         viewModelScope.launch {
             showProgress()
-            _gradeList.value = lectureRepository.getGradeList(lectureId)
+//            _gradeList.value = lectureRepository.get(lectureId)
             hideProgress()
         }
     }
