@@ -23,6 +23,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="assignment_score">배점 : %.1f</string>
+    <string name="assignment_submit_score">점수 : %.1f</string>
 
     <string name="semester">%s학기</string>
 </resources>

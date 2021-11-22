@@ -7,12 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
+import kr.khs.oneboard.R
 import kr.khs.oneboard.core.BaseFragment
 import kr.khs.oneboard.data.Assignment
 import kr.khs.oneboard.data.Notice
+import kr.khs.oneboard.data.Submit
 import kr.khs.oneboard.databinding.FragmentLectureReadBinding
+import kr.khs.oneboard.databinding.ViewAssignmentDetailBinding
 import kr.khs.oneboard.utils.TYPE_NOTICE
 import kr.khs.oneboard.viewmodels.LectureReadViewModel
+import timber.log.Timber
 import kotlin.properties.Delegates
 
 @AndroidEntryPoint
@@ -21,6 +25,9 @@ class LectureReadFragment : BaseFragment<FragmentLectureReadBinding, LectureRead
     private var type by Delegates.notNull<Boolean>()
     private var notice: Notice? = null
     private var assignment: Assignment? = null
+    private val assignmentBinding: ViewAssignmentDetailBinding by lazy {
+        binding.readSubmitAssignmentView
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,6 +37,45 @@ class LectureReadFragment : BaseFragment<FragmentLectureReadBinding, LectureRead
         super.onCreateView(inflater, container, savedInstanceState)
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.isSubmit.observe(viewLifecycleOwner) {
+            binding.readNoSubmitData.visibility = if (it) View.GONE else View.VISIBLE
+            if (it.not())
+                binding.readNoSubmitData.text = "과제를 제출하지 않았습니다."
+        }
+
+        viewModel.assignmentData.observe(viewLifecycleOwner) {
+            Timber.tag("AssignmentData").d("$it")
+            it?.let { submitData ->
+                assignmentBinding.root.visibility = View.VISIBLE
+                setAssignmentData(submitData)
+            } ?: run {
+                assignmentBinding.root.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun setAssignmentData(item: Submit) {
+        with(assignmentBinding) {
+            if (item.score != null) {
+                assignmentDetailScore.text =
+                    String.format(getString(R.string.assignment_submit_score), item.score)
+                assignmentDetailFeedback.text = item.feedback
+            } else {
+                assignmentDetailScore.visibility = View.GONE
+                assignmentDetailFeedback.visibility = View.GONE
+            }
+
+            assignmentDetailContent.text = Html.fromHtml(item.content, Html.FROM_HTML_MODE_LEGACY)
+
+            item.fileUrl?.let {
+                assignmentDetailFileUrl.text = it
+            } ?: run { assignmentDetailFileUrl.visibility = View.GONE }
+        }
     }
 
     override fun getFragmentViewBinding(
@@ -66,6 +112,8 @@ class LectureReadFragment : BaseFragment<FragmentLectureReadBinding, LectureRead
                 binding.readFileUrl.text = item.fileUrl
             }
             binding.readContent.text = Html.fromHtml(item.content, Html.FROM_HTML_MODE_LEGACY)
+
+            viewModel.getAssignmentSubmitInfo(parentViewModel.getLecture().id, item.id)
         }
     }
 }

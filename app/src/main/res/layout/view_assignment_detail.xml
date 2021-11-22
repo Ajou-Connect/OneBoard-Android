@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="visible">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/assignmentDetailScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:padding="8dp"
+            android:textColor="#000000"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/assignmentDetailInfo"
+            tools:text="점수 : 10"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/assignmentDetailInfo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:padding="8dp"
+            android:textColor="#FF0000"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/assignmentDetailFileUrl"
+            tools:text="아직 채점이 완료되지 않았습니다." />
+
+        <TextView
+            android:id="@+id/assignmentDetailFeedback"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:padding="8dp"
+            android:textColor="#000000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/assignmentDetailScore"
+            app:layout_constraintTop_toBottomOf="@+id/assignmentDetailScore"
+            tools:text="This\nis\nFeedBack"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/assignmentDetailContent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:textColor="#000000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="이번주 과제 제출 입니다.\n1번 답 : int main()\n2번 답 : { printf(1);\n3번 답 : return 0; }" />
+
+        <TextView
+            android:id="@+id/assignmentDetailFileUrl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:padding="8dp"
+            android:textColor="#000000"
+            app:layout_constraintStart_toStartOf="@+id/assignmentDetailContent"
+            app:layout_constraintTop_toBottomOf="@+id/assignmentDetailContent"
+            tools:text="https://naver.com"
+            tools:visibility="visible" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
