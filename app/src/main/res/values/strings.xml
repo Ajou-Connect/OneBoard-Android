@@ -26,4 +26,8 @@
     <string name="assignment_submit_score">점수 : %.1f</string>
 
     <string name="semester">%s학기</string>
+
+    <string name="grade_submit_score">제출 점수 : %.1f</string>
+    <string name="grade_attendance_score">출석 점수 : %.1f</string>
+    <string name="grade_total_score">총합 점수 : %.1f</string>
 </resources>
