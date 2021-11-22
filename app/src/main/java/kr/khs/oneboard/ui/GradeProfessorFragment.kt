@@ -1,13 +1,12 @@
 package kr.khs.oneboard.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import kr.khs.oneboard.R
 import kr.khs.oneboard.adapters.GradeListAdapter
 import kr.khs.oneboard.core.BaseFragment
 import kr.khs.oneboard.databinding.FragmentGradeProfessorBinding
@@ -30,6 +29,8 @@ class GradeProfessorFragment :
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
 
+        setHasOptionsMenu(true)
+
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
@@ -45,7 +46,7 @@ class GradeProfessorFragment :
                 viewModel.bRatio.value?.let { b ->
                     if (a == "")
                         viewModel.setRatio(a = 0)
-                    else if (a.toInt() > 100 || a.toInt() > b.toInt())
+                    else if (a.toInt() > 100 || a.toInt() + b.toInt() > 100)
                         viewModel.setRatio(a = a.toInt() / 10)
                 }
             }
@@ -57,7 +58,7 @@ class GradeProfessorFragment :
                     when {
                         b == "" -> viewModel.setRatio(b = 0)
                         b < a -> viewModel.setRatio(b = a.toInt())
-                        b.toInt() > 100 -> viewModel.setRatio(b = b.toInt() / 10)
+                        b.toInt() > 100 || a.toInt() + b.toInt() > 100 -> viewModel.setRatio(b = b.toInt() / 10)
                     }
 
                     binding.gradeElseRatio.text =
@@ -69,6 +70,23 @@ class GradeProfessorFragment :
         viewModel.gradeList.observe(viewLifecycleOwner) {
             gradeListAdapter.submitList(it.toMutableList())
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.option_menu_reset_save, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.option_menu_reset -> {
+                viewModel.getRatio(parentViewModel.getLecture().id)
+            }
+            R.id.option_menu_save -> {
+                viewModel.saveRatio(parentViewModel.getLecture().id)
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun getFragmentViewBinding(

@@ -53,7 +53,7 @@ interface ApiService {
         @Path("noticeId") noticeId: Int
     ): BasicResponseImpl
 
-    @GET("lecture/{lectureId}/attendance")
+    @GET("lecture/{lectureId}/attendances")
     suspend fun getAttendanceList(@Path("lectureId") lectureId: Int): Response<List<AttendanceStudent>>
 
     @PUT("lecture/{lectureId}/attendances")
