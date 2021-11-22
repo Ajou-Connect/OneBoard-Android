@@ -274,41 +274,98 @@ class LectureRepositoryImpl @Inject constructor(
         return returnValue
     }
 
-    override suspend fun getGradeList(lectureId: Int): List<GradeStudent> {
-        val response: Response<List<GradeStudent>>
-        withContext(Dispatchers.IO) {
-//            response = apiService.getGradeList(lectureId)
-            response = Response(
-                SUCCESS,
-                (0 until 20)
-                    .map {
-                        GradeStudent(
-                            lectureId = lectureId,
-                            studentId = "201520930$it",
-                            studentName = "김희승$it",
-                            studentMajor = "사이버보안학과",
-                            assignmentList = (0 until 5).map {
-                                Pair("과제 $it", (0 until 100).random())
-                            }.toList(),
-                            score = (1..4).random() + (0..1).random() / 2f
-                        )
-                    }
-            )
+    override suspend fun getStudentOwnGrade(lectureId: Int): UseCase<GradeStudent> {
+        var returnValue: UseCase<GradeStudent>
+
+        try {
+            withContext(Dispatchers.IO) {
+                val response = apiService.getStudentOwnGrade(lectureId)
+                returnValue = if (response.result == SUCCESS)
+                    UseCase.success(response.data)
+                else
+                    throw Exception()
+            }
+        } catch (e: Exception) {
+            returnValue = UseCase.error("Error")
         }
 
-        return response.data
+        return returnValue
     }
 
-    override suspend fun getGradeRatio(lectureId: Int): HashMap<String, Int> {
-        val response: Response<HashMap<String, Int>>
-        withContext(Dispatchers.IO) {
-//            response = apiService.getGradeRatio(lectureId)
-            response = Response(
-                SUCCESS,
-                hashMapOf("A" to 30, "B" to 70)
-            )
+    override suspend fun getStudentGrade(lectureId: Int, studentId: Int): UseCase<GradeStudent> {
+        var returnValue: UseCase<GradeStudent>
+
+        try {
+            withContext(Dispatchers.IO) {
+                val response = apiService.getStudentGrade(lectureId, studentId)
+
+                returnValue = if (response.result == SUCCESS)
+                    UseCase.success(response.data)
+                else
+                    throw Exception()
+            }
+        } catch (e: Exception) {
+            returnValue = UseCase.error("Error")
         }
 
-        return response.data
+        return returnValue
     }
+
+    override suspend fun getStudentGradeList(lectureId: Int): UseCase<List<GradeStudent>> {
+        var returnValue: UseCase<List<GradeStudent>>
+
+        try {
+            withContext(Dispatchers.IO) {
+                val response = apiService.getGradeList(lectureId)
+
+                returnValue = if (response.result == SUCCESS)
+                    UseCase.success(response.data)
+                else
+                    throw Exception()
+            }
+        } catch (e: Exception) {
+            returnValue = UseCase.error("Error")
+        }
+
+        return returnValue
+    }
+
+    override suspend fun getGradeRatio(lectureId: Int): UseCase<GradeRatio> {
+        var returnValue: UseCase<GradeRatio>
+
+        try {
+            withContext(Dispatchers.IO) {
+                val response = apiService.getGradeRatio(lectureId)
+
+                returnValue = if (response.result == SUCCESS)
+                    UseCase.success(response.data)
+                else
+                    throw Exception()
+            }
+        } catch (e: Exception) {
+            returnValue = UseCase.error("Error")
+        }
+
+        return returnValue
+    }
+
+    override suspend fun postGradeRatio(lectureId: Int, gradeRatio: GradeRatio): UseCase<Boolean> {
+        var returnValue: UseCase<Boolean>
+
+        try {
+            withContext(Dispatchers.IO) {
+                val response = apiService.postGradeRatio(lectureId, gradeRatio)
+
+                returnValue = if (response.result == SUCCESS)
+                    UseCase.success(true)
+                else
+                    throw Exception()
+            }
+        } catch (e: Exception) {
+            returnValue = UseCase.error("Error")
+        }
+
+        return returnValue
+    }
+
 }
