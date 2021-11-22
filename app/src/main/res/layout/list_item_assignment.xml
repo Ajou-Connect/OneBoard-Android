@@ -100,7 +100,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/listItemAssignmentTitle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/listItemAssignmentTitle"
-            app:srcCompat="@android:drawable/ic_delete" />
+            app:srcCompat="@drawable/ic_kebap" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

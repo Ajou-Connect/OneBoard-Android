@@ -87,12 +87,10 @@ class AssignmentFragment : BaseFragment<FragmentAssignmentBinding, AssignmentVie
                 listItemClickListener = { item ->
                     findNavController().navigate(
                         if (UserInfoUtil.type == TYPE_PROFESSOR) {
-                            AssignmentFragmentDirections.actionAssignmentFragmentToLectureWriteFragment(
-                                TYPE_ASSIGNMENT
-                            ).apply {
-                                isEdit = true
-                                assignment = item
-                            }
+                            AssignmentFragmentDirections.actionAssignmentFragmentToContentDetailFragment()
+                                .apply {
+                                    assignment = item
+                                }
                         } else {
                             AssignmentFragmentDirections.actionAssignmentFragmentToLectureReadFragment(
                                 TYPE_ASSIGNMENT
@@ -105,11 +103,18 @@ class AssignmentFragment : BaseFragment<FragmentAssignmentBinding, AssignmentVie
                 listItemDeleteListener = { item ->
                     DialogUtil.createDialog(
                         requireContext(),
-                        "삭제하시겠습니까?",
-                        "네",
-                        "아니오",
+                        "수정, 삭제 선택해주세요.\n(취소 : 외부 클릭)",
+                        "수정",
+                        "삭제",
+                        {
+                            AssignmentFragmentDirections.actionAssignmentFragmentToLectureWriteFragment(
+                                TYPE_ASSIGNMENT
+                            ).apply {
+                                isEdit = true
+                                assignment = item
+                            }
+                        },
                         { viewModel.deleteItem(parentViewModel.getLecture().id, item) },
-                        { }
                     )
                 }
             }
