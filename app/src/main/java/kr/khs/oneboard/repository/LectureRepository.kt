@@ -38,6 +38,8 @@ interface LectureRepository {
 
     suspend fun getMyAssignmentSubmitInfo(lectureId: Int, assignmentId: Int): UseCase<Submit>
 
+    suspend fun getSubmitAssignmentList(lectureId: Int, assignmentId: Int): UseCase<List<Submit>>
+
     suspend fun getAttendanceList(lectureId: Int): UseCase<List<AttendanceStudent>>
 
     suspend fun postAttendanceList(
