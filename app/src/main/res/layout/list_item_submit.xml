@@ -29,7 +29,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="@{item.studentName}"
+            android:text="@{item.userName}"
+            android:textColor="@color/black"
+            android:padding="4dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="김희승" />
@@ -38,6 +40,8 @@
             android:id="@+id/submitFileUrl"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:padding="4dp"
             app:layout_constraintStart_toStartOf="@+id/submitStudentName"
             app:layout_constraintTop_toBottomOf="@+id/submitStudentName"
             tools:text="https://naver.com" />
@@ -47,6 +51,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{item.content}"
+            android:textColor="@color/black"
+            android:padding="4dp"
             app:layout_constraintStart_toStartOf="@+id/submitStudentName"
             app:layout_constraintTop_toBottomOf="@+id/submitFileUrl"
             tools:text="제출 내용" />
@@ -55,6 +61,8 @@
             android:id="@+id/submitScore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:padding="4dp"
             app:layout_constraintStart_toStartOf="@+id/submitStudentName"
             app:layout_constraintTop_toBottomOf="@+id/submitContent"
             tools:text="30" />
@@ -64,7 +72,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:text="@{item.createdDT}"
+            android:text="@{item.createdDt}"
+            android:textColor="@color/black"
+            android:padding="4dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/submitStudentName"
             tools:text="2021.01.01" />
@@ -73,6 +83,8 @@
             android:id="@+id/submitFeedback"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:padding="4dp"
             app:layout_constraintStart_toStartOf="@+id/submitStudentName"
             app:layout_constraintTop_toBottomOf="@+id/submitScore"
             tools:text="Feed back" />

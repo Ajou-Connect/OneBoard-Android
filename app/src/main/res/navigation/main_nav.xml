@@ -47,6 +47,9 @@
         <action
             android:id="@+id/action_assignmentFragment_to_lectureReadFragment"
             app:destination="@id/lectureReadFragment" />
+        <action
+            android:id="@+id/action_assignmentFragment_to_contentDetailFragment"
+            app:destination="@id/contentDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/lectureWriteFragment"
@@ -81,11 +84,6 @@
         android:name="kr.khs.oneboard.ui.ContentDetailFragment"
         android:label="fragment_content_detail"
         tools:layout="@layout/fragment_content_detail">
-        <argument
-            android:name="notice"
-            app:argType="kr.khs.oneboard.data.Notice"
-            app:nullable="true"
-            android:defaultValue="@null" />
         <argument
             android:name="assignment"
             app:argType="kr.khs.oneboard.data.Assignment"
