@@ -57,6 +57,8 @@ class GradeStudentFragment : BaseFragment<FragmentGradeStudentBinding, GradeStud
         binding.gradeStudentName.text = item.userName
         binding.gradeStudentNumber.text = item.studentNumber
         binding.gradeStudentSubmitScore.text = item.submitScore.toString()
+        binding.gradeStudentResult.text = item.result
+        binding.gradeStudentTotal.text = item.totalScore.toString()
         binding.gradeStudentAttendanceScore.text = item.attendScore.toString()
     }
 
