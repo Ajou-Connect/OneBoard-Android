@@ -178,6 +178,27 @@ class LectureRepositoryImpl @Inject constructor(
         return returnValue
     }
 
+    override suspend fun getMyAssignmentSubmitInfo(
+        lectureId: Int,
+        assignmentId: Int
+    ): UseCase<Submit> {
+        val returnValue: UseCase<Submit>
+        try {
+            withContext(Dispatchers.IO) {
+                val response = apiService.getMyAssignmentSubmitInfo(lectureId, assignmentId)
+                returnValue = if (response.result == SUCCESS) {
+                    UseCase.success(response.data)
+                } else {
+                    UseCase.error("Error")
+                }
+            }
+        } catch (e: Exception) {
+            return UseCase.error("Error")
+        }
+
+        return returnValue
+    }
+
     override suspend fun getAttendanceList(lectureId: Int): UseCase<List<AttendanceStudent>> {
         var returnValue: UseCase<List<AttendanceStudent>>
 

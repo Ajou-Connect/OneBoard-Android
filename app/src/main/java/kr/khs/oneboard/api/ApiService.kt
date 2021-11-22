@@ -87,6 +87,12 @@ interface ApiService {
         @Path("assignmentId") assignmentId: Int
     ): BasicResponseImpl
 
+    @GET("lecture/{lectureId}/assignment/{assignmentId}/submit")
+    suspend fun getMyAssignmentSubmitInfo(
+        @Path("lectureId") lectureId: Int,
+        @Path("assignmentId") assignmentId: Int
+    ): Response<Submit>
+
     @POST("lecture/assignment/result")
     suspend fun postAssignmentFeedBack(): Response<Boolean>
 
