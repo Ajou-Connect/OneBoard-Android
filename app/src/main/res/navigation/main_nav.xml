@@ -103,10 +103,14 @@
             app:argType="kr.khs.oneboard.data.Submit" />
     </fragment>
     <fragment
-        android:id="@+id/gradeFragment"
-        android:name="kr.khs.oneboard.ui.GradeFragment"
+        android:id="@+id/gradeProfessorFragment"
+        android:name="kr.khs.oneboard.ui.GradeProfessorFragment"
         android:label="fragment_grade"
-        tools:layout="@layout/fragment_grade" />
+        tools:layout="@layout/fragment_grade_professor">
+        <action
+            android:id="@+id/action_gradeProfessorFragment_to_gradeStudentFragment"
+            app:destination="@id/gradeStudentFragment" />
+    </fragment>
     <fragment
         android:id="@+id/lessonListFragment"
         android:name="kr.khs.oneboard.ui.LessonListFragment"
@@ -153,5 +157,15 @@
         <argument
             android:name="item"
             app:argType="kr.khs.oneboard.data.Lesson" />
+    </fragment>
+    <fragment
+        android:id="@+id/gradeStudentFragment"
+        android:name="kr.khs.oneboard.ui.GradeStudentFragment"
+        android:label="fragment_grade_student"
+        tools:layout="@layout/fragment_grade_student">
+        <argument
+            android:name="studentId"
+            app:argType="integer"
+            android:defaultValue="-1" />
     </fragment>
 </navigation>

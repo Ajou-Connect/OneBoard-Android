@@ -155,7 +155,12 @@ class MainActivity : AppCompatActivity() {
                     navController.navigate(R.id.assignmentFragment)
                 }
                 R.id.lecture_menu_grade -> {
-                    navController.navigate(R.id.gradeFragment)
+                    navController.navigate(
+                        if (UserInfoUtil.type == TYPE_PROFESSOR)
+                            R.id.gradeProfessorFragment
+                        else
+                            R.id.gradeStudentFragment
+                    )
                 }
                 R.id.lecture_menu_understanding -> {
                 }

@@ -48,17 +48,17 @@ class AttendanceFragment : BaseFragment<FragmentAttendanceBinding, AttendanceVie
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         if (UserInfoUtil.type == TYPE_PROFESSOR) {
             super.onCreateOptionsMenu(menu, inflater)
-            inflater.inflate(R.menu.option_menu_in_attendance, menu)
+            inflater.inflate(R.menu.option_menu_reset_save, menu)
         }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (UserInfoUtil.type == TYPE_PROFESSOR) {
             when (item.itemId) {
-                R.id.attendance_menu_reset -> {
+                R.id.option_menu_reset -> {
                     viewModel.resetAttendanceList(parentViewModel.getLecture().id)
                 }
-                R.id.attendance_menu_save -> {
+                R.id.option_menu_save -> {
                     viewModel.saveAttendanceList(parentViewModel.getLecture().id)
                 }
             }

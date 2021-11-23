@@ -3,13 +3,29 @@ package kr.khs.oneboard.data
 import com.squareup.moshi.Json
 
 data class GradeStudent(
-    @Json(name = "lecture_id")
     val lectureId: Int,
-    @Json(name = "student_id")
-    val studentId: String,
-    @Json(name = "student_name")
-    val studentName: String,
-    val studentMajor: String,
-    val assignmentList: List<Pair<String, Int>>,
-    val score: Float?
+    val lectureTitle: String,
+    val userId: Int,
+    val userName: String,
+    val studentNumber: String,
+    val totalScore: Float,
+    val submitScore: Float,
+    val attendScore: Float,
+    var result: String,
+    val submitList: List<GradeSubmit>? = null,
+    val attendanceList: List<AttendanceLesson>? = null
+) {
+    data class GradeSubmit(
+        val submitId: Int,
+        val assignmentId: Int,
+        val assignmentTitle: String,
+        val score: Float
+    )
+}
+
+data class GradeRatio(
+    @Json(name = "aratio")
+    val aRatio: Int,
+    @Json(name = "bratio")
+    val bRatio: Int
 )

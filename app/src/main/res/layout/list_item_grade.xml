@@ -17,30 +17,18 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/round_corner">
+        android:background="@drawable/round_corner"
+        android:paddingBottom="8dp">
 
         <TextView
-            android:id="@+id/gradeMajor"
+            android:id="@+id/gradeStudentNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="@{item.studentMajor}"
+            android:text="@{item.studentNumber}"
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="사이버보안학과" />
-
-        <TextView
-            android:id="@+id/gradeStudentId"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="@{String.valueOf(item.studentId)}"
-            android:textColor="@color/black"
-            app:layout_constraintBottom_toBottomOf="@+id/gradeMajor"
-            app:layout_constraintStart_toEndOf="@+id/gradeMajor"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="201520930" />
 
@@ -48,41 +36,67 @@
             android:id="@+id/gradeName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{item.studentName}"
+            android:text="@{item.userName}"
             android:textColor="@color/black"
-            app:layout_constraintEnd_toStartOf="@+id/gradeScore"
-            app:layout_constraintStart_toStartOf="@+id/gradeMajor"
-            app:layout_constraintTop_toBottomOf="@+id/gradeMajor"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toEndOf="@+id/gradeStudentNumber"
+            app:layout_constraintTop_toTopOf="@id/gradeStudentNumber"
             tools:text="김희승" />
+
+        <TextView
+            android:id="@+id/gradeSubmitScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{@string/grade_submit_score(item.submitScore)}"
+            android:textColor="@color/black"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@id/gradeStudentNumber"
+            app:layout_constraintStart_toStartOf="@id/gradeStudentNumber"
+            tools:text="제출 점수 : 30.0" />
+
+        <TextView
+            android:id="@+id/gradeAttendanceScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{@string/grade_attendance_score(item.attendScore)}"
+            android:textColor="@color/black"
+            android:layout_marginStart="8dp"
+            app:layout_constraintTop_toTopOf="@id/gradeSubmitScore"
+            app:layout_constraintStart_toEndOf="@id/gradeSubmitScore"
+            tools:text="출석 점수 : 0.4" />
+
+        <TextView
+            android:id="@+id/gradeTotalScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{@string/grade_attendance_score(item.totalScore)}"
+            android:textColor="@color/black"
+            android:layout_marginStart="8dp"
+            app:layout_constraintTop_toTopOf="@id/gradeAttendanceScore"
+            app:layout_constraintStart_toEndOf="@id/gradeAttendanceScore"
+            tools:text="총 점수 : 30.4" />
 
         <TextView
             android:id="@+id/gradeScore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
+            android:text="@{item.result}"
             android:textColor="@color/black"
-            app:layout_constraintBottom_toBottomOf="@+id/gradeStudentId"
+            app:layout_constraintBottom_toBottomOf="@+id/gradeStudentNumber"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/gradeStudentId"
-            tools:text="4.5" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/gradeList"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_margin="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/gradeName" />
+            app:layout_constraintTop_toTopOf="@+id/gradeStudentNumber"
+            tools:text="B" />
 
         <ImageButton
-            android:id="@+id/gradeExpandButton"
+            android:id="@+id/gradeDetailButton"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Expand Student's detail grade"
-            app:layout_constraintBottom_toTopOf="@+id/gradeList"
+            android:contentDescription="@null"
+            app:layout_constraintBottom_toBottomOf="@+id/gradeTotalScore"
             app:layout_constraintEnd_toEndOf="@+id/gradeScore"
-            app:srcCompat="@drawable/ic_expand_more" />
+            app:srcCompat="@drawable/ic_search" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

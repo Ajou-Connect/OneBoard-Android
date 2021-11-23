@@ -3,10 +3,7 @@ package kr.khs.oneboard.api
 import kr.khs.oneboard.data.*
 import kr.khs.oneboard.data.api.BasicResponseImpl
 import kr.khs.oneboard.data.api.Response
-import kr.khs.oneboard.data.request.AssignmentUpdateRequestDto
-import kr.khs.oneboard.data.request.AttendanceUpdateRequestDto
-import kr.khs.oneboard.data.request.LessonUpdateRequestDto
-import kr.khs.oneboard.data.request.NoticeUpdateRequestDto
+import kr.khs.oneboard.data.request.*
 import retrofit2.http.*
 
 interface ApiService {
@@ -53,7 +50,7 @@ interface ApiService {
         @Path("noticeId") noticeId: Int
     ): BasicResponseImpl
 
-    @GET("lecture/{lectureId}/attendance")
+    @GET("lecture/{lectureId}/attendances")
     suspend fun getAttendanceList(@Path("lectureId") lectureId: Int): Response<List<AttendanceStudent>>
 
     @PUT("lecture/{lectureId}/attendances")
@@ -102,14 +99,33 @@ interface ApiService {
         @Path("assignmentId") assignmentId: Int
     ): Response<List<Submit>>
 
-    @GET("lecture/grade")
-    suspend fun getGrade()
+    @GET("lecture/{lectureId}/grade")
+    suspend fun getStudentOwnGrade(@Path("lectureId") lectureId: Int): Response<GradeStudent>
 
-    @POST("lecture/grade/list")
-    suspend fun getGradeList(lectureId: Int): Response<List<GradeStudent>>
+    @GET("lecture/{lectureId}/grade/{studentId}")
+    suspend fun getStudentGrade(
+        @Path("lectureId") lectureId: Int,
+        @Path("studentId") studentId: Int
+    ): Response<GradeStudent>
 
-    @GET("lecture/grade/ratio")
-    suspend fun getGradeRatio(lectureId: Int): Response<HashMap<String, Int>>
+    @POST("lecture/{lectureId}/grade/{studentId}")
+    suspend fun postStudentGrade(
+        @Path("lectureId") lectureId: Int,
+        @Path("studentId") studentId: Int,
+        @Body body: GradeUpdateRequestDto
+    ): BasicResponseImpl
+
+    @GET("lecture/{lectureId}/grade/list")
+    suspend fun getGradeList(@Path("lectureId") lectureId: Int): Response<List<GradeStudent>>
+
+    @GET("lecture/{lectureId}/grade/ratio")
+    suspend fun getGradeRatio(@Path("lectureId") lectureId: Int): Response<GradeRatio>
+
+    @POST("lecture/{lectureId}/grade/ratio")
+    suspend fun postGradeRatio(
+        @Path("lectureId") lectureId: Int,
+        @Body gradeRatio: GradeRatio
+    ): BasicResponseImpl
 
     @GET("lecture/{lectureId}/lessons")
     suspend fun getLessonList(@Path("lectureId") lectureId: Int): Response<List<Lesson>>

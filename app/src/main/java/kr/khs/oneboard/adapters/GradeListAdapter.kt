@@ -1,78 +1,42 @@
 package kr.khs.oneboard.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.*
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import kr.khs.oneboard.data.GradeStudent
 import kr.khs.oneboard.databinding.ListItemGradeBinding
-import kr.khs.oneboard.utils.collapse
-import kr.khs.oneboard.utils.expand
 
 class GradeListAdapter : ListAdapter<GradeStudent, RecyclerView.ViewHolder>(GradeDiffCallBack()) {
 
-    private val isClicked = hashMapOf<GradeStudent, Boolean>()
-
-    private val itemClickListener: (GradeStudent) -> Unit = { item ->
-        isClicked[item] = !isClicked[item]!!
-    }
-
-    private val isItemClicked: (GradeStudent) -> Boolean = { item ->
-        isClicked[item]!!
-    }
+    lateinit var itemClickListener: (GradeStudent) -> Unit
 
     class GradeViewHolder(
         private val binding: ListItemGradeBinding,
-        private val itemClickListener: (GradeStudent) -> Unit,
-        private val isItemClicked: (GradeStudent) -> Boolean
+        private val itemClickListener: (GradeStudent) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         init {
-            with(binding.gradeList) {
-                adapter = GradeDetailListAdapter()
-                layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-                addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
-            }
             binding.root.setOnClickListener {
                 binding.item?.let { item ->
                     itemClickListener.invoke(item)
-                    if (isItemClicked.invoke(item))
-                        expandLess()
-                    else
-                        expandMore()
                 }
             }
-            binding.gradeExpandButton.setOnClickListener {
+            binding.gradeDetailButton.setOnClickListener {
                 binding.root.performClick()
             }
         }
 
-        private fun expandMore() {
-            binding.gradeExpandButton.animate().rotation(180f)
-            binding.gradeList.expand()
-        }
-
-        private fun expandLess() {
-            binding.gradeExpandButton.animate().rotation(0f)
-            binding.gradeList.collapse()
-        }
 
         fun bind(item: GradeStudent) {
             binding.item = item
-            (binding.gradeList.adapter as GradeDetailListAdapter).submitList(item.assignmentList)
-            with(binding.gradeScore) {
-                visibility = if (item.score != null) View.VISIBLE else View.GONE
-                item.score ?: return@with
-                text = item.score.toString()
-            }
-            if (isItemClicked(item)) expandMore() else expandLess()
             binding.executePendingBindings()
         }
 
         companion object {
             fun from(
                 parent: ViewGroup,
-                itemClickListener: (GradeStudent) -> Unit,
-                isItemClicked: (GradeStudent) -> Boolean
+                itemClickListener: (GradeStudent) -> Unit
             ): GradeViewHolder {
                 return GradeViewHolder(
                     ListItemGradeBinding.inflate(
@@ -80,15 +44,14 @@ class GradeListAdapter : ListAdapter<GradeStudent, RecyclerView.ViewHolder>(Grad
                         parent,
                         false
                     ),
-                    itemClickListener,
-                    isItemClicked
+                    itemClickListener
                 )
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return GradeViewHolder.from(parent, itemClickListener, isItemClicked)
+        return GradeViewHolder.from(parent, itemClickListener)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -96,7 +59,6 @@ class GradeListAdapter : ListAdapter<GradeStudent, RecyclerView.ViewHolder>(Grad
     }
 
     override fun submitList(list: MutableList<GradeStudent>?) {
-        list?.map { if (isClicked[it] != true) isClicked[it] = false }
         super.submitList(list?.map { it.copy() })
     }
 
@@ -104,11 +66,11 @@ class GradeListAdapter : ListAdapter<GradeStudent, RecyclerView.ViewHolder>(Grad
 
 class GradeDiffCallBack : DiffUtil.ItemCallback<GradeStudent>() {
     override fun areItemsTheSame(oldItem: GradeStudent, newItem: GradeStudent): Boolean {
-        return oldItem == newItem
+        return oldItem.userId == newItem.userId
     }
 
     override fun areContentsTheSame(oldItem: GradeStudent, newItem: GradeStudent): Boolean {
-        TODO("Not yet implemented")
+        return oldItem == newItem
     }
 
 }
