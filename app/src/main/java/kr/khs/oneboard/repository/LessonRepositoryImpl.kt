@@ -7,6 +7,9 @@ import kr.khs.oneboard.core.UseCase
 import kr.khs.oneboard.data.Lesson
 import kr.khs.oneboard.data.request.LessonUpdateRequestDto
 import kr.khs.oneboard.utils.SUCCESS
+import kr.khs.oneboard.utils.toPlainRequestBody
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -50,13 +53,40 @@ class LessonRepositoryImpl @Inject constructor(@Named("withJWT") val apiService:
         return returnValue
     }
 
-    override suspend fun postLesson(lectureId: Int, dto: LessonUpdateRequestDto): UseCase<Boolean> {
+    override suspend fun postLesson(
+        lectureId: Int,
+        title: String,
+        date: String,
+        type: Int,
+        note: MultipartBody.Part?,
+        room: String?,
+        meetingId: String?,
+        videoUrl: String?
+    ): UseCase<Boolean> {
         val returnValue: UseCase<Boolean>
 
         try {
             withContext(Dispatchers.IO) {
+                val map = HashMap<String, RequestBody>()
+                map["title"] = title.toPlainRequestBody()
+                map["date"] = date.toPlainRequestBody()
+                map["type"] = type.toString().toPlainRequestBody()
+                room?.let {
+                    map["room"] = room.toPlainRequestBody()
+                }
+                meetingId?.let {
+                    map["meetingId"] = meetingId.toPlainRequestBody()
+                }
+                videoUrl?.let {
+                    map["videoUrl"] = videoUrl.toPlainRequestBody()
+                }
+
                 returnValue = UseCase.success(
-                    apiService.postLesson(lectureId, dto).result == SUCCESS
+                    apiService.postLesson(
+                        lectureId,
+                        note,
+                        map
+                    ).result == SUCCESS
                 )
             }
         } catch (e: Exception) {
