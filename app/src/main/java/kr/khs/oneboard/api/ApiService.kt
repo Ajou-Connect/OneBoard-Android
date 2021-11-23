@@ -3,7 +3,10 @@ package kr.khs.oneboard.api
 import kr.khs.oneboard.data.*
 import kr.khs.oneboard.data.api.BasicResponseImpl
 import kr.khs.oneboard.data.api.Response
-import kr.khs.oneboard.data.request.*
+import kr.khs.oneboard.data.request.AssignmentUpdateRequestDto
+import kr.khs.oneboard.data.request.AttendanceUpdateRequestDto
+import kr.khs.oneboard.data.request.GradeUpdateRequestDto
+import kr.khs.oneboard.data.request.NoticeUpdateRequestDto
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.*
@@ -146,11 +149,13 @@ interface ApiService {
         @PartMap body: HashMap<String, RequestBody>
     ): BasicResponseImpl
 
+    @Multipart
     @PUT("lecture/{lectureId}/lesson/{lessonId}")
     suspend fun putLesson(
         @Path("lectureId") lectureId: Int,
         @Path("lessonId") lessonId: Int,
-        @Body dto: LessonUpdateRequestDto
+        @Part file: MultipartBody.Part?,
+        @PartMap body: HashMap<String, RequestBody>
     ): BasicResponseImpl
 
     @DELETE("lecture/{lectureId}/lesson/{lessonId}")
