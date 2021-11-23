@@ -89,7 +89,14 @@ class LessonListFragment : BaseFragment<FragmentLessonListBinding, LessonListVie
                         "수정, 삭제 선택해주세요.\n(취소 : 외부 클릭)",
                         "수정",
                         "삭제",
-                        { },
+                        {
+                            findNavController().navigate(
+                                LessonListFragmentDirections.actionLessonListFragmentToLessonWriteFragment()
+                                    .apply {
+                                        this.item = item.toLessonUpdateRequestDto()
+                                        this.lessonId = item.id
+                                    })
+                        },
                         { viewModel.deleteItem(parentViewModel.getLecture().id, item.id) }
                     )
 
