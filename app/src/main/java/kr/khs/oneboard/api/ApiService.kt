@@ -3,10 +3,7 @@ package kr.khs.oneboard.api
 import kr.khs.oneboard.data.*
 import kr.khs.oneboard.data.api.BasicResponseImpl
 import kr.khs.oneboard.data.api.Response
-import kr.khs.oneboard.data.request.AssignmentUpdateRequestDto
-import kr.khs.oneboard.data.request.AttendanceUpdateRequestDto
-import kr.khs.oneboard.data.request.LessonUpdateRequestDto
-import kr.khs.oneboard.data.request.NoticeUpdateRequestDto
+import kr.khs.oneboard.data.request.*
 import retrofit2.http.*
 
 interface ApiService {
@@ -110,6 +107,13 @@ interface ApiService {
         @Path("lectureId") lectureId: Int,
         @Path("studentId") studentId: Int
     ): Response<GradeStudent>
+
+    @POST("lecture/{lectureId}/grade/{studentId}")
+    suspend fun postStudentGrade(
+        @Path("lectureId") lectureId: Int,
+        @Path("studentId") studentId: Int,
+        @Body body: GradeUpdateRequestDto
+    ): BasicResponseImpl
 
     @GET("lecture/{lectureId}/grade/list")
     suspend fun getGradeList(@Path("lectureId") lectureId: Int): Response<List<GradeStudent>>

@@ -8,6 +8,7 @@ import kr.khs.oneboard.data.*
 import kr.khs.oneboard.data.api.Response
 import kr.khs.oneboard.data.request.AssignmentUpdateRequestDto
 import kr.khs.oneboard.data.request.AttendanceUpdateRequestDto
+import kr.khs.oneboard.data.request.GradeUpdateRequestDto
 import kr.khs.oneboard.data.request.NoticeUpdateRequestDto
 import kr.khs.oneboard.utils.SUCCESS
 import timber.log.Timber
@@ -301,6 +302,29 @@ class LectureRepositoryImpl @Inject constructor(
 
                 returnValue = if (response.result == SUCCESS)
                     UseCase.success(response.data)
+                else
+                    throw Exception()
+            }
+        } catch (e: Exception) {
+            returnValue = UseCase.error("Error")
+        }
+
+        return returnValue
+    }
+
+    override suspend fun postStudentGrade(
+        lectureId: Int,
+        studentId: Int,
+        grade: String
+    ): UseCase<Boolean> {
+        var returnValue: UseCase<Boolean>
+        try {
+            withContext(Dispatchers.IO) {
+                val response = apiService.postStudentGrade(
+                    lectureId, studentId, GradeUpdateRequestDto(grade)
+                )
+                returnValue = if (response.result == SUCCESS)
+                    UseCase.success(true)
                 else
                     throw Exception()
             }

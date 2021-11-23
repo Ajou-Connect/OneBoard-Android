@@ -53,6 +53,8 @@ interface LectureRepository {
 
     suspend fun getStudentGrade(lectureId: Int, studentId: Int): UseCase<GradeStudent>
 
+    suspend fun postStudentGrade(lectureId: Int, studentId: Int, grade: String): UseCase<Boolean>
+
     suspend fun getStudentGradeList(lectureId: Int): UseCase<List<GradeStudent>>
 
     suspend fun getGradeRatio(lectureId: Int): UseCase<GradeRatio>
