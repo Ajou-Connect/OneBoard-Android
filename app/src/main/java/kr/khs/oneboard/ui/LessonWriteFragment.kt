@@ -16,6 +16,7 @@ import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import kr.khs.oneboard.R
 import kr.khs.oneboard.core.BaseFragment
+import kr.khs.oneboard.data.request.LessonUpdateRequestDto
 import kr.khs.oneboard.databinding.FragmentLessonWriteBinding
 import kr.khs.oneboard.utils.*
 import kr.khs.oneboard.viewmodels.LessonWriteViewModel
@@ -35,6 +36,8 @@ class LessonWriteFragment : BaseFragment<FragmentLessonWriteBinding, LessonWrite
     private var lessonRoom: String? = null
     private lateinit var lessonDate: String
     private lateinit var lessonTime: String
+    private var isEdit = false
+    private var lessonId = -1
 
     private var noteFile: MultipartBody.Part? = null
 
@@ -119,6 +122,29 @@ class LessonWriteFragment : BaseFragment<FragmentLessonWriteBinding, LessonWrite
         initLessonTypeSpinner()
         initShowButton()
         initNoteAdd()
+        initDefaultData()
+    }
+
+    private fun initDefaultData() {
+        val editData = arguments?.getParcelable<LessonUpdateRequestDto>("item") ?: return
+        isEdit = true
+        with(editData) {
+            binding.lessonWriteTitle.setText(title)
+            val dateTime = date.split(" ")
+            binding.lessonWriteDate.text = dateTime[0]
+            binding.lessonWriteTime.text = dateTime[1]
+            binding.lessonWriteSpinner.setSelection(type)
+            if (type == TYPE_FACE_TO_FACE)
+                binding.lessonWriteShowText.setText(room)
+
+            DialogUtil.createDialog(
+                requireContext(),
+                "강의 노트는 다시 업로드를 해주어야 합니다.",
+                positiveText = "알겠습니다.",
+                positiveAction = { }
+            )
+        }
+        lessonId = arguments?.getInt("lessonId")!!
     }
 
     private fun initNoteAdd() {
@@ -198,9 +224,7 @@ class LessonWriteFragment : BaseFragment<FragmentLessonWriteBinding, LessonWrite
     }
 
     private fun initTitle() {
-        binding.lessonWriteTitle.setText(
-            "${parentViewModel.getLecture().title} - ${(1..32).random()}수업"
-        )
+        binding.lessonWriteTitle.hint = parentViewModel.getLecture().title
     }
 
     private fun initShowButton() {
@@ -241,18 +265,33 @@ class LessonWriteFragment : BaseFragment<FragmentLessonWriteBinding, LessonWrite
 
     private fun initWriteLessonButton() {
         binding.lessonWriteButton.setOnClickListener {
-            if (binding.lessonWriteDate.text == "날짜 선택" || binding.lessonWriteTime.text == "시간 선택")
+            if (binding.lessonWriteTitle.text.toString()
+                    .isEmpty() || binding.lessonWriteDate.text == "날짜 선택" || binding.lessonWriteTime.text == "시간 선택"
+            ) {
                 viewModel.setErrorMessage("날짜, 시간을 선택해주세요.")
-
-            viewModel.writeLesson(
-                parentViewModel.getLecture().id,
-                binding.lessonWriteTitle.text.toString(),
-                binding.lessonWriteDate.text.toString(),
-                noteFile,
-                lessonRoom,
-                null,
-                null
-            )
+            }
+            if (isEdit) {
+                viewModel.editLesson(
+                    parentViewModel.getLecture().id,
+                    lessonId,
+                    binding.lessonWriteTitle.text.toString(),
+                    binding.lessonWriteDate.text.toString() + " " + binding.lessonWriteTime.text.toString(),
+                    noteFile,
+                    if (viewModel.lessonType.value!! == TYPE_FACE_TO_FACE) binding.lessonWriteShowText.text.toString() else null,
+                    null,
+                    null
+                )
+            } else {
+                viewModel.writeLesson(
+                    parentViewModel.getLecture().id,
+                    binding.lessonWriteTitle.text.toString(),
+                    binding.lessonWriteDate.text.toString() + " " + binding.lessonWriteTime.text.toString(),
+                    noteFile,
+                    if (viewModel.lessonType.value!! == TYPE_FACE_TO_FACE) binding.lessonWriteShowText.text.toString() else null,
+                    null,
+                    null
+                )
+            }
         }
     }
 }

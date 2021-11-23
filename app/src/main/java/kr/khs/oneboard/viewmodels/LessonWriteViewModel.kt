@@ -61,4 +61,37 @@ class LessonWriteViewModel @Inject constructor(private val lessonRepository: Les
             hideProgress()
         }
     }
+
+    fun editLesson(
+        lectureId: Int,
+        lessonId: Int,
+        title: String,
+        date: String,
+        note: MultipartBody.Part? = null,
+        room: String? = null,
+        meetingId: String? = null,
+        videoUrl: String? = null
+    ) {
+        viewModelScope.launch {
+            showProgress()
+            val response = lessonRepository.putLesson(
+                lectureId,
+                lessonId,
+                title,
+                date,
+                lessonType.value!!,
+                note,
+                room,
+                meetingId,
+                videoUrl,
+            )
+
+            if (response.status == UseCase.Status.SUCCESS)
+                _updateLesson.value = true
+            else
+                setErrorMessage("수업이 생성되지 못했습니다.")
+
+            hideProgress()
+        }
+    }
 }
