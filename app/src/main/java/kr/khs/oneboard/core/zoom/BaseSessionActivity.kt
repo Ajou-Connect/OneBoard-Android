@@ -47,8 +47,8 @@ open class BaseSessionActivity : AppCompatActivity(), ZoomVideoSDKDelegate, Shar
         const val REQUEST_SELECT_ORIGINAL_PIC = 1003
     }
 
-    protected val binding: ActivitySessionBinding by lazy {
-        ActivitySessionBinding.inflate(LayoutInflater.from(this))
+    protected val binding: ActivityBaseSessionBinding by lazy {
+        ActivityBaseSessionBinding.inflate(LayoutInflater.from(this))
     }
 
     protected val actionBarBinding: LayoutBottomActionBarBinding by lazy {

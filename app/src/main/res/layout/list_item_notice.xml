@@ -17,7 +17,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="@{clickListener}">
+        android:backgroundTint="@color/white"
+        android:onClick="@{clickListener}"
+        android:layout_margin="8dp"
+        android:background="@drawable/round_corner">
 
         <TextView
             android:id="@+id/listItemNoticeTitle"
@@ -27,6 +30,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:textSize="14sp"
+            android:textColor="@color/colorBlack"
             android:text="@{item.title}"
             app:layout_constraintEnd_toStartOf="@+id/listItemNoticeDate"
             app:layout_constraintStart_toStartOf="parent"
@@ -40,7 +44,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:text="@{item.content}"
+            android:textColor="@color/colorBlack"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -54,7 +58,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:text="@{String.valueOf(item.exposeDT)}"
+            android:text="@{item.exposeDt}"
+            android:textColor="@color/colorBlack"
             android:textSize="13sp"
             app:layout_constraintBottom_toBottomOf="@+id/listItemNoticeTitle"
             app:layout_constraintEnd_toStartOf="@+id/listItemNoticeDelete"

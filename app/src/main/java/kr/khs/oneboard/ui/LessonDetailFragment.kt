@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebViewClient
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
@@ -58,22 +59,51 @@ class LessonDetailFragment : BaseFragment<FragmentLessonDetailBinding, LessonDet
     }
 
     private fun initViews() {
-        val lesson = viewModel.getLesson()
-        binding.lessonDetailTV.text = lesson.title
-
-        // TODO: 2021/11/07 추후에는 타입에 따라서 다른 화면 보여지도록. 현재는 줌 테스트
-        when (lesson.type) {
+        binding.lessonDetailTitle.text = viewModel.getLesson().title
+        binding.lessonDetailDate.text = viewModel.getLesson().date
+        binding.lessonDetailInfo.text = when (viewModel.getLesson().type) {
             TYPE_FACE_TO_FACE -> {
+                binding.lessonDetailLessonBtn.visibility = View.INVISIBLE
+                "대면 강의, 강의실 : ${viewModel.getLesson().room ?: "미정"}"
             }
             TYPE_NON_FACE_TO_FACE -> {
+                binding.lessonDetailLessonBtn.text = "수업 입장"
+                "비대면 강의"
             }
             TYPE_RECORDING -> {
+                binding.lessonDetailLessonBtn.text = "녹화 강의 시청"
+                "녹화강의 : ${viewModel.getLesson().videoUrl ?: "아직 영상이 올라오지 않았습니다."}"
             }
+            else -> ""
         }
 
-        binding.lessonDetailBtn.setOnClickListener {
-            if (UserInfoUtil.type == TYPE_PROFESSOR) {
-                createOrJoinSession()
+        with(binding.lessonDetailWebView) {
+            val url =
+                "https://docs.google.com/gview?embedded=true&url=http://115.85.182.194:8080/lecture/${parentViewModel.getLecture().id}/lesson/${viewModel.getLesson().id}/note"
+            webViewClient = WebViewClient() // 클릭 시 새창 안뜨게
+            with(this.settings) {
+                javaScriptEnabled = true
+                setSupportMultipleWindows(false)
+                javaScriptCanOpenWindowsAutomatically = false
+                loadWithOverviewMode = true
+                useWideViewPort = true
+                setSupportZoom(false)
+                builtInZoomControls = false
+                layoutAlgorithm = android.webkit.WebSettings.LayoutAlgorithm.SINGLE_COLUMN
+                cacheMode = android.webkit.WebSettings.LOAD_NO_CACHE
+                domStorageEnabled = true
+            }
+
+            loadUrl(url)
+        }
+
+        binding.lessonDetailLessonBtn.setOnClickListener {
+            when (viewModel.getLesson().type) {
+                TYPE_RECORDING -> {
+                }
+                TYPE_FACE_TO_FACE -> {
+                }
+                TYPE_NON_FACE_TO_FACE -> createOrJoinSession()
             }
         }
     }
@@ -118,7 +148,7 @@ class LessonDetailFragment : BaseFragment<FragmentLessonDetailBinding, LessonDet
 
     private fun getSafeArgs() {
         arguments?.let {
-            it.getParcelable<Lesson>("lesson")?.let { lesson ->
+            it.getParcelable<Lesson>("item")?.let { lesson ->
                 viewModel.setLesson(lesson)
             } ?: goBackWhenError()
         } ?: goBackWhenError()

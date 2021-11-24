@@ -8,22 +8,31 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kr.khs.oneboard.data.Lesson
 import kr.khs.oneboard.databinding.ListItemLessonBinding
-import kr.khs.oneboard.utils.TYPE_FACE_TO_FACE
-import kr.khs.oneboard.utils.TYPE_NON_FACE_TO_FACE
-import kr.khs.oneboard.utils.TYPE_RECORDING
+import kr.khs.oneboard.utils.*
 
 class LessonListAdapter : ListAdapter<Lesson, RecyclerView.ViewHolder>(LessonDiffUtil()) {
 
     lateinit var itemClickListener: (Lesson) -> Unit
+    lateinit var optionClickListener: (Lesson) -> Unit
 
     class LessonViewHolder(
         private val binding: ListItemLessonBinding,
-        private val itemClickListener: (Lesson) -> Unit
+        private val itemClickListener: (Lesson) -> Unit,
+        private val optionClickListener: (Lesson) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {
                 binding.item?.let { item ->
                     itemClickListener.invoke(item)
+                }
+            }
+
+            if (UserInfoUtil.type == TYPE_PROFESSOR) {
+                binding.lessonOption.visibility = View.VISIBLE
+                binding.lessonOption.setOnClickListener {
+                    binding.item?.let { item ->
+                        optionClickListener.invoke(item)
+                    }
                 }
             }
         }
@@ -35,7 +44,7 @@ class LessonListAdapter : ListAdapter<Lesson, RecyclerView.ViewHolder>(LessonDif
                 binding.lessonNote.text = it
             }
             binding.lessonInfo.text = when (item.type) {
-                TYPE_NON_FACE_TO_FACE -> item.meetingId ?: "아직 주소가 없습니다."
+                TYPE_NON_FACE_TO_FACE -> "비대면 실시간 수업"
                 TYPE_FACE_TO_FACE -> item.room ?: "아직 강의실이 정해지지 않았습니다."
                 TYPE_RECORDING -> item.videoUrl ?: "아직 녹화 강의 주소가 올라오지 않았습니다."
                 else -> {
@@ -47,21 +56,26 @@ class LessonListAdapter : ListAdapter<Lesson, RecyclerView.ViewHolder>(LessonDif
         }
 
         companion object {
-            fun from(parent: ViewGroup, itemClickListener: (Lesson) -> Unit): LessonViewHolder {
+            fun from(
+                parent: ViewGroup,
+                itemClickListener: (Lesson) -> Unit,
+                optionClickListener: (Lesson) -> Unit
+            ): LessonViewHolder {
                 return LessonViewHolder(
                     ListItemLessonBinding.inflate(
                         LayoutInflater.from(parent.context),
                         parent,
                         false
                     ),
-                    itemClickListener
+                    itemClickListener,
+                    optionClickListener
                 )
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return LessonViewHolder.from(parent, itemClickListener)
+        return LessonViewHolder.from(parent, itemClickListener, optionClickListener)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

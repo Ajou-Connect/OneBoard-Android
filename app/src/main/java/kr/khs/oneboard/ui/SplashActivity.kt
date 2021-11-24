@@ -1,7 +1,6 @@
 package kr.khs.oneboard.ui
 
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -11,6 +10,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kr.khs.oneboard.R
 import kr.khs.oneboard.databinding.ActivitySplashBinding
+import kr.khs.oneboard.extensions.killMyApp
+import kr.khs.oneboard.extensions.restart
 import kr.khs.oneboard.utils.DialogUtil
 import kr.khs.oneboard.utils.UserInfoUtil
 import kr.khs.oneboard.viewmodels.SplashViewModel
@@ -138,18 +139,5 @@ class SplashActivity : AppCompatActivity() {
             )
         }
     }
-
-    private fun restart() {
-        val packageManager: PackageManager = packageManager
-        val intent = packageManager.getLaunchIntentForPackage(packageName) ?: return
-        val componentName = intent.component
-        val mainIntent = Intent.makeRestartActivityTask(componentName)
-        startActivity(mainIntent)
-        Runtime.getRuntime().exit(0)
-    }
-
-    private fun killMyApp() = android.os.Process.killProcess(
-        android.os.Process.myPid()
-    )
 
 }

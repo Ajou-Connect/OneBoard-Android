@@ -12,7 +12,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kr.khs.oneboard.adapters.LectureListAdapter
 import kr.khs.oneboard.core.BaseFragment
 import kr.khs.oneboard.databinding.FragmentLectureListBinding
-import kr.khs.oneboard.utils.ToastUtil
 import kr.khs.oneboard.viewmodels.LectureListViewModel
 
 @AndroidEntryPoint
@@ -42,7 +41,6 @@ class LectureListFragment : BaseFragment<FragmentLectureListBinding, LectureList
         with(binding.rvLectures) {
             lectureListAdapter = LectureListAdapter().apply {
                 lectureClickListener = { item ->
-                    ToastUtil.shortToast(requireContext(), "${item.title} - ${item.semester}")
                     parentViewModel.setLecture(item)
                     findNavController().navigate(
                         LectureListFragmentDirections.actionLectureListFragmentToLectureDetailFragment()

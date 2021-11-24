@@ -62,7 +62,7 @@ class SubmitDetailFragment : BaseFragment<FragmentSubmitDetailBinding, SubmitDet
         }
 
         submit.score?.let { binding.submitDetailEditScore.setText(it.toString()) }
-        submit.feedBack?.let { binding.submitDetailEditFeedBack.setText(it) }
+        submit.feedback?.let { binding.submitDetailEditFeedBack.setText(it) }
 
         binding.submitDetailSaveButton.setOnClickListener {
             if (binding.submitDetailEditScore.text.toString().isEmpty()) {
@@ -71,8 +71,8 @@ class SubmitDetailFragment : BaseFragment<FragmentSubmitDetailBinding, SubmitDet
             }
 
             viewModel.saveScoreFeedback(submit.apply {
-                score = binding.submitDetailEditScore.text.toString().toInt()
-                feedBack = if (binding.submitDetailEditFeedBack.text.toString()
+                score = binding.submitDetailEditScore.text.toString().toFloat()
+                feedback = if (binding.submitDetailEditFeedBack.text.toString()
                         .isEmpty()
                 ) null else binding.submitDetailEditFeedBack.text.toString()
             })

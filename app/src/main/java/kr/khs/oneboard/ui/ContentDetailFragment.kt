@@ -5,25 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kr.khs.oneboard.adapters.SubmitListAdapter
 import kr.khs.oneboard.core.BaseFragment
 import kr.khs.oneboard.data.Assignment
-import kr.khs.oneboard.data.Notice
 import kr.khs.oneboard.databinding.FragmentContentDetailBinding
-import kr.khs.oneboard.utils.TYPE_ASSIGNMENT
-import kr.khs.oneboard.utils.TYPE_NOTICE
 import kr.khs.oneboard.viewmodels.ContentDetailViewModel
-import kotlin.properties.Delegates
 
 @AndroidEntryPoint
 class ContentDetailFragment : BaseFragment<FragmentContentDetailBinding, ContentDetailViewModel>() {
     override val viewModel: ContentDetailViewModel by viewModels()
-    private var type by Delegates.notNull<Boolean>()
-    private lateinit var notice: Notice
     private lateinit var assignment: Assignment
 
     private lateinit var submitListAdapter: SubmitListAdapter
@@ -54,16 +47,8 @@ class ContentDetailFragment : BaseFragment<FragmentContentDetailBinding, Content
 
     override fun init() {
         arguments?.let {
-            it.getParcelable<Notice>("notice")?.let { notice ->
-                this.notice = notice
-            }
             it.getParcelable<Assignment>("assignment")?.let { assignment ->
                 this.assignment = assignment
-            }
-            when {
-                this::notice.isInitialized -> type = TYPE_NOTICE
-                this::assignment.isInitialized -> type = TYPE_ASSIGNMENT
-                else -> goBackWhenError()
             }
         } ?: goBackWhenError()
 
@@ -71,30 +56,23 @@ class ContentDetailFragment : BaseFragment<FragmentContentDetailBinding, Content
     }
 
     private fun initViews() {
-        if (type == TYPE_NOTICE) {
-            binding.contentDetailTitle.text = notice.title
-            binding.contentDetailContent.text = notice.content
-            binding.contentDetailWriter.text = notice.writer
-            binding.contentDetailDate.text = notice.exposeDT
-        } else {
-            binding.contentDetailTitle.text = assignment.title
-            binding.contentDetailContent.text = assignment.content
-            binding.contentDetailWriter.text = assignment.writer
-            binding.contentDetailDate.text = assignment.exposeDT
-            binding.contentDetailAssignmentList.visibility = View.VISIBLE
-            initRecyclerView()
-        }
+        binding.contentDetailTitle.text = assignment.title
+        binding.contentDetailContent.text = assignment.content
+        binding.contentDetailDate.text = assignment.exposeDt
+        binding.contentDetailAssignmentList.visibility = View.VISIBLE
+        initRecyclerView()
     }
 
     private fun initRecyclerView() {
         with(binding.contentDetailAssignmentList) {
             submitListAdapter = SubmitListAdapter().apply {
                 listItemClickListener = { item ->
-                    findNavController().navigate(
-                        ContentDetailFragmentDirections.actionContentDetailFragmentToSubmitDetailFragment(
-                            item
-                        )
-                    )
+                    // TODO: 2021/11/22 추후에 피드백 작성 기능 추가
+//                    findNavController().navigate(
+//                        ContentDetailFragmentDirections.actionContentDetailFragmentToSubmitDetailFragment(
+//                            item
+//                        )
+//                    )
                 }
             }
             adapter = submitListAdapter
@@ -103,6 +81,6 @@ class ContentDetailFragment : BaseFragment<FragmentContentDetailBinding, Content
             addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))
         }
 
-        viewModel.getSubmitList(assignment.id)
+        viewModel.getSubmitList(parentViewModel.getLecture().id, assignment.id)
     }
 }

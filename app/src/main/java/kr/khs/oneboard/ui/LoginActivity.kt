@@ -9,9 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kr.khs.oneboard.R
 import kr.khs.oneboard.databinding.ActivityLoginBinding
-import kr.khs.oneboard.utils.DialogUtil
-import kr.khs.oneboard.utils.PatternUtil
-import kr.khs.oneboard.utils.ToastUtil
+import kr.khs.oneboard.utils.*
 import kr.khs.oneboard.viewmodels.LoginViewModel
 
 @AndroidEntryPoint
@@ -31,11 +29,12 @@ class LoginActivity : AppCompatActivity() {
         initEditTextWatcher()
 
         viewModel.loginYN.observe(this) {
-            if (it)
+            if (it.result == SUCCESS) {
                 startActivity(
                     Intent(this, MainActivity::class.java)
                 )
-            else
+                UserInfoUtil.setToken(applicationContext, it.data.token)
+            } else
                 ToastUtil.shortToast(
                     applicationContext,
                     getString(R.string.login_error_id_pw_error)
@@ -55,6 +54,13 @@ class LoginActivity : AppCompatActivity() {
                 DialogUtil.onLoadingDialog(this)
             } else {
                 DialogUtil.offLoadingDialog()
+            }
+        }
+
+        viewModel.isError.observe(this) {
+            if (it != "") {
+                ToastUtil.shortToast(applicationContext, it)
+                viewModel.setErrorMessage()
             }
         }
     }

@@ -32,6 +32,7 @@ class ThreeStateCheckBox @JvmOverloads constructor(
             textIndeterminate =
                 typedArray.getString(R.styleable.ThreeStateCheckBox_text_state_indeterminate)
             textChecked = typedArray.getString(R.styleable.ThreeStateCheckBox_text_state_checked)
+            isClickable = typedArray.getBoolean(R.styleable.ThreeStateCheckBox_clickable, false)
 
             changeText(state)
             changeDrawable(state)
@@ -41,11 +42,9 @@ class ThreeStateCheckBox @JvmOverloads constructor(
             Timber.d("textIndeterminate: $textIndeterminate")
             Timber.d("textChecked : $textChecked")
 
-            isClickable = true
-
             typedArray.recycle()
 
-            initComponent()
+//            initComponent()
         }
     }
 
@@ -73,17 +72,17 @@ class ThreeStateCheckBox @JvmOverloads constructor(
 
     var onStateChanged: ((ThreeStateCheckBox, Int) -> Unit)? = null
 
-    private fun initComponent() {
-        Timber.d("initComponent()")
-        setOnCheckedChangeListener { _, _ ->
-            state = when (state) {
-                STATE_UNCHECKED -> STATE_CHECKED
-                STATE_CHECKED -> STATE_INDETERMINATE
-                STATE_INDETERMINATE -> STATE_UNCHECKED
-                else -> -1
-            }
-        }
-    }
+//    private fun initComponent() {
+//        Timber.d("initComponent()")
+//        setOnCheckedChangeListener { _, _ ->
+//            state = when (state) {
+//                STATE_UNCHECKED -> STATE_CHECKED
+//                STATE_CHECKED -> STATE_INDETERMINATE
+//                STATE_INDETERMINATE -> STATE_UNCHECKED
+//                else -> -1
+//            }
+//        }
+//    }
 
     private fun changeText(state: Int) {
         text = when (state) {

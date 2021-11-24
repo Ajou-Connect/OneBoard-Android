@@ -83,4 +83,8 @@ lint/generated/
 lint/outputs/
 lint/tmp/
 # lint/reports/
+<<<<<<< HEAD
 /app/src/main/java/kr/khs/oneboard/utils/Credentials.kt
+=======
+/.idea/
+>>>>>>> 05fb01fd493838bf43bd7ed2fd84c93efb363732

@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kr.khs.oneboard.core.BaseViewModel
+import kr.khs.oneboard.core.UseCase
 import kr.khs.oneboard.data.Lesson
 import kr.khs.oneboard.repository.LessonRepository
 import javax.inject.Inject
@@ -21,7 +22,26 @@ class LessonListViewModel @Inject constructor(private val lessonRepository: Less
     fun getLessonList(id: Int) {
         viewModelScope.launch {
             showProgress()
-            _lessonList.value = lessonRepository.getLessonList(id)
+            val response = lessonRepository.getLessonList(id)
+            if (response.status == UseCase.Status.SUCCESS) {
+                _lessonList.value = response.data ?: listOf()
+            } else {
+                setErrorMessage(response.message!!)
+            }
+            hideProgress()
+        }
+    }
+
+    fun deleteItem(lectureId: Int, lessonId: Int) {
+        viewModelScope.launch {
+            showProgress()
+            val response = lessonRepository.deleteLesson(lectureId, lessonId)
+
+            if (response.status == UseCase.Status.SUCCESS && response.data!!)
+                _lessonList.value = _lessonList.value!!.filter { it.id != lessonId }
+            else
+                setErrorMessage(response.message!!)
+
             hideProgress()
         }
     }

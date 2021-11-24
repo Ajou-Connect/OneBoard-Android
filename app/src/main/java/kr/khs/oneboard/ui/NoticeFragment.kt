@@ -39,7 +39,9 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding, NoticeViewModel>() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.list.observe(viewLifecycleOwner) {
-            listAdapter.submitList(it)
+            listAdapter.submitList(
+                it
+            )
         }
     }
 
@@ -86,10 +88,20 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding, NoticeViewModel>() {
             listAdapter = NoticeListAdapter().apply {
                 listItemClickListener = { item ->
                     findNavController().navigate(
-                        NoticeFragmentDirections.actionNoticeFragmentToContentDetailFragment()
-                            .apply {
+                        if (UserInfoUtil.type == TYPE_PROFESSOR) {
+                            NoticeFragmentDirections.actionNoticeFragmentToLectureWriteFragment(
+                                TYPE_NOTICE
+                            ).apply {
+                                isEdit = true
                                 notice = item
                             }
+                        } else {
+                            NoticeFragmentDirections.actionNoticeFragmentToLectureReadFragment(
+                                TYPE_NOTICE
+                            ).apply {
+                                notice = item
+                            }
+                        }
                     )
                 }
                 listItemDeleteListener = { item ->
@@ -98,7 +110,7 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding, NoticeViewModel>() {
                         "삭제하시겠습니까?",
                         "네",
                         "아니오",
-                        { viewModel.deleteItem(item) },
+                        { viewModel.deleteItem(parentViewModel.getLecture().id, item.id) },
                         { }
                     )
                 }

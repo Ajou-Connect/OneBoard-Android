@@ -12,7 +12,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@drawable/round_corner">
 
         <TextView
             android:id="@+id/attendanceMajor"
@@ -20,20 +21,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="@{item.studentMajor}"
+            android:textColor="@color/black"
+            android:text="@{item.studentNumber}"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="사이버보안학과" />
-
-        <TextView
-            android:id="@+id/attendanceStudentId"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="@{String.valueOf(item.studentId)}"
-            app:layout_constraintBottom_toBottomOf="@+id/attendanceMajor"
-            app:layout_constraintStart_toEndOf="@+id/attendanceMajor"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="201520930" />
 
@@ -41,6 +31,7 @@
             android:id="@+id/attendanceName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:textColor="@color/black"
             android:text="@{item.studentName}"
             app:layout_constraintEnd_toStartOf="@+id/attendanceRatio"
             app:layout_constraintStart_toStartOf="@+id/attendanceMajor"
@@ -52,10 +43,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:text="10/16"
-            app:layout_constraintBottom_toBottomOf="@+id/attendanceStudentId"
+            android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/attendanceStudentId"
+            app:layout_constraintTop_toTopOf="@+id/attendanceMajor"
             tools:text="10/16" />
 
         <androidx.recyclerview.widget.RecyclerView

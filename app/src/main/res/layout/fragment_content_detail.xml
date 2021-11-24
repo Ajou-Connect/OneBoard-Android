@@ -13,6 +13,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:textSize="20sp"
+        android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="공지 / 과제 제목" />
@@ -23,6 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:textSize="16sp"
+        android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="@+id/contentDetailTitle"
         app:layout_constraintTop_toBottomOf="@+id/contentDetailTitle"
         tools:text="공지 / 과제 내용" />
@@ -32,27 +34,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/contentDetailTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/contentDetailTitle"
         tools:text="2020-10-31" />
-
-    <TextView
-        android:id="@+id/contentDetailWriter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/contentDetailDate"
-        app:layout_constraintEnd_toStartOf="@+id/contentDetailDate"
-        app:layout_constraintTop_toTopOf="@+id/contentDetailDate"
-        tools:text="윤대균" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/contentDetailAssignmentList"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/contentDetailDate"
         app:layout_constraintStart_toStartOf="@+id/contentDetailTitle"

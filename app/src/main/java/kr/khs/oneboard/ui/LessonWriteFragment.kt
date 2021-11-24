@@ -30,6 +30,9 @@ class LessonWriteFragment : BaseFragment<FragmentLessonWriteBinding, LessonWrite
     private var day by Delegates.notNull<Int>()
     private var hour by Delegates.notNull<Int>()
     private var minute by Delegates.notNull<Int>()
+    private lateinit var lessonRoom: String
+    private lateinit var lessonDate: String
+    private lateinit var lessonTime: String
 
     private val onDateSetListener by lazy {
         DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
@@ -67,13 +70,12 @@ class LessonWriteFragment : BaseFragment<FragmentLessonWriteBinding, LessonWrite
                 TYPE_FACE_TO_FACE -> {
                     binding.lessonWriteShowText.visibility = View.VISIBLE
                     binding.lessonWriteShowButton.visibility = View.GONE
-                    binding.lessonWriteShowText.text = "팔달관 311호"
+                    binding.lessonWriteShowText.text = lessonRoom
                 }
                 TYPE_NON_FACE_TO_FACE -> {
-                    binding.lessonWriteShowText.visibility = View.VISIBLE
-                    binding.lessonWriteShowButton.visibility = View.VISIBLE
-                    binding.lessonWriteShowText.text = ""
-                    binding.lessonWriteShowButton.text = "수업 링크 생성"
+                    binding.lessonWriteShowText.visibility = View.GONE
+                    binding.lessonWriteShowButton.visibility = View.GONE
+//                    binding.lessonWriteShowText.text = "비대면 수업"
                 }
                 TYPE_RECORDING -> {
                     binding.lessonWriteShowText.visibility = View.GONE
@@ -89,11 +91,25 @@ class LessonWriteFragment : BaseFragment<FragmentLessonWriteBinding, LessonWrite
     ): FragmentLessonWriteBinding = FragmentLessonWriteBinding.inflate(inflater, container, false)
 
     override fun init() {
+        getDefaultLectureValue()
         initTitle()
         initTimeDate()
         initWriteLessonButton()
         initLessonTypeSpinner()
         initShowButton()
+    }
+
+    private fun getDefaultLectureValue() {
+        parentViewModel.getLectureDayTime()?.let {
+            lessonDate = it.first
+            lessonTime = it.second
+        } ?: run {
+            binding.lessonWriteCheckbox.isSelected = true
+            lessonDate = "날짜 선택"
+            lessonTime = "시간 선택"
+        }
+
+        lessonRoom = parentViewModel.getLecture().defaultRoom ?: "강의실 미정"
     }
 
     private fun initTimeDate() {
@@ -116,13 +132,13 @@ class LessonWriteFragment : BaseFragment<FragmentLessonWriteBinding, LessonWrite
             if (isChecked) {
                 setDateTimeEnabled(true)
             } else {
-                binding.lessonWriteDate.text = "2021-11-04"
-                binding.lessonWriteTime.text = "16:30"
+                binding.lessonWriteDate.text = lessonDate
+                binding.lessonWriteTime.text = lessonTime
                 setDateTimeEnabled(false)
             }
         }
-        binding.lessonWriteDate.text = "2021-11-04"
-        binding.lessonWriteTime.text = "16:30"
+        binding.lessonWriteDate.text = lessonDate
+        binding.lessonWriteTime.text = lessonTime
 
         binding.lessonWriteDate.setOnClickListener {
             DatePickerDialog(
@@ -157,18 +173,14 @@ class LessonWriteFragment : BaseFragment<FragmentLessonWriteBinding, LessonWrite
     }
 
     private fun initShowButton() {
-        binding.lessonWriteShowButton.setOnClickListener {
-            if (viewModel.lessonType.value!! == TYPE_NON_FACE_TO_FACE)
-                binding.lessonWriteShowText.text =
-                    String.format("zoom.us/%06d", (0 until 1_000_000).random())
-        }
+        binding.lessonWriteShowButton.setOnClickListener { }
     }
 
     private fun initLessonTypeSpinner() {
         with(binding.lessonWriteSpinner) {
             adapter = ArrayAdapter(
                 requireContext(),
-                android.R.layout.simple_spinner_dropdown_item,
+                R.layout.spinner_item,
                 resources.getStringArray(R.array.spinner_type_array)
             )
             onItemSelectedListener = object : AdapterView.OnItemSelectedListener {

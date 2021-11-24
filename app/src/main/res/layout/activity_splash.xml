@@ -5,6 +5,7 @@
     android:id="@+id/splashMotionLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/naturePalette2"
     app:layoutDescription="@xml/activity_splash_scene"
     tools:context=".ui.SplashActivity">
 
@@ -12,6 +13,7 @@
         android:id="@+id/splashTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
         android:contentDescription="@string/splash_description_title"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,20 +23,27 @@
 
     <ImageView
         android:id="@+id/splashLineImage"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
         android:contentDescription="@string/splash_description_line"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/splashHorizontalGuideLine"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/splashVerticalGuideLine"
         app:srcCompat="@drawable/ic_app_line_pen" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/splashGuideLine"
+        android:id="@+id/splashVerticalGuideLine"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.3" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/splashHorizontalGuideLine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.48" />
 
 </androidx.constraintlayout.motion.widget.MotionLayout>

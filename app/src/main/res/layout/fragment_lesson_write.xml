@@ -15,6 +15,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:textSize="20sp"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -25,6 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/lessonWriteTime"
         app:layout_constraintEnd_toStartOf="@+id/lessonWriteTime"
         app:layout_constraintTop_toTopOf="@+id/lessonWriteTime"
@@ -35,6 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/lessonWriteCheckbox"
         app:layout_constraintEnd_toEndOf="@+id/lessonwriteTitle"
         app:layout_constraintTop_toBottomOf="@+id/lessonwriteTitle"
@@ -45,6 +48,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="@+id/lessonwriteTitle"
         app:layout_constraintStart_toStartOf="@+id/lessonwriteTitle"
         app:layout_constraintTop_toBottomOf="@+id/lessonWriteCheckbox" />
@@ -53,18 +57,19 @@
         android:id="@+id/lessonWriteShowText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/lessonWriteShowButton"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="@+id/lessonWriteSpinner"
-        app:layout_constraintTop_toTopOf="@+id/lessonWriteShowButton"
+        app:layout_constraintTop_toBottomOf="@+id/lessonWriteSpinner"
         tools:text="팔달관 311호 or zoom.us/1234565" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/lessonWriteShowButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="@+id/lessonWriteSpinner"
-        app:layout_constraintTop_toBottomOf="@+id/lessonWriteSpinner"
+        app:layout_constraintTop_toTopOf="@+id/lessonWriteShowText"
         tools:text="강의실 확정 / 비대면 링크 생성" />
 
     <com.google.android.material.button.MaterialButton
@@ -75,6 +80,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:text="수업 생성 하기"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
