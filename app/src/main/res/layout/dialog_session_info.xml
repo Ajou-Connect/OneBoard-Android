@@ -3,7 +3,7 @@
     android:layout_width="@dimen/dp_280"
     android:layout_height="wrap_content"
     android:background="@drawable/dialog_bg"
-    android:gravity="left"
+    android:gravity="start"
     android:minHeight="237dp"
     android:orientation="vertical"
     android:padding="21dp">

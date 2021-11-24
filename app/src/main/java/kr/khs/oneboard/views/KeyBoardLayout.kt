@@ -1,14 +1,17 @@
 package kr.khs.oneboard.views
 
+import android.app.Service
 import android.content.Context
 import android.content.res.Configuration
 import android.graphics.Rect
+import android.os.Build
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
 import android.util.DisplayMetrics
 import android.view.View
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.LinearLayout
@@ -26,13 +29,13 @@ class KeyBoardLayout @JvmOverloads constructor(
     }
 
     private lateinit var listener: KeyBoardListener
-    lateinit var inputText: EditText
     private var mHeight = 0
     private var keyboardHeight = 0
     private var isKeyBoardShow = false
     var scale = 0f
-    private lateinit var chatInputGroup: View
-    private lateinit var btnSend: View
+    private val inputText: EditText by lazy { findViewById(R.id.chat_input) }
+    private val chatInputGroup: View by lazy { findViewById(R.id.chat_input_group) }
+    private val btnSend: View by lazy { findViewById(R.id.btn_send) }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
@@ -51,17 +54,17 @@ class KeyBoardLayout @JvmOverloads constructor(
     }
 
     fun init() {
-        inputText = findViewById(R.id.chat_input)
-        chatInputGroup = findViewById(R.id.chat_input_group)
-        btnSend = findViewById(R.id.btn_send)
 //        val display =
 //            (context.getSystemService(Service.WINDOW_SERVICE) as WindowManager).defaultDisplay
-        val display = this.display
+        val display = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            context.display
+        } else {
+            (context.getSystemService(Service.WINDOW_SERVICE) as WindowManager).defaultDisplay
+        }
         val metrics = DisplayMetrics()
-        display.getRealMetrics(metrics)
-//        display.getMetrics(metrics)
-
+        display?.getRealMetrics(metrics) ?: run { Timber.tag("keyboard").d("display is null") }
         scale = metrics.density
+
         viewTreeObserver.addOnGlobalLayoutListener(layoutListener)
         inputText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
@@ -79,13 +82,13 @@ class KeyBoardLayout @JvmOverloads constructor(
             }
         })
         btnSend.setOnClickListener {
-            val content = inputText.getText().toString().trim { it <= ' ' }
+            val content = inputText.text.toString().trim { it <= ' ' }
             ZoomVideoSDK.getInstance().chatHelper.sendChatToAll(content)
             inputText.setText("")
         }
     }
 
-    var layoutListener: OnGlobalLayoutListener = object : OnGlobalLayoutListener {
+    private var layoutListener: OnGlobalLayoutListener = object : OnGlobalLayoutListener {
         private var wasOpened = false
         override fun onGlobalLayout() {
             val height = height
@@ -104,7 +107,6 @@ class KeyBoardLayout @JvmOverloads constructor(
             } else {
                 onKeyboardHidden()
             }
-            //            Log.w("KeyBoardLayout", String.format("keyboard height: %d  height:%d heightDiff=%d", keyboardHeight, height, heightDiff));
         }
     }
 
@@ -120,7 +122,7 @@ class KeyBoardLayout @JvmOverloads constructor(
         keyboardHeight = height
         listener.onKeyBoardChange(true, keyboardHeight, inputText.height)
         isKeyBoardShow = true
-        Timber.w("onKeyboardShow:$height:$keyboardHeight")
+        Timber.d("onKeyboardShow : $height : $keyboardHeight")
     }
 
     private fun onKeyboardHidden() {
@@ -128,7 +130,7 @@ class KeyBoardLayout @JvmOverloads constructor(
         listener.onKeyBoardChange(false, keyboardHeight, inputText.height)
         isKeyBoardShow = false
         //        getViewTreeObserver().removeGlobalOnLayoutListener(layoutListener);
-        Timber.w("onKeyboardHidden:$keyboardHeight")
+        Timber.d("onKeyboardHidden : $keyboardHeight")
     }
 
     private fun updateLayout() {
@@ -144,12 +146,17 @@ class KeyBoardLayout @JvmOverloads constructor(
             params.topMargin = height - inputHeight - (12 * scale).toInt()
         } else {
             params = chatInputGroup.layoutParams as LayoutParams
+
+            Timber.tag("KeyBoardLayout.updateLayout()").d("after : ${params.topMargin}")
+
             val height = if (height > width) height else width
             if (keyboardHeight > 0) {
                 params.topMargin = height - keyboardHeight - inputHeight - (12 * scale).toInt()
             } else {
                 params.topMargin = (12 * scale).toInt()
             }
+
+            Timber.tag("KeyBoardLayout.updateLayout()").d("after : ${params.topMargin}")
         }
         chatInputGroup.layoutParams = params
         Timber.w("update layout params.topMargin: ${params.topMargin}, orientation: $orientation, height: $height, width: $width")

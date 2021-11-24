@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/dp_280"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/dialog_bg"
     android:orientation="vertical">
 
@@ -9,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="61dp"
         android:gravity="center_vertical"
-        android:paddingLeft="24dp"
+        android:paddingStart="24dp"
         android:text="More"
         android:textColor="#232333"
         android:textSize="20sp" />
@@ -21,8 +22,8 @@
         android:background="@drawable/more_action_bg"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingLeft="24dp"
-        android:paddingRight="16dp">
+        android:paddingStart="24dp"
+        android:paddingEnd="16dp">
 
         <TextView
             android:id="@+id/tvSpeaker"
@@ -37,7 +38,7 @@
             android:id="@+id/ivSpeaker"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/icon_speaker_on" />
+            app:srcCompat="@drawable/icon_speaker_on" />
     </LinearLayout>
 
     <LinearLayout
@@ -47,8 +48,8 @@
         android:background="@drawable/more_action_last_bg"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingLeft="24dp"
-        android:paddingRight="16dp">
+        android:paddingStart="24dp"
+        android:paddingEnd="16dp">
 
         <TextView
             android:id="@+id/tvSwitchCamera"
@@ -63,7 +64,7 @@
             android:id="@+id/ivSwitchCamera"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/icon_switchcamera" />
+            app:srcCompat="@drawable/icon_switchcamera" />
     </LinearLayout>
 
 </LinearLayout>

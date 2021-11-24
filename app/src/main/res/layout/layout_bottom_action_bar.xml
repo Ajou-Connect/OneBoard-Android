@@ -3,7 +3,7 @@
     android:id="@+id/action_bar"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_gravity="right|center_vertical"
+    android:layout_gravity="end|center_vertical"
     android:gravity="center_horizontal"
     android:orientation="vertical"
     android:scrollbars="none"
