@@ -55,21 +55,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/meeting_lock_status"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginStart="14dp"
-        app:layout_constraintBottom_toBottomOf="@+id/sessionName"
-        app:layout_constraintStart_toEndOf="@+id/sessionName"
-        app:layout_constraintTop_toTopOf="@+id/sessionName"
-        app:srcCompat="@drawable/small_lock" />
+    <!--    <ImageView-->
+    <!--        android:id="@+id/meeting_lock_status"-->
+    <!--        android:layout_width="32dp"-->
+    <!--        android:layout_height="32dp"-->
+    <!--        android:layout_marginStart="14dp"-->
+    <!--        app:layout_constraintBottom_toBottomOf="@+id/sessionName"-->
+    <!--        app:layout_constraintStart_toEndOf="@+id/sessionName"-->
+    <!--        app:layout_constraintTop_toTopOf="@+id/sessionName"-->
+    <!--        app:srcCompat="@drawable/small_lock" />-->
 
     <TextView
         android:id="@+id/text_meeting_user_size"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Participants:"
+        android:text="참여 인원 :"
         android:textColor="@color/white"
         android:textSize="@dimen/textsize_13"
         app:layout_constraintStart_toStartOf="@+id/sessionName"
@@ -165,7 +165,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <include layout="@layout/layout_bottom_action_bar" />
+    <include
+        android:id="@+id/actionBar"
+        layout="@layout/layout_bottom_action_bar" />
 
     <FrameLayout
         android:layout_width="match_parent"
