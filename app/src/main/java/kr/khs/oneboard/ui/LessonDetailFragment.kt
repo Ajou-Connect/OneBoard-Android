@@ -130,6 +130,13 @@ class LessonDetailFragment : BaseFragment<FragmentLessonDetailBinding, LessonDet
             Timber.tag("Session").d("host : $sessionHost")
             Timber.tag("Session").d("mySelf : ${mySelf.userName}")
 
+            startActivity(
+                Intent(requireContext(), SessionActivity::class.java).apply {
+                    putExtra("name", mySelf.userName)
+                    putExtra("sessionName", sessionName)
+                    putExtra("renderType", BaseSessionActivity.RENDER_TYPE_ZOOMRENDERER)
+                }
+            )
         } ?: run {
             ToastUtil.shortToast(requireContext(), "세션 생성에 실패했습니다.")
         }
@@ -210,16 +217,6 @@ class LessonDetailFragment : BaseFragment<FragmentLessonDetailBinding, LessonDet
     override fun onSessionJoin() {
         Timber.tag("ZoomListener").d("onSessionJoin()")
 
-        zoom.session?.run {
-            startActivity(
-                Intent(requireContext(), SessionActivity::class.java).apply {
-                    putExtra("name", mySelf.userName)
-                    putExtra("sessionName", sessionName)
-                    putExtra("renderType", BaseSessionActivity.RENDER_TYPE_ZOOMRENDERER)
-                }
-            )
-            zoom.removeListener(this@LessonDetailFragment)
-        }
     }
 
     override fun onSessionLeave() {
