@@ -48,15 +48,12 @@ open class BaseSessionActivity : AppCompatActivity(), ZoomVideoSDKDelegate, Shar
         const val REQUEST_SELECT_ORIGINAL_PIC = 1003
     }
 
-    //    protected val binding: ActivitySessionBinding by lazy {
-//        ActivitySessionBinding.inflate(LayoutInflater.from(this))
-//    }
     protected val binding: ActivitySessionAsdfBinding by lazy {
-        ActivitySessionAsdfBinding.inflate(LayoutInflater.from(this))
+        ActivitySessionAsdfBinding.inflate(layoutInflater)
     }
 
     protected val actionBarBinding: LayoutBottomActionBarBinding by lazy {
-        LayoutBottomActionBarBinding.inflate(layoutInflater, binding.root, false)
+        binding.actionBar
     }
 
     @get:JvmName("getMeetingDisplay")
@@ -186,8 +183,7 @@ open class BaseSessionActivity : AppCompatActivity(), ZoomVideoSDKDelegate, Shar
                                 Timber.d("start share $ret")
                                 if (ret == ZoomVideoSDKErrors.Errors_Success) {
                                     onStartShareView()
-                                }
-                                else {
+                                } else {
                                     binding.shareImage.setImageBitmap(null)
                                     binding.shareViewGroup.visibility = View.GONE
                                     val isLocked =
@@ -198,13 +194,11 @@ open class BaseSessionActivity : AppCompatActivity(), ZoomVideoSDKDelegate, Shar
                                         Toast.LENGTH_LONG
                                     ).show()
                                 }
-                            }
-                            else {
+                            } else {
                                 Toast.makeText(this, "Other is sharing", Toast.LENGTH_LONG).show()
                             }
                         }
-                    }
-                    catch (e: Exception) {
+                    } catch (e: Exception) {
                         e.printStackTrace()
                     }
                 }
@@ -243,8 +237,7 @@ open class BaseSessionActivity : AppCompatActivity(), ZoomVideoSDKDelegate, Shar
         textFps.visibility = View.GONE
         textFps = if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             binding.textFpsLandscape
-        }
-        else {
+        } else {
             binding.textFps
         }
 
@@ -270,8 +263,7 @@ open class BaseSessionActivity : AppCompatActivity(), ZoomVideoSDKDelegate, Shar
         if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             params.topMargin = (35 * displayMetrics.scaledDensity).toInt()
             actionBarBinding.actionBarScroll.scrollTo(0, 0)
-        }
-        else {
+        } else {
             params.topMargin = 0
         }
 
@@ -303,12 +295,9 @@ open class BaseSessionActivity : AppCompatActivity(), ZoomVideoSDKDelegate, Shar
         val params = (binding.chatList.layoutParams) as ConstraintLayout.LayoutParams
 
         if (isShow) {
-//            params.gravity = Gravity.START or Gravity.BOTTOM
             params.bottomMargin =
                 resources.getDimensionPixelSize(R.dimen.dp_13) + height + inputHeight
-        }
-        else {
-//            params.gravity = Gravity.START or Gravity.BOTTOM
+        } else {
             params.bottomMargin = resources.getDimensionPixelSize(R.dimen.dp_160)
         }
 
@@ -344,8 +333,7 @@ open class BaseSessionActivity : AppCompatActivity(), ZoomVideoSDKDelegate, Shar
         }
         try {
             startActivity(home)
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             Timber.e(e)
         }
     }
@@ -392,18 +380,16 @@ open class BaseSessionActivity : AppCompatActivity(), ZoomVideoSDKDelegate, Shar
 
     }
 
-    fun updateFps(statisticInfo: ZoomVideoSDKVideoStatisticInfo?) {
-        statisticInfo?.let { statisticInfo ->
-            val fps = statisticInfo.fps
-            textFps.post {
-                if (statisticInfo.width > 0 && statisticInfo.height > 0) {
-                    textFps.visibility = View.VISIBLE
-                    val text = "${statisticInfo.width}X${statisticInfo.height} $fps FPS"
-                    textFps.text = text
-                }
-                else {
-                    textFps.visibility = View.GONE
-                }
+    fun updateFps(statisticInfo: ZoomVideoSDKVideoStatisticInfo) {
+        val fps = statisticInfo.fps
+        textFps.post {
+            if (statisticInfo.width > 0 && statisticInfo.height > 0) {
+                textFps.visibility = View.VISIBLE
+                val text = "${statisticInfo.width}X${statisticInfo.height} $fps FPS"
+                Timber.tag("ZoomUpdateFps").d(text)
+                textFps.text = text
+            } else {
+                textFps.visibility = View.GONE
             }
         }
     }
@@ -461,12 +447,10 @@ open class BaseSessionActivity : AppCompatActivity(), ZoomVideoSDKDelegate, Shar
                                 index += 1
                                 if (index == adapter!!.itemCount - 1) {
                                     recyclerView.scrollBy(view.width, 0)
-                                }
-                                else {
+                                } else {
                                     recyclerView.scrollBy(view.width + left + 2 * margin, 0)
                                 }
-                            }
-                            else {
+                            } else {
                                 recyclerView.scrollBy(left - margin, 0)
                             }
                             if (index == 0) {
@@ -492,6 +476,7 @@ open class BaseSessionActivity : AppCompatActivity(), ZoomVideoSDKDelegate, Shar
 
     }
 
+    // 상단 세션 정보
     fun onClickInfo(view: View) {
         val binding = DialogSessionInfoBinding.inflate(layoutInflater)
         val builder = MaterialAlertDialogBuilder(this).apply {
@@ -511,6 +496,7 @@ open class BaseSessionActivity : AppCompatActivity(), ZoomVideoSDKDelegate, Shar
         dialog.show()
     }
 
+    // leave 버튼
     fun onClickEnd(view: View) {
         val userInfo = session.mySelf
         val binding = DialogLeaveAlertBinding.inflate(layoutInflater)
@@ -544,10 +530,11 @@ open class BaseSessionActivity : AppCompatActivity(), ZoomVideoSDKDelegate, Shar
         dialog.show()
     }
 
+    // 리소스 해제
     private fun releaseResource() {
         unSubscribe()
         userVideoAdapter.clear(true)
-        actionBarBinding.actionBar.visibility = View.GONE
+        actionBarBinding.root.visibility = View.GONE
         binding.tvInput.visibility = View.GONE
     }
 
@@ -595,8 +582,7 @@ open class BaseSessionActivity : AppCompatActivity(), ZoomVideoSDKDelegate, Shar
                 shareToolbar?.let {
                     it.destroy()
                 }
-            }
-            else {
+            } else {
                 askScreenSharePermission()
             }
         }
@@ -630,12 +616,10 @@ open class BaseSessionActivity : AppCompatActivity(), ZoomVideoSDKDelegate, Shar
 
         if (zoomSDKUserInfo.audioStatus.audioType == ZoomVideoSDKAudioStatus.ZoomVideoSDKAudioType.ZoomVideoSDKAudioType_None) {
             zoom.audioHelper.startAudio()
-        }
-        else {
+        } else {
             if (zoomSDKUserInfo.audioStatus.isMuted) {
                 zoom.audioHelper.unMuteAudio(zoomSDKUserInfo)
-            }
-            else {
+            } else {
                 zoom.audioHelper.muteAudio(zoomSDKUserInfo)
             }
         }
@@ -676,8 +660,7 @@ open class BaseSessionActivity : AppCompatActivity(), ZoomVideoSDKDelegate, Shar
             }
 
             hasLast = true
-        }
-        else {
+        } else {
             binding.llSwitchCamera.visibility = View.GONE
         }
         if (canSwitchAudioSource()) {
@@ -691,8 +674,7 @@ open class BaseSessionActivity : AppCompatActivity(), ZoomVideoSDKDelegate, Shar
                 binding.llSpeaker.background =
                     resources.getDrawable(R.drawable.more_action_last_bg, null)
             }
-        }
-        else {
+        } else {
             binding.llSpeaker.visibility = View.GONE
         }
 
@@ -702,8 +684,7 @@ open class BaseSessionActivity : AppCompatActivity(), ZoomVideoSDKDelegate, Shar
         if (isSpeakerOn()) {
             binding.tvSpeaker.text = "Turn Off Speaker"
             binding.ivSpeaker.setImageResource(R.drawable.icon_speaker_off)
-        }
-        else {
+        } else {
             binding.tvSpeaker.text = "Turn On Speaker"
             binding.ivSpeaker.setImageResource(R.drawable.icon_speaker_on)
         }
@@ -735,8 +716,7 @@ open class BaseSessionActivity : AppCompatActivity(), ZoomVideoSDKDelegate, Shar
                     mgr.createScreenCaptureIntent(),
                     REQUEST_SHARE_SCREEN_PERMISSION
                 )
-            }
-            catch (e: Exception) {
+            } catch (e: Exception) {
                 Timber.e(e, "askScreenSharePermission failed")
             }
         }
@@ -751,22 +731,20 @@ open class BaseSessionActivity : AppCompatActivity(), ZoomVideoSDKDelegate, Shar
 
             binding.tvInput.visibility = View.VISIBLE
             textFps.visibility = View.VISIBLE
-        }
-        else {
+        } else {
             if (binding.chatInputLayout.isKeyBoardShow()) {
                 binding.chatInputLayout.dismissChat(true)
                 return
             }
 
-            actionBarBinding.actionBar.visibility = View.GONE
+            actionBarBinding.root.visibility = View.GONE
             binding.tvInput.visibility = View.GONE
             textFps.visibility = View.GONE
             binding.textMeetingUserSize.text = "Connecting..."
         }
-        session?.let {
-            binding.sessionName.text = session.sessionName
-        }
-        binding.meetingLockStatus.setImageResource(R.drawable.unlock)
+
+        binding.sessionName.text = session.sessionName
+//        binding.meetingLockStatus.setImageResource(R.drawable.unlock)
     }
 
     protected open fun unSubscribe() {
@@ -940,8 +918,7 @@ open class BaseSessionActivity : AppCompatActivity(), ZoomVideoSDKDelegate, Shar
             if (userList.contains(zoomSDKUserInfo)) {
                 if (zoomSDKUserInfo.audioStatus.audioType == ZoomVideoSDKAudioStatus.ZoomVideoSDKAudioType.ZoomVideoSDKAudioType_None) {
                     actionBarBinding.iconAudio.setImageResource(R.drawable.icon_join_audio)
-                }
-                else {
+                } else {
                     actionBarBinding.iconAudio.setImageResource(
                         if (zoomSDKUserInfo.audioStatus.isMuted) R.drawable.icon_unmute
                         else R.drawable.icon_mute
@@ -961,8 +938,7 @@ open class BaseSessionActivity : AppCompatActivity(), ZoomVideoSDKDelegate, Shar
             currentShareUser = userInfo
             if (userInfo == session.mySelf)
                 actionBarBinding.iconShare.setImageResource(R.drawable.icon_stop_share)
-        }
-        else if (status == ZoomVideoSDKShareStatus.ZoomVideoSDKShareStatus_Stop) {
+        } else if (status == ZoomVideoSDKShareStatus.ZoomVideoSDKShareStatus_Stop) {
             currentShareUser = null
             actionBarBinding.iconShare.setImageResource(R.drawable.icon_share)
             binding.shareViewGroup.visibility = View.GONE
@@ -1063,5 +1039,4 @@ open class BaseSessionActivity : AppCompatActivity(), ZoomVideoSDKDelegate, Shar
 }
 
 // TODO: 2021/11/18 줌 비디오 sdk와 완벽하게 같은 기능이 안됨
-// TODO: 2021/11/18 1. 화면 공유 등
 // TODO: 2021/11/18 2. 채팅 관련
