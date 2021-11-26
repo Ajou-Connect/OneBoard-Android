@@ -101,6 +101,8 @@ class KeyBoardLayout @JvmOverloads constructor(
                 return
             }
             wasOpened = isOpen
+
+            Timber.tag("KeyboardLayoutListener").d("isOpen: $isOpen")
             if (isOpen) {
                 keyboardHeight = heightDiff
                 onKeyboardShow(heightDiff)
@@ -129,7 +131,7 @@ class KeyBoardLayout @JvmOverloads constructor(
         visibility = INVISIBLE
         listener.onKeyBoardChange(false, keyboardHeight, inputText.height)
         isKeyBoardShow = false
-        //        getViewTreeObserver().removeGlobalOnLayoutListener(layoutListener);
+//        viewTreeObserver.removeOnGlobalLayoutListener(layoutListener)
         Timber.d("onKeyboardHidden : $keyboardHeight")
     }
 
@@ -182,6 +184,7 @@ class KeyBoardLayout @JvmOverloads constructor(
     }
 
     fun isKeyBoardShow(): Boolean {
+        Timber.tag("isKeyBoardShow").d("$visibility")
         return visibility == VISIBLE
     }
 

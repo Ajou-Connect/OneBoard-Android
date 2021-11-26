@@ -75,6 +75,8 @@ class SessionActivity : BaseSessionActivity() {
             if (zoom.isInSession.not())
                 return
 
+            Timber.tag("onEmptyContentClick")
+                .d("${actionBarBinding.actionBar.visibility == View.VISIBLE}")
             val isShow = actionBarBinding.actionBar.visibility == View.VISIBLE
             toggleView(isShow.not())
         }
@@ -117,6 +119,12 @@ class SessionActivity : BaseSessionActivity() {
 
         actionBarBinding.actionBar.visibility = if (show) View.VISIBLE else View.GONE
         binding.chatList.visibility = if (show) View.VISIBLE else View.GONE
+        Timber.tag("toggleView").d(
+            """
+            Show : $show
+            ActionBar visibility : ${actionBarBinding.actionBar.visibility}
+        """.trimIndent()
+        )
     }
 
     override fun initMeeting() {
@@ -147,7 +155,9 @@ class SessionActivity : BaseSessionActivity() {
                 else
                     activeUser.videoStatisticInfo
             )
+            Timber.tag("FpsRunnable").d("updateFps, ${textFps.visibility == View.VISIBLE}")
         }
+        Timber.tag("FpsRunnable").d("runnable!")
     }
 
     private fun refreshFps() {
