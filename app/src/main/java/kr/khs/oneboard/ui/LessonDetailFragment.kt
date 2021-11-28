@@ -129,12 +129,13 @@ class LessonDetailFragment : BaseFragment<FragmentLessonDetailBinding, LessonDet
             Timber.tag("Session").d("password: $sessionPassword")
             Timber.tag("Session").d("host : $sessionHost")
             Timber.tag("Session").d("mySelf : ${mySelf.userName}")
+            Timber.tag("SessionHost").d("host : $sessionHostName")
 
             startActivity(
                 Intent(requireContext(), SessionActivity::class.java).apply {
                     putExtra("name", mySelf.userName)
                     putExtra("sessionName", sessionName)
-                    putExtra("renderType", BaseSessionActivity.RENDER_TYPE_ZOOMRENDERER)
+                    putExtra("renderType", BaseSessionActivity.RENDER_TYPE_OPENGLES)
                 }
             )
         } ?: run {
