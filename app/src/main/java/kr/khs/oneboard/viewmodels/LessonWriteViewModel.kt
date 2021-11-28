@@ -4,11 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kr.khs.oneboard.core.BaseViewModel
+import kr.khs.oneboard.core.UseCase
 import kr.khs.oneboard.repository.LessonRepository
 import kr.khs.oneboard.utils.TYPE_FACE_TO_FACE
+import okhttp3.MultipartBody
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,6 +20,10 @@ class LessonWriteViewModel @Inject constructor(private val lessonRepository: Les
     val lessonType: LiveData<Int>
         get() = _lessonType
 
+    private val _updateLesson = MutableLiveData(false)
+    val updateLesson: LiveData<Boolean>
+        get() = _updateLesson
+
     fun setLessonType(type: Int) {
         if (_lessonType.value == type)
             return
@@ -26,15 +31,67 @@ class LessonWriteViewModel @Inject constructor(private val lessonRepository: Les
         _lessonType.value = type
     }
 
-    // todo 생성
-    fun writeLesson(data: Any): Boolean {
-        var response = false
+    fun writeLesson(
+        lectureId: Int,
+        title: String,
+        date: String,
+        note: MultipartBody.Part? = null,
+        room: String? = null,
+        meetingId: String? = null,
+        videoUrl: String? = null
+    ) {
         viewModelScope.launch {
             showProgress()
-            response = true
-            delay(1000)
+            val response = lessonRepository.postLesson(
+                lectureId,
+                title,
+                date,
+                lessonType.value!!,
+                note,
+                room,
+                meetingId,
+                videoUrl,
+            )
+
+            if (response.status == UseCase.Status.SUCCESS)
+                _updateLesson.value = true
+            else
+                setErrorMessage("수업이 생성되지 못했습니다.")
+
             hideProgress()
         }
-        return response
+    }
+
+    fun editLesson(
+        lectureId: Int,
+        lessonId: Int,
+        title: String,
+        date: String,
+        note: MultipartBody.Part? = null,
+        room: String? = null,
+        meetingId: String? = null,
+        videoUrl: String? = null
+    ) {
+        viewModelScope.launch {
+            showProgress()
+            val response = lessonRepository.putLesson(
+                lectureId,
+                lessonId,
+                title,
+                date,
+                lessonType.value!!,
+                note,
+                room,
+                meetingId,
+                videoUrl,
+            )
+
+            if (response.status == UseCase.Status.SUCCESS)
+                _updateLesson.value = true
+            else
+                setErrorMessage("수업이 생성되지 못했습니다.")
+
+            hideProgress()
+        }
     }
 }

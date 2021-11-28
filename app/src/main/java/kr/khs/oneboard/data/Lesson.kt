@@ -2,6 +2,7 @@ package kr.khs.oneboard.data
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
+import kr.khs.oneboard.data.request.LessonUpdateRequestDto
 
 @Parcelize
 data class Lesson(
@@ -14,4 +15,13 @@ data class Lesson(
     val room: String? = null,
     val meetingId: String? = null,
     val videoUrl: String? = null
-) : Parcelable
+) : Parcelable {
+    fun toLessonUpdateRequestDto() = LessonUpdateRequestDto(
+        title = title,
+        date = date,
+        type = type,
+        room = room,
+        meetingId = meetingId,
+        videoUrl = videoUrl
+    )
+}

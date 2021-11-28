@@ -127,7 +127,17 @@
         android:id="@+id/lessonWriteFragment"
         android:name="kr.khs.oneboard.ui.LessonWriteFragment"
         android:label="fragment_lesson_write"
-        tools:layout="@layout/fragment_lesson_write" />
+        tools:layout="@layout/fragment_lesson_write">
+        <argument
+            android:name="item"
+            app:argType="kr.khs.oneboard.data.request.LessonUpdateRequestDto"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <argument
+            android:name="lessonId"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </fragment>
 
     <fragment
         android:id="@+id/lectureReadFragment"
