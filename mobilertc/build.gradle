@@ -1,5 +1,0 @@
-configurations.create("default")
-artifacts.add("default", file('mobilertc.aar'))
-
-dependencies.add("default","androidx.security:security-crypto:1.1.0-alpha02")
-dependencies.add("default","com.google.crypto.tink:tink-android:1.5.0")
