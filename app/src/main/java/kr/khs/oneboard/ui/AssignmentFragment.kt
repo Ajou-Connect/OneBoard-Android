@@ -107,12 +107,14 @@ class AssignmentFragment : BaseFragment<FragmentAssignmentBinding, AssignmentVie
                         "수정",
                         "삭제",
                         {
-                            AssignmentFragmentDirections.actionAssignmentFragmentToLectureWriteFragment(
-                                TYPE_ASSIGNMENT
-                            ).apply {
-                                isEdit = true
-                                assignment = item
-                            }
+                            findNavController().navigate(
+                                AssignmentFragmentDirections.actionAssignmentFragmentToLectureWriteFragment(
+                                    TYPE_ASSIGNMENT
+                                ).apply {
+                                    isEdit = true
+                                    assignment = item
+                                }
+                            )
                         },
                         { viewModel.deleteItem(parentViewModel.getLecture().id, item) },
                     )
