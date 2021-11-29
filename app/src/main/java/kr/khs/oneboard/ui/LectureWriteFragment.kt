@@ -21,10 +21,7 @@ import kr.khs.oneboard.data.request.NoticeUpdateRequestDto
 import kr.khs.oneboard.databinding.FragmentLectureWriteBinding
 import kr.khs.oneboard.extensions.toDateTime
 import kr.khs.oneboard.extensions.toTimeInMillis
-import kr.khs.oneboard.utils.TYPE_ASSIGNMENT
-import kr.khs.oneboard.utils.TYPE_NOTICE
-import kr.khs.oneboard.utils.ToastUtil
-import kr.khs.oneboard.utils.asMultipart
+import kr.khs.oneboard.utils.*
 import kr.khs.oneboard.viewmodels.LectureWriteViewModel
 import okhttp3.MultipartBody
 import timber.log.Timber
@@ -45,8 +42,9 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
             if (result.resultCode == Activity.RESULT_OK) {
                 val data = result.data
                 assignmentFile =
-                    data?.data?.asMultipart("filename", requireContext().contentResolver)
-                binding.writeFileDescription.text = data?.data?.lastPathSegment
+                    data?.data?.asMultipart("file", requireContext().contentResolver)
+                binding.writeFileDescription.text =
+                    "${data?.data?.getFileName(requireContext().contentResolver)}"
             }
         }
 
@@ -249,7 +247,8 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
                             binding.writeAssignmentScore.text.toString().toFloat()
                         )
                     } else
-                        null
+                        null,
+                    assignmentFile
                 )
             } else {
                 viewModel.writeContent(
@@ -287,7 +286,8 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
                             binding.writeAssignmentScore.text.toString().toFloat()
                         )
                     } else
-                        null
+                        null,
+                    assignmentFile
                 )
             }
         }

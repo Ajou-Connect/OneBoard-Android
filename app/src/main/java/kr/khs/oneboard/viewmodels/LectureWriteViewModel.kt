@@ -11,6 +11,7 @@ import kr.khs.oneboard.data.request.NoticeUpdateRequestDto
 import kr.khs.oneboard.repository.LectureRepository
 import kr.khs.oneboard.utils.TYPE_ASSIGNMENT
 import kr.khs.oneboard.utils.TYPE_NOTICE
+import okhttp3.MultipartBody
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -24,7 +25,8 @@ class LectureWriteViewModel @Inject constructor(private val repository: LectureR
         contentId: Int,
         type: Boolean,
         notice: NoticeUpdateRequestDto? = null,
-        assignment: AssignmentUpdateRequestDto? = null
+        assignment: AssignmentUpdateRequestDto? = null,
+        file: MultipartBody.Part? = null
     ) {
         if (contentId == -1) {
             setErrorMessage("올바르지 않은 접근입니다.")
@@ -38,7 +40,7 @@ class LectureWriteViewModel @Inject constructor(private val repository: LectureR
                     repository.putNotice(lectureId, contentId, notice!!)
                 }
                 TYPE_ASSIGNMENT -> {
-                    repository.putAssignment(lectureId, contentId, assignment!!)
+                    repository.putAssignment(lectureId, contentId, assignment!!, file)
                 }
                 else -> throw Exception("Unknown Type")
             }
@@ -51,9 +53,11 @@ class LectureWriteViewModel @Inject constructor(private val repository: LectureR
         lectureId: Int,
         type: Boolean,
         notice: NoticeUpdateRequestDto? = null,
-        assignment: AssignmentUpdateRequestDto? = null
+        assignment: AssignmentUpdateRequestDto? = null,
+        file: MultipartBody.Part? = null
     ) {
         var result: UseCase<Boolean>
+        Timber.tag("WriteAssignment").d("file is null : ${file == null}")
         viewModelScope.launch {
             showProgress()
             result = when (type) {
@@ -63,7 +67,7 @@ class LectureWriteViewModel @Inject constructor(private val repository: LectureR
                 }
                 TYPE_ASSIGNMENT -> {
                     Timber.tag("Write").d("$assignment")
-                    repository.postAssignment(lectureId, assignment!!)
+                    repository.postAssignment(lectureId, assignment!!, file)
                 }
                 else -> throw Exception("Unknown Type")
             }
