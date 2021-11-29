@@ -5,6 +5,7 @@ import kr.khs.oneboard.data.*
 import kr.khs.oneboard.data.request.AssignmentUpdateRequestDto
 import kr.khs.oneboard.data.request.AttendanceUpdateRequestDto
 import kr.khs.oneboard.data.request.NoticeUpdateRequestDto
+import okhttp3.MultipartBody
 
 interface LectureRepository {
     suspend fun getDetailLecture(lectureId: Int): UseCase<Lecture>
@@ -25,13 +26,15 @@ interface LectureRepository {
 
     suspend fun postAssignment(
         lectureId: Int,
-        assignment: AssignmentUpdateRequestDto
+        assignment: AssignmentUpdateRequestDto,
+        file: MultipartBody.Part? = null
     ): UseCase<Boolean>
 
     suspend fun putAssignment(
         lectureId: Int,
         assignmentId: Int,
-        assignment: AssignmentUpdateRequestDto
+        assignment: AssignmentUpdateRequestDto,
+        file: MultipartBody.Part? = null
     ): UseCase<Boolean>
 
     suspend fun deleteAssignment(lectureId: Int, assignmentId: Int): UseCase<Boolean>
