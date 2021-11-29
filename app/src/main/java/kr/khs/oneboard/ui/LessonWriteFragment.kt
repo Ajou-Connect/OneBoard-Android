@@ -1,23 +1,26 @@
 package kr.khs.oneboard.ui
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import kr.khs.oneboard.R
 import kr.khs.oneboard.core.BaseFragment
+import kr.khs.oneboard.data.request.LessonUpdateRequestDto
 import kr.khs.oneboard.databinding.FragmentLessonWriteBinding
-import kr.khs.oneboard.utils.TYPE_FACE_TO_FACE
-import kr.khs.oneboard.utils.TYPE_NON_FACE_TO_FACE
-import kr.khs.oneboard.utils.TYPE_RECORDING
-import kr.khs.oneboard.utils.ToastUtil
+import kr.khs.oneboard.utils.*
 import kr.khs.oneboard.viewmodels.LessonWriteViewModel
+import okhttp3.MultipartBody
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.properties.Delegates
@@ -30,9 +33,13 @@ class LessonWriteFragment : BaseFragment<FragmentLessonWriteBinding, LessonWrite
     private var day by Delegates.notNull<Int>()
     private var hour by Delegates.notNull<Int>()
     private var minute by Delegates.notNull<Int>()
-    private lateinit var lessonRoom: String
+    private var lessonRoom: String? = null
     private lateinit var lessonDate: String
     private lateinit var lessonTime: String
+    private var isEdit = false
+    private var lessonId = -1
+
+    private var noteFile: MultipartBody.Part? = null
 
     private val onDateSetListener by lazy {
         DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
@@ -52,6 +59,19 @@ class LessonWriteFragment : BaseFragment<FragmentLessonWriteBinding, LessonWrite
         }
     }
 
+    @SuppressLint("SetTextI18n")
+    private val fileResultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val data = result.data
+                noteFile =
+                    data?.data?.asMultipart("file", requireContext().contentResolver)
+
+                binding.lessonWriteFileDescription.text =
+                    "${data?.data?.getFileName(requireContext().contentResolver)}"
+            }
+        }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -70,18 +90,22 @@ class LessonWriteFragment : BaseFragment<FragmentLessonWriteBinding, LessonWrite
                 TYPE_FACE_TO_FACE -> {
                     binding.lessonWriteShowText.visibility = View.VISIBLE
                     binding.lessonWriteShowButton.visibility = View.GONE
-                    binding.lessonWriteShowText.text = lessonRoom
+                    binding.lessonWriteShowText.setText(lessonRoom)
                 }
                 TYPE_NON_FACE_TO_FACE -> {
                     binding.lessonWriteShowText.visibility = View.GONE
                     binding.lessonWriteShowButton.visibility = View.GONE
-//                    binding.lessonWriteShowText.text = "비대면 수업"
                 }
                 TYPE_RECORDING -> {
                     binding.lessonWriteShowText.visibility = View.GONE
                     binding.lessonWriteShowButton.visibility = View.GONE
                 }
             }
+        }
+
+        viewModel.updateLesson.observe(viewLifecycleOwner) {
+            if (it)
+                requireActivity().onBackPressed()
         }
     }
 
@@ -97,6 +121,38 @@ class LessonWriteFragment : BaseFragment<FragmentLessonWriteBinding, LessonWrite
         initWriteLessonButton()
         initLessonTypeSpinner()
         initShowButton()
+        initNoteAdd()
+        initDefaultData()
+    }
+
+    private fun initDefaultData() {
+        val editData = arguments?.getParcelable<LessonUpdateRequestDto>("item") ?: return
+        isEdit = true
+        with(editData) {
+            binding.lessonWriteTitle.setText(title)
+            val dateTime = date.split(" ")
+            binding.lessonWriteDate.text = dateTime[0]
+            binding.lessonWriteTime.text = dateTime[1]
+            binding.lessonWriteSpinner.setSelection(type)
+            if (type == TYPE_FACE_TO_FACE)
+                binding.lessonWriteShowText.setText(room)
+
+            DialogUtil.createDialog(
+                requireContext(),
+                "강의 노트는 다시 업로드를 해주어야 합니다.",
+                positiveText = "알겠습니다.",
+                positiveAction = { }
+            )
+        }
+        lessonId = arguments?.getInt("lessonId")!!
+    }
+
+    private fun initNoteAdd() {
+        binding.lessonWriteFileAddButton.setOnClickListener {
+            fileResultLauncher.launch(
+                Intent(Intent.ACTION_GET_CONTENT).setType("application/pdf")
+            )
+        }
     }
 
     private fun getDefaultLectureValue() {
@@ -168,8 +224,7 @@ class LessonWriteFragment : BaseFragment<FragmentLessonWriteBinding, LessonWrite
     }
 
     private fun initTitle() {
-        binding.lessonwriteTitle.text =
-            "${parentViewModel.getLecture().title} - ${(1..32).random()}수업"
+        binding.lessonWriteTitle.hint = parentViewModel.getLecture().title
     }
 
     private fun initShowButton() {
@@ -210,10 +265,33 @@ class LessonWriteFragment : BaseFragment<FragmentLessonWriteBinding, LessonWrite
 
     private fun initWriteLessonButton() {
         binding.lessonWriteButton.setOnClickListener {
-            if (viewModel.writeLesson("1"))
-                requireActivity().onBackPressed()
-            else
-                ToastUtil.shortToast(requireContext(), "수업을 생성하는데 실패하였습니다.\n다시 시도해 주세요.")
+            if (binding.lessonWriteTitle.text.toString()
+                    .isEmpty() || binding.lessonWriteDate.text == "날짜 선택" || binding.lessonWriteTime.text == "시간 선택"
+            ) {
+                viewModel.setErrorMessage("날짜, 시간을 선택해주세요.")
+            }
+            if (isEdit) {
+                viewModel.editLesson(
+                    parentViewModel.getLecture().id,
+                    lessonId,
+                    binding.lessonWriteTitle.text.toString(),
+                    binding.lessonWriteDate.text.toString() + " " + binding.lessonWriteTime.text.toString(),
+                    noteFile,
+                    if (viewModel.lessonType.value!! == TYPE_FACE_TO_FACE) binding.lessonWriteShowText.text.toString() else null,
+                    null,
+                    null
+                )
+            } else {
+                viewModel.writeLesson(
+                    parentViewModel.getLecture().id,
+                    binding.lessonWriteTitle.text.toString(),
+                    binding.lessonWriteDate.text.toString() + " " + binding.lessonWriteTime.text.toString(),
+                    noteFile,
+                    if (viewModel.lessonType.value!! == TYPE_FACE_TO_FACE) binding.lessonWriteShowText.text.toString() else null,
+                    null,
+                    null
+                )
+            }
         }
     }
 }
