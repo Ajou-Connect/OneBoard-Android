@@ -107,7 +107,7 @@ class LectureReadFragment : BaseFragment<FragmentLectureReadBinding, LectureRead
             binding.readStartDT.text = item.startDt
             binding.readEndDT.visibility = View.VISIBLE
             binding.readEndDT.text = item.endDt
-            if (item.fileUrl != "") {
+            item.fileUrl?.let {
                 binding.readFileUrl.visibility = View.VISIBLE
                 binding.readFileUrl.text = item.fileUrl
             }
