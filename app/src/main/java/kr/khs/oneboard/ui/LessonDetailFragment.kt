@@ -1,9 +1,5 @@
 package kr.khs.oneboard.ui
 
-import android.app.DownloadManager
-import android.content.Context
-import android.net.Uri
-import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,10 +9,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kr.khs.oneboard.core.BaseFragment
 import kr.khs.oneboard.data.Lesson
 import kr.khs.oneboard.databinding.FragmentLessonDetailBinding
-import kr.khs.oneboard.utils.API_URL
-import kr.khs.oneboard.utils.TYPE_FACE_TO_FACE
-import kr.khs.oneboard.utils.TYPE_NON_FACE_TO_FACE
-import kr.khs.oneboard.utils.TYPE_RECORDING
+import kr.khs.oneboard.utils.*
 import kr.khs.oneboard.viewmodels.LessonDetailViewModel
 import timber.log.Timber
 
@@ -98,25 +91,7 @@ class LessonDetailFragment : BaseFragment<FragmentLessonDetailBinding, LessonDet
 
         binding.lessonDetailNoteDownloadBtn.setOnClickListener {
             val fileName = "${item.title} 강의노트.pdf"
-            fileDownload(downloadUrl, fileName)
+            fileDownload("$fileName 다운로드 ", "강의노트 다운로드", downloadUrl, fileName)
         }
-    }
-
-    private fun fileDownload(downloadUrl: String, fileName: String) {
-        val request = DownloadManager.Request(Uri.parse(downloadUrl))
-            .setTitle("$fileName 다운로드 ")
-            .setDescription("강의노트 다운로드")
-            .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-            .setDestinationInExternalPublicDir(
-                Environment.DIRECTORY_DOWNLOADS,
-                fileName
-            )
-            .setRequiresCharging(false)
-            .setAllowedOverMetered(true)
-            .setAllowedOverRoaming(true)
-
-        (requireContext().getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager).enqueue(
-            request
-        )
     }
 }
