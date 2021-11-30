@@ -9,6 +9,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kr.khs.oneboard.core.BaseFragment
 import kr.khs.oneboard.data.Lesson
 import kr.khs.oneboard.databinding.FragmentLessonDetailBinding
+import kr.khs.oneboard.utils.API_URL
 import kr.khs.oneboard.utils.TYPE_FACE_TO_FACE
 import kr.khs.oneboard.utils.TYPE_NON_FACE_TO_FACE
 import kr.khs.oneboard.utils.TYPE_RECORDING
@@ -58,7 +59,7 @@ class LessonDetailFragment : BaseFragment<FragmentLessonDetailBinding, LessonDet
 
         with(binding.lessonDetailWebView) {
             val url =
-                "https://docs.google.com/gview?embedded=true&url=http://115.85.182.194:8080/lecture/${parentViewModel.getLecture().id}/lesson/${item.id}/note"
+                "https://docs.google.com/gview?embedded=true&url=${API_URL}lecture/${parentViewModel.getLecture().id}/lesson/${item.id}/note"
             webViewClient = WebViewClient() // 클릭 시 새창 안뜨게
             with(this.settings) {
                 javaScriptEnabled = true
