@@ -71,11 +71,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:textColor="@color/black"
-            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="@id/lessonTitle"
             app:layout_constraintStart_toStartOf="@id/lessonTitle"
             app:layout_constraintTop_toBottomOf="@id/lessonInfo"
-            tools:text="강의 노트 주소"
-            tools:visibility="visible" />
+            tools:text="강의 노트 등록 여부" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
