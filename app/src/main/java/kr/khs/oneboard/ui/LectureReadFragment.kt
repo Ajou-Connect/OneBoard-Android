@@ -15,6 +15,7 @@ import kr.khs.oneboard.data.Submit
 import kr.khs.oneboard.databinding.FragmentLectureReadBinding
 import kr.khs.oneboard.databinding.ViewAssignmentDetailBinding
 import kr.khs.oneboard.utils.TYPE_NOTICE
+import kr.khs.oneboard.utils.fileDownload
 import kr.khs.oneboard.viewmodels.LectureReadViewModel
 import timber.log.Timber
 import kotlin.properties.Delegates
@@ -110,8 +111,13 @@ class LectureReadFragment : BaseFragment<FragmentLectureReadBinding, LectureRead
             binding.readEndDT.visibility = View.VISIBLE
             binding.readEndDT.text = item.endDt
             item.fileUrl?.let {
+                val fileName = "${item.title} 과제.pdf"
                 binding.readFileUrl.visibility = View.VISIBLE
-                binding.readFileUrl.text = item.fileUrl
+                binding.readFileUrl.text = fileName
+                binding.readFileDownloadBtn.visibility = View.VISIBLE
+                binding.readFileDownloadBtn.setOnClickListener {
+                    fileDownload("과제 다운로드", "${item.title} 과제 파일", item.fileUrl, fileName)
+                }
             }
             binding.readContent.text = Html.fromHtml(item.content, Html.FROM_HTML_MODE_LEGACY)
 
