@@ -44,7 +44,7 @@ class AssignmentFragment : BaseFragment<FragmentAssignmentBinding, AssignmentVie
                 if (UserInfoUtil.type == TYPE_PROFESSOR)
                     it
                 else
-                    it.filter { it.exposeDt.toTimeInMillis() <= System.currentTimeMillis() }
+                    it.filter { it.exposeDt == "" || it.exposeDt.toTimeInMillis() <= System.currentTimeMillis() }
             )
         }
     }

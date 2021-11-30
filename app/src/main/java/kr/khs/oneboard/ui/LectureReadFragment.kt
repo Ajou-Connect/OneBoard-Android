@@ -42,10 +42,12 @@ class LectureReadFragment : BaseFragment<FragmentLectureReadBinding, LectureRead
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.isSubmit.observe(viewLifecycleOwner) {
-            binding.readNoSubmitData.visibility = if (it) View.GONE else View.VISIBLE
-            if (it.not())
-                binding.readNoSubmitData.text = "과제를 제출하지 않았습니다."
+        viewModel.isSubmit.observe(viewLifecycleOwner) { isSubmit ->
+            assignment?.let {
+                binding.readNoSubmitData.visibility = if (isSubmit) View.GONE else View.VISIBLE
+                if (isSubmit.not())
+                    binding.readNoSubmitData.text = "과제를 제출하지 않았습니다."
+            }
         }
 
         viewModel.assignmentData.observe(viewLifecycleOwner) {
