@@ -154,6 +154,13 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
             binding.writeEndDt.text = assignment?.endDt
             binding.writeAssignmentScore.setText(assignment?.score.toString())
         }
+
+        DialogUtil.createDialog(
+            requireContext(),
+            "파일 다시 업로드를 해주어야 합니다.",
+            positiveText = "알겠습니다.",
+            positiveAction = { }
+        )
     }
 
     private fun initExposeTime() {
@@ -233,6 +240,9 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
                         ) {
                             viewModel.setErrorMessage("시작 시간이 마감 시간보다 크거나 같을 수 없습니다.")
                             return@setOnClickListener
+                        } else if (binding.writeAssignmentScore.text.toString().isEmpty()) {
+                            viewModel.setErrorMessage("배점을 입력해주세요.")
+                            return@setOnClickListener
                         }
                         AssignmentUpdateRequestDto(
                             binding.writeTitleEditText.text.toString(),
@@ -271,6 +281,9 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
                                 .toTimeInMillis()
                         ) {
                             viewModel.setErrorMessage("시작 시간이 마감 시간보다 크거나 같을 수 없습니다.")
+                            return@setOnClickListener
+                        } else if (binding.writeAssignmentScore.text.toString().isEmpty()) {
+                            viewModel.setErrorMessage("배점을 입력해주세요.")
                             return@setOnClickListener
                         }
                         AssignmentUpdateRequestDto(
