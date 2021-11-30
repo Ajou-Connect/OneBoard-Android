@@ -60,6 +60,10 @@ class ContentDetailFragment : BaseFragment<FragmentContentDetailBinding, Content
         binding.contentDetailContent.text = assignment.content
         binding.contentDetailDate.text = assignment.exposeDt
         binding.contentDetailAssignmentList.visibility = View.VISIBLE
+        assignment.fileUrl?.let {
+            binding.contentDetailFileUrl.visibility = View.VISIBLE
+            binding.contentDetailFileUrl.text = it
+        }
         initRecyclerView()
     }
 
