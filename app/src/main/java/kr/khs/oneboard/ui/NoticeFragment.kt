@@ -13,6 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kr.khs.oneboard.adapters.NoticeListAdapter
 import kr.khs.oneboard.core.BaseFragment
 import kr.khs.oneboard.databinding.FragmentNoticeBinding
+import kr.khs.oneboard.extensions.toTimeInMillis
 import kr.khs.oneboard.utils.DialogUtil
 import kr.khs.oneboard.utils.TYPE_NOTICE
 import kr.khs.oneboard.utils.TYPE_PROFESSOR
@@ -40,7 +41,10 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding, NoticeViewModel>() {
 
         viewModel.list.observe(viewLifecycleOwner) {
             listAdapter.submitList(
-                it
+                if (UserInfoUtil.type == TYPE_PROFESSOR)
+                    it
+                else
+                    it.filter { it.exposeDt.toTimeInMillis() <= System.currentTimeMillis() }
             )
         }
     }

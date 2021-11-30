@@ -13,6 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kr.khs.oneboard.adapters.AssignmentListAdapter
 import kr.khs.oneboard.core.BaseFragment
 import kr.khs.oneboard.databinding.FragmentAssignmentBinding
+import kr.khs.oneboard.extensions.toTimeInMillis
 import kr.khs.oneboard.utils.DialogUtil
 import kr.khs.oneboard.utils.TYPE_ASSIGNMENT
 import kr.khs.oneboard.utils.TYPE_PROFESSOR
@@ -39,7 +40,12 @@ class AssignmentFragment : BaseFragment<FragmentAssignmentBinding, AssignmentVie
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.list.observe(viewLifecycleOwner) {
-            listAdapter.submitList(it)
+            listAdapter.submitList(
+                if (UserInfoUtil.type == TYPE_PROFESSOR)
+                    it
+                else
+                    it.filter { it.exposeDt.toTimeInMillis() <= System.currentTimeMillis() }
+            )
         }
     }
 
