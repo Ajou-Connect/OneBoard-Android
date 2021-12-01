@@ -300,12 +300,14 @@ open class BaseSessionActivity : AppCompatActivity(), ZoomVideoSDKDelegate, Shar
         } else {
             params.bottomMargin = resources.getDimensionPixelSize(R.dimen.dp_160)
         }
-        Timber.tag("onKeyBoardChange").d("""
+        Timber.tag("onKeyBoardChange").d(
+            """
             isShow: $isShow
             height: $height
             inputHeight: $inputHeight
             bottomMargin: ${params.bottomMargin}
-        """.trimIndent())
+        """.trimIndent()
+        )
         binding.chatList.layoutParams = params
         if (chatMsgAdapter.itemCount > 0)
             binding.chatList.scrollToPosition(chatMsgAdapter.itemCount - 1)
@@ -1042,5 +1044,3 @@ open class BaseSessionActivity : AppCompatActivity(), ZoomVideoSDKDelegate, Shar
     }
 
 }
-
-// todo 소켓 통신
