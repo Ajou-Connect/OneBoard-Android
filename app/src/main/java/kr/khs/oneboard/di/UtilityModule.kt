@@ -8,7 +8,10 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kr.khs.oneboard.utils.WEB_DOMAIN
 import timber.log.Timber
-import us.zoom.sdk.*
+import us.zoom.sdk.ZoomVideoSDK
+import us.zoom.sdk.ZoomVideoSDKErrors
+import us.zoom.sdk.ZoomVideoSDKInitParams
+import us.zoom.sdk.ZoomVideoSDKRawDataMemoryMode
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
