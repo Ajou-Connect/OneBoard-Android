@@ -6,27 +6,90 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.FrameLayout
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
+import io.socket.client.Socket
+import io.socket.emitter.Emitter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kr.khs.oneboard.R
 import kr.khs.oneboard.core.rawdata.RawDataRenderer
 import kr.khs.oneboard.core.zoom.AudioRawDataUtil
 import kr.khs.oneboard.core.zoom.BaseSessionActivity
 import kr.khs.oneboard.core.zoom.NotificationService
 import kr.khs.oneboard.utils.ToastUtil
+import kr.khs.oneboard.utils.createSocket
 import timber.log.Timber
 import us.zoom.sdk.*
+import kotlin.coroutines.CoroutineContext
 import kotlin.random.Random
 
 @AndroidEntryPoint
-class SessionActivity : BaseSessionActivity() {
+class SessionActivity : BaseSessionActivity(), CoroutineScope {
+    companion object {
+        const val SOCKET_TEST = "Hello!"
+    }
+
     private lateinit var audioRawDataUtil: AudioRawDataUtil
     private lateinit var zoomCanvas: ZoomVideoSDKVideoView
     private lateinit var rawDataRenderer: RawDataRenderer
+
+    private lateinit var socket: Socket
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main
+
+    private val socketConnectListener = Emitter.Listener {
+        Timber.tag("Socket").d("Connect Listener!")
+        launch(coroutineContext) {
+            Timber.tag("Socket").d("Connect Listener!!")
+            ToastUtil.shortToast(this@SessionActivity, "Socket Connected!!")
+        }
+    }
+
+    private val socketDisconnectListener = Emitter.Listener {
+        Timber.tag("Socket").d("Disconnect Listener!")
+        launch(coroutineContext) {
+            Timber.tag("Socket").d("Disconnect Listener!!")
+            ToastUtil.shortToast(this@SessionActivity, "Socket DisConnected!!")
+        }
+    }
+
+    private val socketTestListener = Emitter.Listener {
+        Timber.tag("Socket").d("Listener!")
+
+        launch(coroutineContext) {
+            Timber.tag("Socket").d("Listener!!")
+            MaterialAlertDialogBuilder(this@SessionActivity)
+                .setTitle("Test Title")
+                .setMessage("Test Message")
+                .setPositiveButton("OK") { _, _ ->
+                    ToastUtil.shortToast(this@SessionActivity, "Socket Test Complete!")
+                }
+                .show()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         audioRawDataUtil = AudioRawDataUtil(this)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR
+
+        socket = createSocket()
+
+        addSocketListener()
+    }
+
+    private fun addSocketListener() {
+        Timber.tag("Socket").d("addSocketListener()")
+
+        socket.on(Socket.EVENT_CONNECT, socketConnectListener)
+        socket.on(Socket.EVENT_DISCONNECT, socketDisconnectListener)
+        socket.on(SOCKET_TEST, socketTestListener)
+
+        Timber.tag("Socket").d("connect")
+        socket.connect()
     }
 
     override fun onSessionJoin() {
@@ -55,6 +118,17 @@ class SessionActivity : BaseSessionActivity() {
         super.onSessionLeave()
         audioRawDataUtil.unSubscribe()
         shareToolbar?.destroy()
+
+        removeSocketListener()
+    }
+
+    private fun removeSocketListener() {
+        Timber.tag("Socket").d("disconnect")
+        socket.disconnect()
+
+        Timber.tag("Socket").d("removeSocketListener()")
+        // socket clear
+        socket.off()
     }
 
     override fun onDestroy() {
