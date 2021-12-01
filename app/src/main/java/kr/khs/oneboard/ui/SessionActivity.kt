@@ -19,9 +19,9 @@ import kr.khs.oneboard.core.zoom.AudioRawDataUtil
 import kr.khs.oneboard.core.zoom.BaseSessionActivity
 import kr.khs.oneboard.core.zoom.NotificationService
 import kr.khs.oneboard.utils.ToastUtil
-import kr.khs.oneboard.utils.createSocket
 import timber.log.Timber
 import us.zoom.sdk.*
+import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 import kotlin.random.Random
 
@@ -35,7 +35,8 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
     private lateinit var zoomCanvas: ZoomVideoSDKVideoView
     private lateinit var rawDataRenderer: RawDataRenderer
 
-    private lateinit var socket: Socket
+    @Inject
+    lateinit var socket: Socket
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
@@ -75,8 +76,6 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
         super.onCreate(savedInstanceState)
         audioRawDataUtil = AudioRawDataUtil(this)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR
-
-        socket = createSocket()
 
         addSocketListener()
     }
