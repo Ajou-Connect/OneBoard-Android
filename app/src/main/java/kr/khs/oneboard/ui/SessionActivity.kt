@@ -6,19 +6,24 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.FrameLayout
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import androidx.activity.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kr.khs.oneboard.R
 import kr.khs.oneboard.core.rawdata.RawDataRenderer
 import kr.khs.oneboard.core.zoom.AudioRawDataUtil
 import kr.khs.oneboard.core.zoom.BaseSessionActivity
 import kr.khs.oneboard.core.zoom.NotificationService
+import kr.khs.oneboard.utils.DialogUtil
+import kr.khs.oneboard.utils.TYPE_PROFESSOR
 import kr.khs.oneboard.utils.ToastUtil
+import kr.khs.oneboard.utils.UserInfoUtil
+import kr.khs.oneboard.viewmodels.SessionViewModel
 import timber.log.Timber
 import us.zoom.sdk.*
 import javax.inject.Inject
@@ -29,17 +34,26 @@ import kotlin.random.Random
 class SessionActivity : BaseSessionActivity(), CoroutineScope {
     companion object {
         const val SOCKET_TEST = "Hello!"
+        const val STUDENT_ATTENDANCE = "attendance request"
+        const val PROFESSOR_ATTENDANCE = "attendance response"
+        const val STUDENT_UNDERSTANDING = "understanding request"
+        const val PROFESSOR_UNDERSTANDING = "understanding response"
+        const val STUDENT_QUIZ = "quiz request"
+        const val PROFESSOR_QUIZ = "quiz response"
     }
 
     private lateinit var audioRawDataUtil: AudioRawDataUtil
     private lateinit var zoomCanvas: ZoomVideoSDKVideoView
     private lateinit var rawDataRenderer: RawDataRenderer
 
+    private val viewModel: SessionViewModel by viewModels()
+
     @Inject
     lateinit var socket: Socket
 
+    private val job = Job()
     override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main
+        get() = Dispatchers.Main + job
 
     private val socketConnectListener = Emitter.Listener {
         Timber.tag("Socket").d("Connect Listener!")
@@ -62,13 +76,48 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
 
         launch(coroutineContext) {
             Timber.tag("Socket").d("Listener!!")
-            MaterialAlertDialogBuilder(this@SessionActivity)
-                .setTitle("Test Title")
-                .setMessage("Test Message")
-                .setPositiveButton("OK") { _, _ ->
+            DialogUtil.createDialog(
+                context = this@SessionActivity,
+                message = "Test Message",
+                positiveText = "OK",
+                positiveAction = {
                     ToastUtil.shortToast(this@SessionActivity, "Socket Test Complete!")
                 }
-                .show()
+            )
+        }
+    }
+
+    private val socketAttendanceRequestListener = Emitter.Listener {
+        launch(coroutineContext) {
+
+        }
+    }
+
+    private val socketAttendanceResponseListener = Emitter.Listener {
+        launch(coroutineContext) {
+
+        }
+    }
+
+    private val socketUnderstandingRequestListener = Emitter.Listener {
+        launch(coroutineContext) {
+
+        }
+    }
+
+    private val socketUnderstandingResponseListener = Emitter.Listener {
+
+    }
+
+    private val socketQuizRequestListener = Emitter.Listener {
+        launch(coroutineContext) {
+
+        }
+    }
+
+    private val socketQuizResponseListener = Emitter.Listener {
+        launch(coroutineContext) {
+
         }
     }
 
@@ -85,7 +134,18 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
 
         socket.on(Socket.EVENT_CONNECT, socketConnectListener)
         socket.on(Socket.EVENT_DISCONNECT, socketDisconnectListener)
+
         socket.on(SOCKET_TEST, socketTestListener)
+
+        if (UserInfoUtil.type == TYPE_PROFESSOR) {
+            socket.on(PROFESSOR_ATTENDANCE, socketAttendanceResponseListener)
+            socket.on(PROFESSOR_UNDERSTANDING, socketUnderstandingResponseListener)
+            socket.on(PROFESSOR_QUIZ, socketQuizResponseListener)
+        } else {
+            socket.on(STUDENT_ATTENDANCE, socketAttendanceRequestListener)
+            socket.on(STUDENT_UNDERSTANDING, socketUnderstandingRequestListener)
+            socket.on(STUDENT_QUIZ, socketQuizRequestListener)
+        }
 
         Timber.tag("Socket").d("connect")
         socket.connect()
