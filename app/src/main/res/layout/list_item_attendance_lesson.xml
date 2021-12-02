@@ -14,9 +14,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="16dp"
+        android:background="@drawable/round_corner"
         android:paddingHorizontal="8dp"
-        android:background="@drawable/round_corner">
+        android:paddingVertical="16dp">
 
         <TextView
             android:id="@+id/attendanceLessonDate"
@@ -40,6 +40,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/attendanceLessonDate"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/attendanceLessonDate"
+            app:state="@{item.status}"
             app:text_state_checked="출석"
             app:text_state_indeterminate="지각"
             app:text_state_unchecked="결석"
