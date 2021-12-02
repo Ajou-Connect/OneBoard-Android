@@ -83,3 +83,6 @@ fun Fragment.fileDownload(
         request
     )
 }
+
+fun String.getFileUrl() =
+    "https://docs.google.com/gview?embedded=true&url=${API_URL_WITHOUT_SLASH}$this"
