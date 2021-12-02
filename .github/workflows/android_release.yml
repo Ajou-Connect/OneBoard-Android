@@ -30,8 +30,11 @@ jobs:
         id: date
         run: echo "::set-output name=date::$(date + '%Y-%m-%d')"
 
+      - name: Clean Gradle
+        run: bash ./gradlew clean
+        
       - name: Build Release APK
-        run: bash ./gradlew assembleRelease --stacktrace
+        run: bash ./gradlew assembleRelease --stacktrace --no-build-cache
         
       - run: './gradlew assembleRelease'
 
