@@ -14,6 +14,7 @@ import kr.khs.oneboard.data.Notice
 import kr.khs.oneboard.data.Submit
 import kr.khs.oneboard.databinding.FragmentLectureReadBinding
 import kr.khs.oneboard.databinding.ViewAssignmentDetailBinding
+import kr.khs.oneboard.utils.API_URL_WITHOUT_SLASH
 import kr.khs.oneboard.utils.TYPE_NOTICE
 import kr.khs.oneboard.utils.fileDownload
 import kr.khs.oneboard.viewmodels.LectureReadViewModel
@@ -76,7 +77,15 @@ class LectureReadFragment : BaseFragment<FragmentLectureReadBinding, LectureRead
             assignmentDetailContent.text = Html.fromHtml(item.content, Html.FROM_HTML_MODE_LEGACY)
 
             item.fileUrl?.let {
-                assignmentDetailFileUrl.text = it
+                assignmentDetailFileUrl.setOnClickListener {
+                    val fileName = "${item.assignmentTitle} 제출 과제.pdf"
+                    fileDownload(
+                        "과제 제출 파일 다운로드",
+                        "${item.assignmentTitle} 과제 파일",
+                        API_URL_WITHOUT_SLASH + item.fileUrl,
+                        fileName
+                    )
+                }
             } ?: run { assignmentDetailFileUrl.visibility = View.GONE }
         }
     }
@@ -116,7 +125,12 @@ class LectureReadFragment : BaseFragment<FragmentLectureReadBinding, LectureRead
                 binding.readFileUrl.text = fileName
                 binding.readFileDownloadBtn.visibility = View.VISIBLE
                 binding.readFileDownloadBtn.setOnClickListener {
-                    fileDownload("과제 다운로드", "${item.title} 과제 파일", item.fileUrl, fileName)
+                    fileDownload(
+                        "과제 다운로드",
+                        "${item.title} 과제 파일",
+                        API_URL_WITHOUT_SLASH + item.fileUrl,
+                        fileName
+                    )
                 }
             }
             binding.readContent.text = Html.fromHtml(item.content, Html.FROM_HTML_MODE_LEGACY)
