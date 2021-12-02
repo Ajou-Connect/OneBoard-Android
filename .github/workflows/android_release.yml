@@ -37,17 +37,20 @@ jobs:
         run: bash ./gradlew clean
         
       - name: Build Release APK
-        run: bash ./gradlew assembleRelease --stacktrace --no-build-cache
+        run: bash ./gradlew app:bundleRelease
+#         run: bash ./gradlew assembleRelease --stacktrace --no-build-cache
 #         run: bash ./gradlew assembleDebug --stacktrace --no-build-cache
         
-      - run: './gradlew assembleRelease'
+      - run: './gradlew app:bundleRelease'
+#       - run: './gradlew assembleRelease'
 #       - run: './gradlew assembleDebug'
 
       - name: Slack File Upload
         uses: adrey/slack-file-upload-action@1.0.5
         with:
           token: ${{ secrets.SLACK_READ_WRITE_TOKEN }}
-          path: 'app/build/outputs/apk/release/app-release-unsigned.apk'
+          path: 'app/build/outputs/bundle/release/app-release.aab'
+#           path: 'app/build/outputs/apk/release/app-release-unsigned.apk'
 #           path: 'app/build/outputs/apk/debug/app-debug.apk'
           filename: 'app-release-unsigned.apk'
           filetype: 'apk'
