@@ -1,6 +1,10 @@
 package kr.khs.oneboard.ui
 
+import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +16,7 @@ import kr.khs.oneboard.adapters.SubmitListAdapter
 import kr.khs.oneboard.core.BaseFragment
 import kr.khs.oneboard.data.Assignment
 import kr.khs.oneboard.databinding.FragmentContentDetailBinding
+import kr.khs.oneboard.utils.getFileUrl
 import kr.khs.oneboard.viewmodels.ContentDetailViewModel
 
 @AndroidEntryPoint
@@ -55,14 +60,22 @@ class ContentDetailFragment : BaseFragment<FragmentContentDetailBinding, Content
         initViews()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun initViews() {
         binding.contentDetailTitle.text = assignment.title
-        binding.contentDetailContent.text = assignment.content
+        binding.contentDetailContent.text =
+            Html.fromHtml(assignment.content, Html.FROM_HTML_MODE_LEGACY)
         binding.contentDetailDate.text = assignment.exposeDt
         binding.contentDetailAssignmentList.visibility = View.VISIBLE
-        assignment.fileUrl?.let {
+        assignment.fileUrl?.let { fileUrl ->
             binding.contentDetailFileUrl.visibility = View.VISIBLE
-            binding.contentDetailFileUrl.text = it
+            binding.contentDetailFileUrl.text = "${fileUrl.split("/").last()} 과제 파일 확인하기"
+
+            binding.contentDetailFileUrl.setOnClickListener {
+                startActivity(
+                    Intent(Intent.ACTION_VIEW, Uri.parse(fileUrl.getFileUrl()))
+                )
+            }
         }
         initRecyclerView()
     }
