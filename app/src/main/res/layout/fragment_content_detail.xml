@@ -55,13 +55,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:textColor="@android:color/holo_blue_bright"
         android:visibility="gone"
-        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="@+id/contentDetailDate"
         app:layout_constraintStart_toStartOf="@+id/contentDetailContent"
         app:layout_constraintTop_toBottomOf="@+id/contentDetailContent"
-        tools:visibility="visible"
-        tools:text="파일 url" />
+        tools:text="파일 url"
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/textView2"

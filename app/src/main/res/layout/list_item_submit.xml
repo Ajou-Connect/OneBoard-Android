@@ -40,11 +40,11 @@
             android:id="@+id/submitFileUrl"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
             android:padding="4dp"
+            android:text="제출 파일 확인하기"
+            android:textColor="@android:color/holo_blue_bright"
             app:layout_constraintStart_toStartOf="@+id/submitStudentName"
-            app:layout_constraintTop_toBottomOf="@+id/submitStudentName"
-            tools:text="https://naver.com" />
+            app:layout_constraintTop_toBottomOf="@+id/submitStudentName" />
 
         <TextView
             android:id="@+id/submitContent"
