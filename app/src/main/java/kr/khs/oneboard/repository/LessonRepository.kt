@@ -33,4 +33,14 @@ interface LessonRepository {
     ): UseCase<Boolean>
 
     suspend fun deleteLesson(lectureId: Int, lessonId: Int): UseCase<Boolean>
+
+    suspend fun createLesson(
+        lectureId: Int,
+        lessonId: Int
+    ): UseCase<Boolean>
+
+    suspend fun enterLesson(
+        lectureId: Int,
+        lessonId: Int
+    ): UseCase<Boolean>
 }
