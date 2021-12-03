@@ -9,10 +9,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import kr.khs.oneboard.core.BaseFragment
 import kr.khs.oneboard.data.Lesson
 import kr.khs.oneboard.databinding.FragmentLessonDetailBinding
-import kr.khs.oneboard.utils.TYPE_FACE_TO_FACE
-import kr.khs.oneboard.utils.TYPE_NON_FACE_TO_FACE
-import kr.khs.oneboard.utils.TYPE_RECORDING
+import kr.khs.oneboard.utils.*
 import kr.khs.oneboard.viewmodels.LessonDetailViewModel
+import timber.log.Timber
 
 @AndroidEntryPoint
 class LessonDetailFragment : BaseFragment<FragmentLessonDetailBinding, LessonDetailViewModel>() {
@@ -56,9 +55,19 @@ class LessonDetailFragment : BaseFragment<FragmentLessonDetailBinding, LessonDet
             else -> ""
         }
 
+        if (item.noteUrl == null) {
+            binding.lessonDetailWebView.visibility = View.GONE
+            binding.lessonDetailNoteDownloadBtn.visibility = View.GONE
+            binding.lessonDetailPlanUrl.text = "강의노트가 아직 등록되지 않았습니다."
+            return
+        }
+
+        val url =
+            "https://docs.google.com/gview?embedded=true&url=${API_URL}lecture/${parentViewModel.getLecture().id}/lesson/${item.id}/note"
+
+        Timber.tag("NoteUrl").d(url)
+
         with(binding.lessonDetailWebView) {
-            val url =
-                "https://docs.google.com/gview?embedded=true&url=http://115.85.182.194:8080/lecture/${parentViewModel.getLecture().id}/lesson/${item.id}/note"
             webViewClient = WebViewClient() // 클릭 시 새창 안뜨게
             with(this.settings) {
                 javaScriptEnabled = true
@@ -74,6 +83,15 @@ class LessonDetailFragment : BaseFragment<FragmentLessonDetailBinding, LessonDet
             }
 
             loadUrl(url)
+        }
+
+        val downloadUrl =
+            "${API_URL}lecture/${parentViewModel.getLecture().id}/lesson/${item.id}/note"
+        Timber.tag("NoteUrl").d(downloadUrl)
+
+        binding.lessonDetailNoteDownloadBtn.setOnClickListener {
+            val fileName = "${item.title} 강의노트.pdf"
+            fileDownload("$fileName 다운로드 ", "강의노트 다운로드", downloadUrl, fileName)
         }
     }
 }

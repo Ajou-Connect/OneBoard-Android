@@ -39,10 +39,7 @@ class LessonListAdapter : ListAdapter<Lesson, RecyclerView.ViewHolder>(LessonDif
 
         fun bind(item: Lesson) {
             binding.item = item
-            item.note?.let {
-                binding.lessonNote.visibility = View.VISIBLE
-                binding.lessonNote.text = it
-            }
+            binding.lessonNote.text = if (item.noteUrl != null) "강의노트 등록 완료" else "강의노트 미등록"
             binding.lessonInfo.text = when (item.type) {
                 TYPE_NON_FACE_TO_FACE -> "비대면 실시간 수업"
                 TYPE_FACE_TO_FACE -> item.room ?: "아직 강의실이 정해지지 않았습니다."

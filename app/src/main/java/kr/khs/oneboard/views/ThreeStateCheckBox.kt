@@ -25,8 +25,6 @@ class ThreeStateCheckBox @JvmOverloads constructor(
         attrs?.let {
             val typedArray = context.obtainStyledAttributes(attrs, R.styleable.ThreeStateCheckBox)
 
-            state = typedArray.getInt(R.styleable.ThreeStateCheckBox_state, STATE_UNCHECKED)
-
             textUnchecked =
                 typedArray.getString(R.styleable.ThreeStateCheckBox_text_state_unchecked)
             textIndeterminate =
@@ -34,17 +32,12 @@ class ThreeStateCheckBox @JvmOverloads constructor(
             textChecked = typedArray.getString(R.styleable.ThreeStateCheckBox_text_state_checked)
             isClickable = typedArray.getBoolean(R.styleable.ThreeStateCheckBox_clickable, false)
 
+            typedArray.recycle()
+
             changeText(state)
             changeDrawable(state)
 
-            Timber.d("state: $state")
-            Timber.d("textUnChecked : $textUnchecked")
-            Timber.d("textIndeterminate: $textIndeterminate")
-            Timber.d("textChecked : $textChecked")
-
-            typedArray.recycle()
-
-//            initComponent()
+            initComponent()
         }
     }
 
@@ -72,17 +65,18 @@ class ThreeStateCheckBox @JvmOverloads constructor(
 
     var onStateChanged: ((ThreeStateCheckBox, Int) -> Unit)? = null
 
-//    private fun initComponent() {
-//        Timber.d("initComponent()")
-//        setOnCheckedChangeListener { _, _ ->
-//            state = when (state) {
-//                STATE_UNCHECKED -> STATE_CHECKED
-//                STATE_CHECKED -> STATE_INDETERMINATE
-//                STATE_INDETERMINATE -> STATE_UNCHECKED
-//                else -> -1
-//            }
-//        }
-//    }
+    private fun initComponent() {
+        Timber.d("initComponent()")
+        setOnClickListener { _ ->
+            Timber.d("checkChange")
+            state = when (state) {
+                STATE_UNCHECKED -> STATE_CHECKED
+                STATE_CHECKED -> STATE_INDETERMINATE
+                STATE_INDETERMINATE -> STATE_UNCHECKED
+                else -> -1
+            }
+        }
+    }
 
     private fun changeText(state: Int) {
         text = when (state) {

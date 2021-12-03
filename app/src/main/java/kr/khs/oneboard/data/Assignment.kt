@@ -12,7 +12,7 @@ data class Assignment(
     override val content: String,
     override val exposeDt: String,
     override val updatedDt: String,
-    val fileUrl: String,
+    val fileUrl: String? = null,
     val startDt: String,
     val endDt: String,
     val score: Float

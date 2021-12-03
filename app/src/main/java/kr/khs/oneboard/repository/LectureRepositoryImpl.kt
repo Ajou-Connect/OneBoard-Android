@@ -11,6 +11,9 @@ import kr.khs.oneboard.data.request.AttendanceUpdateRequestDto
 import kr.khs.oneboard.data.request.GradeUpdateRequestDto
 import kr.khs.oneboard.data.request.NoticeUpdateRequestDto
 import kr.khs.oneboard.utils.SUCCESS
+import kr.khs.oneboard.utils.toPlainRequestBody
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Named
@@ -122,12 +125,22 @@ class LectureRepositoryImpl @Inject constructor(
 
     override suspend fun postAssignment(
         lectureId: Int,
-        assignment: AssignmentUpdateRequestDto
+        assignment: AssignmentUpdateRequestDto,
+        file: MultipartBody.Part?
     ): UseCase<Boolean> {
         var returnValue: UseCase<Boolean>
         try {
             withContext(Dispatchers.IO) {
-                val response = apiService.postAssignment(lectureId, assignment)
+                val map = HashMap<String, RequestBody>()
+                map["title"] = assignment.title.toPlainRequestBody()
+                map["content"] = assignment.content.toPlainRequestBody()
+                map["startDt"] = assignment.startDt.toPlainRequestBody()
+                map["endDt"] = assignment.endDt.toPlainRequestBody()
+                map["exposeDt"] = assignment.exposeDt.toPlainRequestBody()
+                map["score"] = assignment.score.toString().toPlainRequestBody()
+
+                val response = apiService.postAssignment(lectureId, file, map)
+
                 returnValue = if (response.result == SUCCESS)
                     UseCase.success(true)
                 else
@@ -144,12 +157,21 @@ class LectureRepositoryImpl @Inject constructor(
     override suspend fun putAssignment(
         lectureId: Int,
         assignmentId: Int,
-        assignment: AssignmentUpdateRequestDto
+        assignment: AssignmentUpdateRequestDto,
+        file: MultipartBody.Part?
     ): UseCase<Boolean> {
         var returnValue: UseCase<Boolean>
         try {
             withContext(Dispatchers.IO) {
-                val response = apiService.putAssignment(lectureId, assignmentId, assignment)
+                val map = HashMap<String, RequestBody>()
+                map["title"] = assignment.title.toPlainRequestBody()
+                map["content"] = assignment.content.toPlainRequestBody()
+                map["startDt"] = assignment.startDt.toPlainRequestBody()
+                map["endDt"] = assignment.endDt.toPlainRequestBody()
+                map["exposeDt"] = assignment.exposeDt.toPlainRequestBody()
+                map["score"] = assignment.score.toString().toPlainRequestBody()
+
+                val response = apiService.putAssignment(lectureId, assignmentId, file, map)
                 returnValue = if (response.result == SUCCESS)
                     UseCase.success(true)
                 else

@@ -21,10 +21,7 @@ import kr.khs.oneboard.data.request.NoticeUpdateRequestDto
 import kr.khs.oneboard.databinding.FragmentLectureWriteBinding
 import kr.khs.oneboard.extensions.toDateTime
 import kr.khs.oneboard.extensions.toTimeInMillis
-import kr.khs.oneboard.utils.TYPE_ASSIGNMENT
-import kr.khs.oneboard.utils.TYPE_NOTICE
-import kr.khs.oneboard.utils.ToastUtil
-import kr.khs.oneboard.utils.asMultipart
+import kr.khs.oneboard.utils.*
 import kr.khs.oneboard.viewmodels.LectureWriteViewModel
 import okhttp3.MultipartBody
 import timber.log.Timber
@@ -45,8 +42,9 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
             if (result.resultCode == Activity.RESULT_OK) {
                 val data = result.data
                 assignmentFile =
-                    data?.data?.asMultipart("filename", requireContext().contentResolver)
-                binding.writeFileDescription.text = data?.data?.lastPathSegment
+                    data?.data?.asMultipart("file", requireContext().contentResolver)
+                binding.writeFileDescription.text =
+                    "${data?.data?.getFileName(requireContext().contentResolver)}"
             }
         }
 
@@ -156,6 +154,13 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
             binding.writeEndDt.text = assignment?.endDt
             binding.writeAssignmentScore.setText(assignment?.score.toString())
         }
+
+        DialogUtil.createDialog(
+            requireContext(),
+            "파일 다시 업로드를 해주어야 합니다.",
+            positiveText = "알겠습니다.",
+            positiveAction = { }
+        )
     }
 
     private fun initExposeTime() {
@@ -235,6 +240,9 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
                         ) {
                             viewModel.setErrorMessage("시작 시간이 마감 시간보다 크거나 같을 수 없습니다.")
                             return@setOnClickListener
+                        } else if (binding.writeAssignmentScore.text.toString().isEmpty()) {
+                            viewModel.setErrorMessage("배점을 입력해주세요.")
+                            return@setOnClickListener
                         }
                         AssignmentUpdateRequestDto(
                             binding.writeTitleEditText.text.toString(),
@@ -249,7 +257,8 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
                             binding.writeAssignmentScore.text.toString().toFloat()
                         )
                     } else
-                        null
+                        null,
+                    assignmentFile
                 )
             } else {
                 viewModel.writeContent(
@@ -273,6 +282,9 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
                         ) {
                             viewModel.setErrorMessage("시작 시간이 마감 시간보다 크거나 같을 수 없습니다.")
                             return@setOnClickListener
+                        } else if (binding.writeAssignmentScore.text.toString().isEmpty()) {
+                            viewModel.setErrorMessage("배점을 입력해주세요.")
+                            return@setOnClickListener
                         }
                         AssignmentUpdateRequestDto(
                             binding.writeTitleEditText.text.toString(),
@@ -287,7 +299,8 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
                             binding.writeAssignmentScore.text.toString().toFloat()
                         )
                     } else
-                        null
+                        null,
+                    assignmentFile
                 )
             }
         }

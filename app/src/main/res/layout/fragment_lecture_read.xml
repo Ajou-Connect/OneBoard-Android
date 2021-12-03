@@ -53,7 +53,8 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/readTitle"
         app:layout_constraintTop_toBottomOf="@+id/readTitle"
-        tools:text="시작 시간" />
+        tools:text="시작 시간"
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/readEndDT"
@@ -69,7 +70,8 @@
         app:layout_constraintEnd_toEndOf="@+id/readTime"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toTopOf="@+id/readStartDT"
-        tools:text="마감 시간" />
+        tools:text="마감 시간"
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/readContent"
@@ -91,15 +93,18 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         android:background="@drawable/round_corner"
         android:backgroundTint="@color/primaryLightColor"
         android:padding="8dp"
         android:textColor="@color/black"
         android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@+id/readTime"
+        app:layout_constraintEnd_toStartOf="@+id/readFileDownloadBtn"
         app:layout_constraintStart_toStartOf="@+id/readTitle"
         app:layout_constraintTop_toBottomOf="@+id/readStartDT"
-        tools:text="파일" />
+        tools:text="파일"
+        tools:visibility="visible" />
+
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
@@ -125,8 +130,21 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/readTime"
         app:layout_constraintStart_toStartOf="@+id/readTitle"
         app:layout_constraintTop_toBottomOf="@+id/readContent" />
+
+    <Button
+        android:id="@+id/readFileDownloadBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="다운로드"
+        android:textColor="@color/white"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/readFileUrl"
+        app:layout_constraintEnd_toEndOf="@+id/readEndDT"
+        app:layout_constraintTop_toTopOf="@+id/readFileUrl"
+        tools:visibility="visible" />
 </androidx.constraintlayout.widget.ConstraintLayout>
