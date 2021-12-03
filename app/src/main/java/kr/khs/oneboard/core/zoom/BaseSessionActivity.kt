@@ -26,9 +26,7 @@ import kr.khs.oneboard.R
 import kr.khs.oneboard.adapters.ChatMsgAdapter
 import kr.khs.oneboard.adapters.UserVideoAdapter
 import kr.khs.oneboard.databinding.*
-import kr.khs.oneboard.utils.ToastUtil
-import kr.khs.oneboard.utils.UserHelper
-import kr.khs.oneboard.utils.ZMAdapterOsBugHelper
+import kr.khs.oneboard.utils.*
 import kr.khs.oneboard.views.KeyBoardLayout
 import timber.log.Timber
 import us.zoom.sdk.*
@@ -36,7 +34,8 @@ import javax.inject.Inject
 import kotlin.properties.Delegates
 
 @AndroidEntryPoint
-open class BaseSessionActivity : AppCompatActivity(), ZoomVideoSDKDelegate, ShareToolbar.Listener,
+abstract class BaseSessionActivity : AppCompatActivity(), ZoomVideoSDKDelegate,
+    ShareToolbar.Listener,
     UserVideoAdapter.ItemTapListener, ChatMsgAdapter.ItemClickListener,
     KeyBoardLayout.KeyBoardListener {
     companion object {
@@ -85,6 +84,8 @@ open class BaseSessionActivity : AppCompatActivity(), ZoomVideoSDKDelegate, Shar
     protected lateinit var session: ZoomVideoSDKSession
 
     protected var renderWithSurfaceView = true
+
+    protected abstract val sessionLeaveProfessor: () -> Unit
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -527,20 +528,23 @@ open class BaseSessionActivity : AppCompatActivity(), ZoomVideoSDKDelegate, Shar
                 getString(R.string.leave_end_text)
             end = true
         }
-        val endSession = end
+//        val endSession = end
         binding.btnEnd.setOnClickListener {
             dialog.dismiss()
-            if (endSession) {
-                releaseResource()
-                val ret = ZoomVideoSDK.getInstance().leaveSession(true)
-                Timber.d("leaveSession ret = $ret")
-            }
+            if (UserInfoUtil.type == TYPE_PROFESSOR)
+                sessionLeaveProfessor()
+
+//            if (endSession) {
+//                releaseResource()
+//                val ret = ZoomVideoSDK.getInstance().leaveSession(true)
+//                Timber.d("leaveSession ret = $ret")
+//            }
         }
         dialog.show()
     }
 
     // 리소스 해제
-    private fun releaseResource() {
+    protected fun releaseResource() {
         unSubscribe()
         userVideoAdapter.clear(true)
         actionBarBinding.root.visibility = View.GONE
@@ -775,7 +779,6 @@ open class BaseSessionActivity : AppCompatActivity(), ZoomVideoSDKDelegate, Shar
 
     override fun onSessionLeave() {
         Timber.d("onSessionLeave")
-        finish()
     }
 
     override fun onError(errorCode: Int) {

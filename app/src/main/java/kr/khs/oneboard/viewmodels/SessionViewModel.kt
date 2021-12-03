@@ -1,5 +1,7 @@
 package kr.khs.oneboard.viewmodels
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -17,6 +19,9 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
 
     private var lectureId by Delegates.notNull<Int>()
     private var lessonId by Delegates.notNull<Int>()
+
+    private val _isLeave = MutableLiveData(false)
+    val isLeave: LiveData<Boolean> = _isLeave
 
     fun postAttendance() {
         viewModelScope.launch {
@@ -56,7 +61,17 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
     }
 
     fun leaveSession() {
+        viewModelScope.launch {
+            showProgress()
+            val response = repository.leaveLesson(lectureId, lessonId)
 
+            if (response.status == UseCase.Status.SUCCESS && response.data!!) {
+                _isLeave.value = true
+            } else {
+                setErrorMessage("다시 시도해주세요.")
+            }
+            hideProgress()
+        }
     }
 
     fun setId(lectureId: Int, lessonId: Int) {

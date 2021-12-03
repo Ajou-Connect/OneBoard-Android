@@ -20,10 +20,7 @@ import kr.khs.oneboard.core.rawdata.RawDataRenderer
 import kr.khs.oneboard.core.zoom.AudioRawDataUtil
 import kr.khs.oneboard.core.zoom.BaseSessionActivity
 import kr.khs.oneboard.core.zoom.NotificationService
-import kr.khs.oneboard.utils.DialogUtil
-import kr.khs.oneboard.utils.TYPE_PROFESSOR
-import kr.khs.oneboard.utils.ToastUtil
-import kr.khs.oneboard.utils.UserInfoUtil
+import kr.khs.oneboard.utils.*
 import kr.khs.oneboard.viewmodels.SessionViewModel
 import timber.log.Timber
 import us.zoom.sdk.*
@@ -48,6 +45,8 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
     private lateinit var rawDataRenderer: RawDataRenderer
 
     private val viewModel: SessionViewModel by viewModels()
+
+    override val sessionLeaveProfessor: () -> Unit by lazy { { viewModel.leaveSession() } }
 
     @Inject
     lateinit var socket: Socket
@@ -133,6 +132,31 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR
 
         addSocketListener()
+
+        viewModel.isLoading.observe(this) {
+            if (it) {
+                DialogUtil.onLoadingDialog(this)
+            } else {
+                DialogUtil.offLoadingDialog()
+            }
+        }
+
+        viewModel.isError.observe(this) {
+            if (it != "") {
+                ToastUtil.shortToast(this, it)
+                viewModel.setErrorMessage()
+            }
+        }
+
+        viewModel.isLeave.observe(this) {
+            if (it) {
+                sessionLeaveAction()
+
+                super.releaseResource()
+                val ret = ZoomVideoSDK.getInstance().leaveSession(true)
+                Timber.d("leaveSession ret = $ret")
+            }
+        }
     }
 
     override fun parseIntent() {
@@ -192,6 +216,13 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
 
     override fun onSessionLeave() {
         super.onSessionLeave()
+        if (UserInfoUtil.type == TYPE_STUDENT) {
+            sessionLeaveAction()
+        }
+    }
+
+    private fun sessionLeaveAction() {
+        finish()
         audioRawDataUtil.unSubscribe()
         shareToolbar?.destroy()
 
