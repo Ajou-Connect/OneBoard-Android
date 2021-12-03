@@ -44,6 +44,29 @@ class LessonDetailFragment : BaseFragment<FragmentLessonDetailBinding, LessonDet
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.isCreateLesson.observe(viewLifecycleOwner) {
+            if (it) {
+                createOrJoinSession()
+                viewModel.doneCreateLesson()
+            }
+        }
+
+        viewModel.sessionError.observe(viewLifecycleOwner) {
+            if (it != "") {
+                DialogUtil.createDialog(
+                    context = requireContext(),
+                    message = it,
+                    positiveText = "확인",
+                    positiveAction = { }
+                )
+                viewModel.setSessionErrorMessage("")
+            }
+        }
+    }
+
     override fun getFragmentViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -101,7 +124,19 @@ class LessonDetailFragment : BaseFragment<FragmentLessonDetailBinding, LessonDet
                 }
                 TYPE_FACE_TO_FACE -> {
                 }
-                TYPE_NON_FACE_TO_FACE -> createOrJoinSession()
+                TYPE_NON_FACE_TO_FACE -> {
+                    if (UserInfoUtil.type == TYPE_PROFESSOR) {
+                        viewModel.createLesson(
+                            parentViewModel.getLecture().id,
+                            viewModel.getLesson().id
+                        )
+                    } else {
+                        viewModel.enterLesson(
+                            parentViewModel.getLecture().id,
+                            viewModel.getLesson().id
+                        )
+                    }
+                }
             }
         }
     }
