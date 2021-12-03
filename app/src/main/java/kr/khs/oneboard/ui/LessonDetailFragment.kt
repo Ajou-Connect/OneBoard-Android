@@ -192,7 +192,10 @@ class LessonDetailFragment : BaseFragment<FragmentLessonDetailBinding, LessonDet
                 Intent(requireContext(), SessionActivity::class.java).apply {
                     putExtra("name", mySelf.userName)
                     putExtra("sessionName", sessionName)
+                    putExtra("sessionDisplayName", sessionName)
                     putExtra("renderType", BaseSessionActivity.RENDER_TYPE_ZOOMRENDERER)
+                    putExtra("lectureId", parentViewModel.getLecture().id)
+                    putExtra("lessonId", viewModel.getLesson().id)
                 }
             )
         } ?: run {

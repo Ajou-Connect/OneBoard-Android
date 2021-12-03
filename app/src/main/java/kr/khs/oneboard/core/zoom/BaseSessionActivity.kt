@@ -68,6 +68,7 @@ open class BaseSessionActivity : AppCompatActivity(), ZoomVideoSDKDelegate, Shar
     protected lateinit var myDisplayName: String
     protected lateinit var meetingPwd: String
     protected lateinit var sessionName: String
+    protected lateinit var sessionDisplayName: String
     protected var renderType by Delegates.notNull<Int>()
 
     protected val handler = Handler(Looper.getMainLooper())
@@ -271,10 +272,11 @@ open class BaseSessionActivity : AppCompatActivity(), ZoomVideoSDKDelegate, Shar
     }
 
     // TODO: 2021/11/15 add bundle when start activity
-    protected fun parseIntent() {
+    protected open fun parseIntent() {
         intent.extras?.let {
             myDisplayName = it.getString("name", "UNKNOWN")
             sessionName = it.getString("sessionName", "UNKNOWN")
+            sessionDisplayName = it.getString("sessionDisplayName", "UNKNOWN")
             renderType = it.getInt("renderType")
         }
     }
@@ -495,7 +497,7 @@ open class BaseSessionActivity : AppCompatActivity(), ZoomVideoSDKDelegate, Shar
             size = 1
         binding.infoUserSize.text = "$size"
         binding.infoSessionPwd.text = ""
-        binding.infoSessionName.text = zoom.session.sessionName
+        binding.infoSessionName.text = sessionDisplayName
 
         builder.setCancelable(true)
         val dialog = builder.create()
