@@ -10,7 +10,7 @@ data class Lesson(
     val lectureId: Int,
     val title: String,
     val date: String,
-    val note: String? = null,
+    val noteUrl: String? = null,
     val type: Int,
     val room: String? = null,
     val meetingId: String? = null,

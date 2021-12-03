@@ -49,6 +49,9 @@ class GradeProfessorFragment :
                         viewModel.setRatio(a = 0)
                     else if (a.toInt() > 100 || a.toInt() + b.toInt() > 100)
                         viewModel.setRatio(a = a.toInt() / 10)
+
+                    binding.gradeElseRatio.text =
+                        if (b == "") "100" else (100 - b.toInt() - a.toInt()).toString()
                 }
             }
         }
@@ -63,7 +66,7 @@ class GradeProfessorFragment :
                     }
 
                     binding.gradeElseRatio.text =
-                        if (b == "") "100" else (100 - b.toInt()).toString()
+                        if (b == "") "100" else (100 - b.toInt() - a.toInt()).toString()
                 }
             }
         }

@@ -45,9 +45,10 @@
         android:id="@+id/lessonDetailPlanUrl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:text="강의노트 보기"
         android:textColor="@color/black"
-        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/lessonDetailNoteDownloadBtn"
         app:layout_constraintStart_toStartOf="@+id/lessonDetailInfo"
         app:layout_constraintTop_toBottomOf="@+id/lessonDetailLessonBtn"
         tools:text="강의 노트 보기" />
@@ -56,10 +57,11 @@
         android:id="@+id/lessonDetailWebView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lessonDetailPlanUrl" />
+        app:layout_constraintTop_toBottomOf="@+id/lessonDetailNoteDownloadBtn" />
 
     <Button
         android:id="@+id/lessonDetailLessonBtn"
@@ -70,5 +72,14 @@
         android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lessonDetailDate" />
+
+    <Button
+        android:id="@+id/lessonDetailNoteDownloadBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="다운로드"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/lessonDetailLessonBtn"
+        app:layout_constraintTop_toBottomOf="@+id/lessonDetailLessonBtn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,6 +10,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <View
+            android:id="@+id/view"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/assignmentDetailScore"
             android:layout_width="wrap_content"
@@ -55,19 +64,19 @@
             android:textColor="#000000"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view"
             tools:text="이번주 과제 제출 입니다.\n1번 답 : int main()\n2번 답 : { printf(1);\n3번 답 : return 0; }" />
 
-        <TextView
+        <Button
             android:id="@+id/assignmentDetailFileUrl"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:padding="8dp"
-            android:textColor="#000000"
+            android:text="제출한 파일 다운로드"
+            android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="@+id/assignmentDetailContent"
             app:layout_constraintTop_toBottomOf="@+id/assignmentDetailContent"
-            tools:text="https://naver.com"
             tools:visibility="visible" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

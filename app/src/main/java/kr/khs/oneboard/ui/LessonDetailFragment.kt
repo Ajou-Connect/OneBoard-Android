@@ -98,9 +98,22 @@ class LessonDetailFragment : BaseFragment<FragmentLessonDetailBinding, LessonDet
             else -> ""
         }
 
+        if (viewModel.getLesson().noteUrl == null) {
+            binding.lessonDetailWebView.visibility = View.GONE
+            binding.lessonDetailNoteDownloadBtn.visibility = View.GONE
+            binding.lessonDetailPlanUrl.text = "강의노트가 아직 등록되지 않았습니다."
+            return
+        }
+
+        val url =
+            "https://docs.google.com/gview?embedded=true&url=${API_URL}lecture/${parentViewModel.getLecture().id}/lesson/${viewModel.getLesson().id}/note"
+
+        Timber.tag("NoteUrl").d(url)
+
         with(binding.lessonDetailWebView) {
             val url =
                 "https://docs.google.com/gview?embedded=true&url=http://115.85.182.194:8080/lecture/${parentViewModel.getLecture().id}/lesson/${viewModel.getLesson().id}/note"
+
             webViewClient = WebViewClient() // 클릭 시 새창 안뜨게
             with(this.settings) {
                 javaScriptEnabled = true
@@ -138,6 +151,15 @@ class LessonDetailFragment : BaseFragment<FragmentLessonDetailBinding, LessonDet
                     }
                 }
             }
+        }
+
+        val downloadUrl =
+            "${API_URL}lecture/${parentViewModel.getLecture().id}/lesson/${viewModel.getLesson().id}/note"
+        Timber.tag("NoteUrl").d(downloadUrl)
+
+        binding.lessonDetailNoteDownloadBtn.setOnClickListener {
+            val fileName = "${viewModel.getLesson().title} 강의노트.pdf"
+            fileDownload("$fileName 다운로드 ", "강의노트 다운로드", downloadUrl, fileName)
         }
     }
 

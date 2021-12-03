@@ -1,10 +1,14 @@
 package kr.khs.oneboard.utils
 
 import android.annotation.SuppressLint
+import android.app.DownloadManager
 import android.content.ContentResolver
+import android.content.Context
 import android.database.Cursor
 import android.net.Uri
+import android.os.Environment
 import android.provider.OpenableColumns
+import androidx.fragment.app.Fragment
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
@@ -56,3 +60,29 @@ fun Uri.getFileName(contentResolver: ContentResolver): String {
     }
     return result ?: "nullll"
 }
+
+fun Fragment.fileDownload(
+    title: String,
+    description: String,
+    downloadUrl: String,
+    fileName: String
+) {
+    val request = DownloadManager.Request(Uri.parse(downloadUrl))
+        .setTitle(title)
+        .setDescription(description)
+        .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+        .setDestinationInExternalPublicDir(
+            Environment.DIRECTORY_DOWNLOADS,
+            fileName
+        )
+        .setRequiresCharging(false)
+        .setAllowedOverMetered(true)
+        .setAllowedOverRoaming(true)
+
+    (requireContext().getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager).enqueue(
+        request
+    )
+}
+
+fun String.getFileUrl() =
+    "https://docs.google.com/gview?embedded=true&url=${API_URL_WITHOUT_SLASH}$this"

@@ -3,7 +3,6 @@ package kr.khs.oneboard.api
 import kr.khs.oneboard.data.*
 import kr.khs.oneboard.data.api.BasicResponseImpl
 import kr.khs.oneboard.data.api.Response
-import kr.khs.oneboard.data.request.AssignmentUpdateRequestDto
 import kr.khs.oneboard.data.request.AttendanceUpdateRequestDto
 import kr.khs.oneboard.data.request.GradeUpdateRequestDto
 import kr.khs.oneboard.data.request.NoticeUpdateRequestDto
@@ -70,17 +69,21 @@ interface ApiService {
     @GET("lecture/{lectureId}/assignments")
     suspend fun getAssignmentList(@Path("lectureId") lectureId: Int): Response<List<Assignment>>
 
+    @Multipart
     @POST("lecture/{lectureId}/assignment")
     suspend fun postAssignment(
         @Path("lectureId") lectureId: Int,
-        @Body dto: AssignmentUpdateRequestDto
+        @Part file: MultipartBody.Part?,
+        @PartMap body: HashMap<String, RequestBody>
     ): BasicResponseImpl
 
+    @Multipart
     @PUT("lecture/{lectureId}/assignment/{assignmentId}")
     suspend fun putAssignment(
         @Path("lectureId") lectureId: Int,
         @Path("assignmentId") assignmentId: Int,
-        @Body dto: AssignmentUpdateRequestDto
+        @Part file: MultipartBody.Part?,
+        @PartMap body: HashMap<String, RequestBody>
     ): BasicResponseImpl
 
     @DELETE("lecture/{lectureId}/assignment/{assignmentId}")

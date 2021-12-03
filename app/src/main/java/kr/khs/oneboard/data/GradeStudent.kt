@@ -19,7 +19,7 @@ data class GradeStudent(
         val submitId: Int,
         val assignmentId: Int,
         val assignmentTitle: String,
-        val score: Float
+        val score: Float? = null
     )
 }
 

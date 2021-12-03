@@ -68,7 +68,6 @@ class LessonListFragment : BaseFragment<FragmentLessonListBinding, LessonListVie
         })
 
         binding.fab.setOnClickListener {
-            // TODO: 2021/11/01 add lesson
             findNavController().navigate(LessonListFragmentDirections.actionLessonListFragmentToLessonWriteFragment())
         }
     }
