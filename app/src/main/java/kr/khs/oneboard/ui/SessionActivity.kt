@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.FrameLayout
 import androidx.activity.viewModels
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
@@ -89,7 +90,12 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
 
     private val socketAttendanceRequestListener = Emitter.Listener {
         launch(coroutineContext) {
-
+            MaterialAlertDialogBuilder(this@SessionActivity)
+                .setMessage("출석 체크를 해주세요.")
+                .setCancelable(false)
+                .setPositiveButton("확인") { _, _ ->
+                    viewModel.postAttendance()
+                }
         }
     }
 
@@ -127,6 +133,17 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR
 
         addSocketListener()
+    }
+
+    override fun parseIntent() {
+        super.parseIntent()
+
+        intent.extras?.let {
+            val lectureId = it.getInt("lectureId", 0)
+            val lessonId = it.getInt("lessonId", 0)
+
+            viewModel.setId(lectureId, lessonId)
+        }
     }
 
     private fun addSocketListener() {
