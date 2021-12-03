@@ -28,12 +28,29 @@ class SessionRepositoryImpl @Inject constructor(
         return returnValue
     }
 
-    override suspend fun postAttendance(lectureId: Int, lessonId: Int): UseCase<Boolean> {
+    override suspend fun postAttendanceProfessor(lectureId: Int, lessonId: Int): UseCase<Boolean> {
         var returnValue: UseCase<Boolean>
 
         try {
             withContext(Dispatchers.IO) {
-                val response = apiService.postAttendance(lectureId, lessonId)
+                val response = apiService.postAttendanceStudent(lectureId, lessonId)
+
+                returnValue = UseCase.success(response.result == SUCCESS)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            returnValue = UseCase.error("error")
+        }
+
+        return returnValue
+    }
+
+    override suspend fun postAttendanceStudent(lectureId: Int, lessonId: Int): UseCase<Boolean> {
+        var returnValue: UseCase<Boolean>
+
+        try {
+            withContext(Dispatchers.IO) {
+                val response = apiService.postAttendanceProfessor(lectureId, lessonId)
 
                 returnValue = UseCase.success(response.result == SUCCESS)
             }

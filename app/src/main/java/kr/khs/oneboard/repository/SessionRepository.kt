@@ -8,7 +8,12 @@ interface SessionRepository {
         lessonId: Int
     ): UseCase<Boolean>
 
-    suspend fun postAttendance(
+    suspend fun postAttendanceProfessor(
+        lectureId: Int,
+        lessonId: Int
+    ): UseCase<Boolean>
+
+    suspend fun postAttendanceStudent(
         lectureId: Int,
         lessonId: Int
     ): UseCase<Boolean>

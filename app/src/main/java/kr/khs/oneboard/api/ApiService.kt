@@ -196,9 +196,16 @@ interface ApiService {
         @Path("lessonId") lessonId: Int
     ): BasicResponseImpl
 
-    // TODO: 2021/12/03 출석 체크 요청
-    @POST("lecture/{lectureId}/lesson/{lessonId}/live/attendance/professor")
-    suspend fun postAttendance(
+    // TODO: 2021/12/03 출석 체크 요청 - 교수
+    @GET("lecture/{lectureId}/lesson/{lessonId}/live/attendance/professor")
+    suspend fun postAttendanceProfessor(
+        @Path("lectureId") lectureId: Int,
+        @Path("lessonId") lessonId: Int
+    ): BasicResponseImpl
+
+    // TODO: 2021/12/03 출석 체크 요청 - 교수
+    @POST("lecture/{lectureId}/lesson/{lessonId}/live/attendance/student")
+    suspend fun postAttendanceStudent(
         @Path("lectureId") lectureId: Int,
         @Path("lessonId") lessonId: Int
     ): BasicResponseImpl
