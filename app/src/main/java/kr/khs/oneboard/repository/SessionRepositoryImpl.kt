@@ -1,6 +1,7 @@
 package kr.khs.oneboard.repository
 
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import kr.khs.oneboard.api.ApiService
 import kr.khs.oneboard.core.UseCase
@@ -13,17 +14,19 @@ class SessionRepositoryImpl @Inject constructor(
 ) : SessionRepository {
     override suspend fun leaveLesson(lectureId: Int, lessonId: Int): UseCase<Boolean> {
         var returnValue: UseCase<Boolean>
+        delay(1000)
+        returnValue = UseCase.success(true)
 
-        try {
-            withContext(Dispatchers.IO) {
-                val response = apiService.leaveLesson(lectureId, lessonId)
-
-                returnValue = UseCase.success(response.result == SUCCESS)
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-            returnValue = UseCase.error("error")
-        }
+//        try {
+//            withContext(Dispatchers.IO) {
+//                val response = apiService.leaveLesson(lectureId, lessonId)
+//
+//                returnValue = UseCase.success(response.result == SUCCESS)
+//            }
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//            returnValue = UseCase.error("error")
+//        }
 
         return returnValue
     }
