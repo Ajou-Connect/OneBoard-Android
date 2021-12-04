@@ -172,7 +172,7 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
         }
         binding.writeExposeTimeCheckBox.isChecked = true
 
-        binding.writeExposeTimeTextView.text = System.currentTimeMillis().toDateTime()
+        binding.writeExposeTimeTextView.text = "날짜, 시간 선택"
 
         binding.writeExposeTimeTextView.setOnClickListener { textview ->
             CustomDateTimePicker(
@@ -222,10 +222,13 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
 
 
         binding.writeButton.setOnClickListener {
-            if (binding.writeTitleEditText.text.toString()
-                    .isEmpty() || binding.writeContentEditText.html == null
+            if (binding.writeTitleEditText.text.toString().isEmpty()
+                || binding.writeContentEditText.html == null
             ) {
                 viewModel.setErrorMessage("빈 칸을 전부 채워주세요.")
+                return@setOnClickListener
+            } else if (binding.writeExposeTimeTextView.text == "날짜, 시간 선택") {
+                viewModel.setErrorMessage("날짜, 시간을 선택해주세요.")
                 return@setOnClickListener
             }
 
