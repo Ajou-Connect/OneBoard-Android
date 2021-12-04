@@ -277,7 +277,9 @@ abstract class BaseSessionActivity : AppCompatActivity(), ZoomVideoSDKDelegate,
         intent.extras?.let {
             myDisplayName = it.getString("name", "UNKNOWN")
             sessionName = it.getString("sessionName", "UNKNOWN")
+            Timber.tag("SessionName").d("session : $sessionName")
             sessionDisplayName = it.getString("sessionDisplayName", "UNKNOWN")
+            Timber.tag("SessionName").d("session display : $sessionDisplayName")
             renderType = it.getInt("renderType")
         }
     }
@@ -756,7 +758,7 @@ abstract class BaseSessionActivity : AppCompatActivity(), ZoomVideoSDKDelegate,
             binding.textMeetingUserSize.text = "Connecting..."
         }
 
-        binding.sessionName.text = session.sessionName
+        binding.sessionName.text = sessionDisplayName
 //        binding.meetingLockStatus.setImageResource(R.drawable.unlock)
     }
 

@@ -80,6 +80,8 @@ class LessonDetailFragment : BaseFragment<FragmentLessonDetailBinding, LessonDet
     }
 
     private fun initViews() {
+        Timber.tag("SessionInfo").d("${viewModel.getLesson()}")
+
         binding.lessonDetailTitle.text = viewModel.getLesson().title
         binding.lessonDetailDate.text = viewModel.getLesson().date
         binding.lessonDetailInfo.text = when (viewModel.getLesson().type) {
@@ -96,6 +98,30 @@ class LessonDetailFragment : BaseFragment<FragmentLessonDetailBinding, LessonDet
                 "녹화강의 : ${viewModel.getLesson().videoUrl ?: "아직 영상이 올라오지 않았습니다."}"
             }
             else -> ""
+        }
+
+        binding.lessonDetailLessonBtn.setOnClickListener {
+            when (viewModel.getLesson().type) {
+                TYPE_RECORDING -> {
+                }
+                TYPE_FACE_TO_FACE -> {
+                }
+                TYPE_NON_FACE_TO_FACE -> {
+                    if (UserInfoUtil.type == TYPE_PROFESSOR) {
+                        Timber.tag("SessionInfo").d("type professor")
+                        viewModel.createLesson(
+                            parentViewModel.getLecture().id,
+                            viewModel.getLesson().lessonId
+                        )
+                    } else {
+                        Timber.tag("SessionInfo").d("type student")
+                        viewModel.enterLesson(
+                            parentViewModel.getLecture().id,
+                            viewModel.getLesson().lessonId
+                        )
+                    }
+                }
+            }
         }
 
         if (viewModel.getLesson().noteUrl == null) {
@@ -131,28 +157,6 @@ class LessonDetailFragment : BaseFragment<FragmentLessonDetailBinding, LessonDet
             loadUrl(url)
         }
 
-        binding.lessonDetailLessonBtn.setOnClickListener {
-            when (viewModel.getLesson().type) {
-                TYPE_RECORDING -> {
-                }
-                TYPE_FACE_TO_FACE -> {
-                }
-                TYPE_NON_FACE_TO_FACE -> {
-                    if (UserInfoUtil.type == TYPE_PROFESSOR) {
-                        viewModel.createLesson(
-                            parentViewModel.getLecture().id,
-                            viewModel.getLesson().lessonId
-                        )
-                    } else {
-                        viewModel.enterLesson(
-                            parentViewModel.getLecture().id,
-                            viewModel.getLesson().lessonId
-                        )
-                    }
-                }
-            }
-        }
-
         val downloadUrl =
             "${API_URL}lecture/${parentViewModel.getLecture().id}/lesson/${viewModel.getLesson().lessonId}/note"
         Timber.tag("NoteUrl").d(downloadUrl)
@@ -168,7 +172,7 @@ class LessonDetailFragment : BaseFragment<FragmentLessonDetailBinding, LessonDet
             return
 
         val sessionContext = ZoomVideoSDKSessionContext().apply {
-            sessionName = viewModel.getLesson().title
+            sessionName = viewModel.getLesson().session
             userName = UserInfoUtil.name
             token = createJWT(sessionName, userName)
             audioOption = ZoomVideoSDKAudioOption().apply {
@@ -192,7 +196,7 @@ class LessonDetailFragment : BaseFragment<FragmentLessonDetailBinding, LessonDet
                 Intent(requireContext(), SessionActivity::class.java).apply {
                     putExtra("name", mySelf.userName)
                     putExtra("sessionName", sessionName)
-                    putExtra("sessionDisplayName", sessionName)
+                    putExtra("sessionDisplayName", viewModel.getLesson().title)
                     putExtra("renderType", BaseSessionActivity.RENDER_TYPE_ZOOMRENDERER)
                     putExtra("lectureId", parentViewModel.getLecture().id)
                     putExtra("lessonId", viewModel.getLesson().lessonId)
