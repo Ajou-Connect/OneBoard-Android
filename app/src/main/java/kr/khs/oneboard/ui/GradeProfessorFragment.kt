@@ -6,10 +6,12 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kr.khs.oneboard.R
 import kr.khs.oneboard.adapters.GradeListAdapter
 import kr.khs.oneboard.core.BaseFragment
+import kr.khs.oneboard.databinding.DialogEditRatioBinding
 import kr.khs.oneboard.databinding.FragmentGradeProfessorBinding
 import kr.khs.oneboard.utils.TYPE_STUDENT
 import kr.khs.oneboard.utils.UserInfoUtil
@@ -78,16 +80,33 @@ class GradeProfessorFragment :
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.option_menu_reset_save, menu)
+        inflater.inflate(R.menu.option_menu_edit, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.option_menu_reset -> {
-                viewModel.getRatio(parentViewModel.getLecture().id)
-            }
-            R.id.option_menu_save -> {
-                viewModel.saveRatio(parentViewModel.getLecture().id)
+            R.id.option_menu_edit -> {
+                val dialogBinding = DialogEditRatioBinding.inflate(layoutInflater)
+
+                MaterialAlertDialogBuilder(requireContext())
+                    .setView(dialogBinding.root)
+                    .setPositiveButton("저장") { _, _ ->
+                        val aString = dialogBinding.editRatioARatio.text.toString()
+                        val bString = dialogBinding.editRatioBRatio.text.toString()
+
+                        if (aString.isEmpty() || bString.isEmpty()) {
+                            viewModel.setErrorMessage("새로운 값을 입력해주세요.")
+                            return@setPositiveButton
+                        }
+
+                        viewModel.saveRatio(
+                            parentViewModel.getLecture().id,
+                            aString.toInt(),
+                            bString.toInt()
+                        )
+
+                    }
+                    .show()
             }
         }
         return super.onOptionsItemSelected(item)
