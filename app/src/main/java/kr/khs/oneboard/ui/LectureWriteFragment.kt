@@ -198,13 +198,12 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
                         AM_PM: String
                     ) {
                         (textview as TextView).text = String.format(
-                            "%04d-%02d-%02d %02d:%02d:%02d",
+                            "%04d-%02d-%02d %02d:%02d:00",
                             year,
                             monthNumber + 1,
                             day,
                             hour24,
-                            min,
-                            sec
+                            min
                         )
                     }
                 }).apply {
@@ -212,7 +211,7 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
                 setMaxMinDisplayDate(
                     minDate = Calendar.getInstance().timeInMillis
                 )
-                setDate(Calendar.getInstance())
+                setDate(Date(binding.writeExposeTimeTextView.text.toString().toTimeInMillis()))
             }.showDialog()
         }
     }
