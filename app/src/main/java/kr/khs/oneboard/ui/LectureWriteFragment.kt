@@ -218,7 +218,16 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
 
     private fun initWriteArticleButton() {
         Timber.tag("WriteArticle").d(if (TYPE_NOTICE) "notice" else "assingment")
+
+
         binding.writeButton.setOnClickListener {
+            if (binding.writeTitleEditText.text.toString()
+                    .isEmpty() || binding.writeContentEditText.html == null
+            ) {
+                viewModel.setErrorMessage("빈 칸을 전부 채워주세요.")
+                return@setOnClickListener
+            }
+
             if (isEdit) {
                 viewModel.editContent(
                     parentViewModel.getLecture().id,
