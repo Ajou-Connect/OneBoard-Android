@@ -114,28 +114,30 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
     }
 
     private val socketUnderstandingResponseListener = Emitter.Listener {
-        val dialogBinding = DialogUnderstandingBinding.inflate(layoutInflater)
-        var select = ""
+        launch(coroutineContext) {
+            val dialogBinding = DialogUnderstandingBinding.inflate(layoutInflater)
+            var select = ""
 
-        dialogBinding.dialogUnderstandingO.setOnClickListener {
-            select = "O"
-        }
-        dialogBinding.dialogUnderstandingX.setOnClickListener {
-            select = "X"
-        }
-
-        MaterialAlertDialogBuilder(this@SessionActivity)
-            .setView(dialogBinding.root)
-            .setCancelable(false)
-            .setPositiveButton("전송") { dialogView, _ ->
-                if (select == "")
-                    viewModel.setErrorMessage("선택해주세요.")
-                else {
-                    viewModel.postUnderStanding(select)
-                    dialogView.dismiss()
-                }
+            dialogBinding.dialogUnderstandingO.setOnClickListener {
+                select = "O"
             }
-            .show()
+            dialogBinding.dialogUnderstandingX.setOnClickListener {
+                select = "X"
+            }
+
+            MaterialAlertDialogBuilder(this@SessionActivity)
+                .setView(dialogBinding.root)
+                .setCancelable(false)
+                .setPositiveButton("전송") { dialogView, _ ->
+                    if (select == "")
+                        viewModel.setErrorMessage("선택해주세요.")
+                    else {
+                        viewModel.postUnderStanding(select)
+                        dialogView.dismiss()
+                    }
+                }
+                .show()
+        }
     }
 
     private val socketQuizRequestListener = Emitter.Listener {
