@@ -6,6 +6,7 @@ import kotlinx.coroutines.withContext
 import kr.khs.oneboard.api.ApiService
 import kr.khs.oneboard.core.UseCase
 import kr.khs.oneboard.data.Lesson
+import kr.khs.oneboard.data.LessonDefaultInfo
 import kr.khs.oneboard.utils.SUCCESS
 import kr.khs.oneboard.utils.toPlainRequestBody
 import okhttp3.MultipartBody
@@ -148,6 +149,22 @@ class LessonRepositoryImpl @Inject constructor(@Named("withJWT") val apiService:
             withContext(Dispatchers.IO) {
                 returnValue = UseCase.success(
                     apiService.deleteLesson(lectureId, lessonId).result == SUCCESS
+                )
+            }
+        } catch (e: Exception) {
+            return UseCase.error("Error")
+        }
+
+        return returnValue
+    }
+
+    override suspend fun getDefaultLessonInfo(lectureId: Int): UseCase<LessonDefaultInfo> {
+        val returnValue: UseCase<LessonDefaultInfo>
+
+        try {
+            withContext(Dispatchers.IO) {
+                returnValue = UseCase.success(
+                    apiService.getDefaultLessonInfo(lectureId).data
                 )
             }
         } catch (e: Exception) {

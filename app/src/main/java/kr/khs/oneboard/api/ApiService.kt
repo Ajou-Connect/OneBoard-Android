@@ -168,6 +168,11 @@ interface ApiService {
         @Path("lessonId") lessonId: Int
     ): BasicResponseImpl
 
+    @GET("lecture/{lectureId}/lesson/default")
+    suspend fun getDefaultLessonInfo(
+        @Path("lectureId") lectureId: Int
+    ): Response<LessonDefaultInfo>
+
 
     // TODO: 2021/12/03 수업 분석 차트 확인
     @GET("lecture/{lectureId}/lesson/{lessonId}/analysis")

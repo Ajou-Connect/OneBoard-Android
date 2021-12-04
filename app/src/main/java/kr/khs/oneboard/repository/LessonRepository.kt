@@ -2,6 +2,7 @@ package kr.khs.oneboard.repository
 
 import kr.khs.oneboard.core.UseCase
 import kr.khs.oneboard.data.Lesson
+import kr.khs.oneboard.data.LessonDefaultInfo
 import okhttp3.MultipartBody
 
 interface LessonRepository {
@@ -33,6 +34,8 @@ interface LessonRepository {
     ): UseCase<Boolean>
 
     suspend fun deleteLesson(lectureId: Int, lessonId: Int): UseCase<Boolean>
+
+    suspend fun getDefaultLessonInfo(lectureId: Int): UseCase<LessonDefaultInfo>
 
     suspend fun createLesson(
         lectureId: Int,
