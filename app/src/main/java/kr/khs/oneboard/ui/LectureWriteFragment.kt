@@ -170,6 +170,7 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
             binding.writeExposeTimeTextView.visibility =
                 if (isChecked) View.INVISIBLE else View.VISIBLE
         }
+        binding.writeExposeTimeCheckBox.isChecked = true
 
         binding.writeExposeTimeTextView.text = System.currentTimeMillis().toDateTime()
 
