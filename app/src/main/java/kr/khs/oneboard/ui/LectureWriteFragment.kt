@@ -155,12 +155,14 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
             binding.writeAssignmentScore.setText(assignment?.score.toString())
         }
 
-        DialogUtil.createDialog(
-            requireContext(),
-            "파일 다시 업로드를 해주어야 합니다.",
-            positiveText = "알겠습니다.",
-            positiveAction = { }
-        )
+        if (type == TYPE_ASSIGNMENT) {
+            DialogUtil.createDialog(
+                requireContext(),
+                "파일 다시 업로드를 해주어야 합니다.",
+                positiveText = "알겠습니다.",
+                positiveAction = { }
+            )
+        }
     }
 
     private fun initExposeTime() {
