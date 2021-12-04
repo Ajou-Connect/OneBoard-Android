@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.FrameLayout
+import android.widget.RadioButton
 import androidx.activity.viewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,6 +21,8 @@ import kr.khs.oneboard.core.rawdata.RawDataRenderer
 import kr.khs.oneboard.core.zoom.AudioRawDataUtil
 import kr.khs.oneboard.core.zoom.BaseSessionActivity
 import kr.khs.oneboard.core.zoom.NotificationService
+import kr.khs.oneboard.databinding.DialogQuizBinding
+import kr.khs.oneboard.databinding.DialogUnderstandingBinding
 import kr.khs.oneboard.utils.*
 import kr.khs.oneboard.viewmodels.SessionViewModel
 import timber.log.Timber
@@ -111,7 +114,28 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
     }
 
     private val socketUnderstandingResponseListener = Emitter.Listener {
+        val dialogBinding = DialogUnderstandingBinding.inflate(layoutInflater)
+        var select = ""
 
+        dialogBinding.dialogUnderstandingO.setOnClickListener {
+            select = "O"
+        }
+        dialogBinding.dialogUnderstandingX.setOnClickListener {
+            select = "X"
+        }
+
+        MaterialAlertDialogBuilder(this@SessionActivity)
+            .setView(dialogBinding.root)
+            .setCancelable(false)
+            .setPositiveButton("전송") { dialogView, _ ->
+                if (select == "")
+                    viewModel.setErrorMessage("선택해주세요.")
+                else {
+                    viewModel.postUnderStanding(select)
+                    dialogView.dismiss()
+                }
+            }
+            .show()
     }
 
     private val socketQuizRequestListener = Emitter.Listener {
@@ -122,7 +146,34 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
 
     private val socketQuizResponseListener = Emitter.Listener {
         launch(coroutineContext) {
+            val dialogBinding = DialogQuizBinding.inflate(layoutInflater)
 
+            val radioButtonList = Array(5) {
+                RadioButton(this@SessionActivity).apply {
+                    text = "RadioGroup Button $it"
+                    id = it + 100
+                }
+            }
+
+            for (radioButton in radioButtonList)
+                dialogBinding.dialogQuizList.addView(radioButton)
+
+            MaterialAlertDialogBuilder(this@SessionActivity)
+                .setView(dialogBinding.root)
+                .setCancelable(false)
+                .setPositiveButton("정답") { dialogView, _ ->
+                    val checkId = dialogBinding.dialogQuizList.checkedRadioButtonId
+
+                    // 선택되지 않았을 경우
+                    if (checkId == 0) {
+                        viewModel.setErrorMessage("정답을 선택해 주세요.")
+                    } else {
+                        // TODO: 2021/12/04 quizId
+                        viewModel.postQuiz(1, checkId - 100)
+                        dialogView.dismiss()
+                    }
+                }
+                .show()
         }
     }
 
