@@ -24,3 +24,9 @@ data class Lesson(
         videoUrl = videoUrl
     )
 }
+
+data class LessonDefaultInfo(
+    val defaultTitle: String?,
+    val defaultDateTime: String?,
+    val defaultRoom: String?
+)
