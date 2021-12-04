@@ -65,10 +65,10 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
         }
     }
 
-    fun postUnderStanding() {
+    fun postUnderStanding(select: String) {
         viewModelScope.launch {
             showProgress()
-            val response = repository.postUnderStanding(lectureId, lessonId, liveId)
+            val response = repository.postUnderStanding(lectureId, lessonId, liveId, select)
 
             if (response.status == UseCase.Status.SUCCESS) {
                 setErrorMessage(
@@ -101,10 +101,10 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
         }
     }
 
-    fun postQuiz(quizId: Int) {
+    fun postQuiz(quizId: Int, answer: Int) {
         viewModelScope.launch {
             showProgress()
-            val response = repository.postQuiz(lectureId, lessonId, liveId, quizId)
+            val response = repository.postQuiz(lectureId, lessonId, liveId, quizId, answer)
 
             if (response.status == UseCase.Status.SUCCESS) {
                 setErrorMessage(
