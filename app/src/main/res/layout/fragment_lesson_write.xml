@@ -6,6 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".ui.LessonWriteFragment">
 
+    <include
+        android:id="@+id/viewTitle"
+        layout="@layout/view_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/lessonWriteTitle"
@@ -18,7 +24,7 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewTitle"
         tools:text="SW캡스톤디자인 수업 생성" />
 
     <TextView

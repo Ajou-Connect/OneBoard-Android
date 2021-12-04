@@ -72,6 +72,7 @@ class AttendanceFragment : BaseFragment<FragmentAttendanceBinding, AttendanceVie
     ): FragmentAttendanceBinding = FragmentAttendanceBinding.inflate(inflater, container, false)
 
     override fun init() {
+        binding.viewTitle.root.text = "출석 목록"
         initAttendanceList()
         initData()
     }

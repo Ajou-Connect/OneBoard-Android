@@ -60,6 +60,8 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
 
     private val socketConnectListener = Emitter.Listener {
         Timber.tag("Socket").d("Connect Listener!")
+        Timber.tag("Socket").d("$it")
+        socket.emit("Hello!", "Android")
         launch(coroutineContext) {
             Timber.tag("Socket").d("Connect Listener!!")
             ToastUtil.shortToast(this@SessionActivity, "Socket Connected!!")
@@ -76,6 +78,7 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
 
     private val socketTestListener = Emitter.Listener {
         Timber.tag("Socket").d("Listener!")
+        Timber.tag("Socket").d(it[0] as String)
 
         launch(coroutineContext) {
             Timber.tag("Socket").d("Listener!!")

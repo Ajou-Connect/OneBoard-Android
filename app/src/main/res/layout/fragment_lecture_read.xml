@@ -7,6 +7,13 @@
     android:background="@color/primaryBackgroundColor"
     tools:context=".ui.LectureReadFragment">
 
+    <include
+        android:id="@+id/viewTitle"
+        layout="@layout/view_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/readTitle"
         android:layout_width="0dp"
@@ -21,14 +28,13 @@
         android:textSize="24sp"
         app:layout_constraintEnd_toStartOf="@+id/readTime"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewTitle"
         tools:text="제목" />
 
     <TextView
         android:id="@+id/readTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/round_corner"
         android:backgroundTint="@color/primaryLightColor"
@@ -36,7 +42,7 @@
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/readTitle"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/readTitle"
         tools:text="시간" />
 
     <TextView

@@ -27,6 +27,7 @@ class LectureDetailFragment : BaseFragment<FragmentLectureDetailBinding, Lecture
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.lectureInfo.observe(viewLifecycleOwner) {
+            requireActivity().title = it.title
             binding.lectureDetailTitle.text = it.title
             binding.lectureDetailSemester.text = it.semester
             binding.lectureDetailProfessor.text = it.professor
@@ -44,6 +45,7 @@ class LectureDetailFragment : BaseFragment<FragmentLectureDetailBinding, Lecture
         FragmentLectureDetailBinding.inflate(inflater, container, false)
 
     override fun init() {
+        binding.viewTitle.root.text = "과목 상세"
         getSafeArgs()
         inflateMenu(true)
 

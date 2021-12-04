@@ -56,6 +56,7 @@ class AssignmentFragment : BaseFragment<FragmentAssignmentBinding, AssignmentVie
         FragmentAssignmentBinding.inflate(layoutInflater, container, false)
 
     override fun init() {
+        binding.viewTitle.root.text = "과제 목록"
         getSafeArgs()
         initRecyclerView()
         initFAB()

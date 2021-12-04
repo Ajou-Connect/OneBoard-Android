@@ -126,6 +126,7 @@ class LessonWriteFragment : BaseFragment<FragmentLessonWriteBinding, LessonWrite
     ): FragmentLessonWriteBinding = FragmentLessonWriteBinding.inflate(inflater, container, false)
 
     override fun init() {
+        binding.viewTitle.root.text = "수업 생성"
         getDefaultLectureValue()
         initTitle()
         initTimeDate()

@@ -48,6 +48,7 @@ class LessonListFragment : BaseFragment<FragmentLessonListBinding, LessonListVie
     ): FragmentLessonListBinding = FragmentLessonListBinding.inflate(inflater, container, false)
 
     override fun init() {
+        binding.viewTitle.root.text = "수업 목록"
         initRecyclerView()
         initFab()
     }

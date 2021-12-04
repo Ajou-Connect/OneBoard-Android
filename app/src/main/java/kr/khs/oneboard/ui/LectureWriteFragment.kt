@@ -1,5 +1,6 @@
 package kr.khs.oneboard.ui
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
@@ -79,6 +80,7 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
     ): FragmentLectureWriteBinding =
         FragmentLectureWriteBinding.inflate(layoutInflater, container, false)
 
+    @SuppressLint("SetTextI18n")
     override fun init() {
         arguments?.let {
             type = it.getBoolean("type")
@@ -88,6 +90,9 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
             else if (isEdit && type == TYPE_ASSIGNMENT)
                 assignment = it.getParcelable("assignment")
         } ?: goBackWhenError()
+
+        binding.viewTitle.root.text =
+            "${if (type == TYPE_NOTICE) "공지 사항" else "과제"} ${if (isEdit) "수정" else "작성"}"
 
         initHtmlEditor()
         initExposeTime()

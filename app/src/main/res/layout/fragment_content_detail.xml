@@ -6,16 +6,24 @@
     android:layout_height="match_parent"
     tools:context=".ui.ContentDetailFragment">
 
+    <include
+        android:id="@+id/viewTitle"
+        layout="@layout/view_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/contentDetailTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:textSize="20sp"
         android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewTitle"
         tools:text="공지 / 과제 제목" />
 
     <TextView
@@ -55,7 +63,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:textColor="@android:color/holo_blue_bright"
+        android:textColor="@drawable/leave_text_color"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="@+id/contentDetailDate"
         app:layout_constraintStart_toStartOf="@+id/contentDetailContent"

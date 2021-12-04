@@ -56,6 +56,7 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding, NoticeViewModel>() {
         FragmentNoticeBinding.inflate(layoutInflater, container, false)
 
     override fun init() {
+        binding.viewTitle.root.text = "공지 사항 목록"
         getSafeArgs()
         initRecyclerView()
         initFAB()

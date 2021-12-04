@@ -119,6 +119,7 @@ class GradeProfessorFragment :
         FragmentGradeProfessorBinding.inflate(inflater, container, false)
 
     override fun init() {
+        binding.viewTitle.root.text = "성적 목록"
         initRatioLayout()
         initGradeListRecyclerView()
     }

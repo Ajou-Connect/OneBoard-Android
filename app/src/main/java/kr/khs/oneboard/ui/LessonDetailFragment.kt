@@ -73,6 +73,7 @@ class LessonDetailFragment : BaseFragment<FragmentLessonDetailBinding, LessonDet
     ): FragmentLessonDetailBinding = FragmentLessonDetailBinding.inflate(inflater, container, false)
 
     override fun init() {
+        binding.viewTitle.root.text = "수업 상세"
         getSafeArgs()
 
         initViews()
