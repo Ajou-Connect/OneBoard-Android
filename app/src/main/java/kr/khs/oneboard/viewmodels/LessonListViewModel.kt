@@ -38,7 +38,7 @@ class LessonListViewModel @Inject constructor(private val lessonRepository: Less
             val response = lessonRepository.deleteLesson(lectureId, lessonId)
 
             if (response.status == UseCase.Status.SUCCESS && response.data!!)
-                _lessonList.value = _lessonList.value!!.filter { it.id != lessonId }
+                _lessonList.value = _lessonList.value!!.filter { it.lessonId != lessonId }
             else
                 setErrorMessage(response.message!!)
 

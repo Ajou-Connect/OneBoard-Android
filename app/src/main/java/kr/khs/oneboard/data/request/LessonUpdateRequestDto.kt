@@ -9,6 +9,5 @@ data class LessonUpdateRequestDto(
     val date: String,
     val type: Int,
     val room: String? = null,
-    val meetingId: String? = null,
     val videoUrl: String? = null
 ) : Parcelable

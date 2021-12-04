@@ -106,13 +106,13 @@ class LessonDetailFragment : BaseFragment<FragmentLessonDetailBinding, LessonDet
         }
 
         val url =
-            "https://docs.google.com/gview?embedded=true&url=${API_URL}lecture/${parentViewModel.getLecture().id}/lesson/${viewModel.getLesson().id}/note"
+            "https://docs.google.com/gview?embedded=true&url=${API_URL}lecture/${parentViewModel.getLecture().id}/lesson/${viewModel.getLesson().lessonId}/note"
 
         Timber.tag("NoteUrl").d(url)
 
         with(binding.lessonDetailWebView) {
             val url =
-                "https://docs.google.com/gview?embedded=true&url=http://115.85.182.194:8080/lecture/${parentViewModel.getLecture().id}/lesson/${viewModel.getLesson().id}/note"
+                "https://docs.google.com/gview?embedded=true&url=http://115.85.182.194:8080/lecture/${parentViewModel.getLecture().id}/lesson/${viewModel.getLesson().lessonId}/note"
 
             webViewClient = WebViewClient() // 클릭 시 새창 안뜨게
             with(this.settings) {
@@ -141,12 +141,12 @@ class LessonDetailFragment : BaseFragment<FragmentLessonDetailBinding, LessonDet
                     if (UserInfoUtil.type == TYPE_PROFESSOR) {
                         viewModel.createLesson(
                             parentViewModel.getLecture().id,
-                            viewModel.getLesson().id
+                            viewModel.getLesson().lessonId
                         )
                     } else {
                         viewModel.enterLesson(
                             parentViewModel.getLecture().id,
-                            viewModel.getLesson().id
+                            viewModel.getLesson().lessonId
                         )
                     }
                 }
@@ -154,7 +154,7 @@ class LessonDetailFragment : BaseFragment<FragmentLessonDetailBinding, LessonDet
         }
 
         val downloadUrl =
-            "${API_URL}lecture/${parentViewModel.getLecture().id}/lesson/${viewModel.getLesson().id}/note"
+            "${API_URL}lecture/${parentViewModel.getLecture().id}/lesson/${viewModel.getLesson().lessonId}/note"
         Timber.tag("NoteUrl").d(downloadUrl)
 
         binding.lessonDetailNoteDownloadBtn.setOnClickListener {
@@ -195,7 +195,7 @@ class LessonDetailFragment : BaseFragment<FragmentLessonDetailBinding, LessonDet
                     putExtra("sessionDisplayName", sessionName)
                     putExtra("renderType", BaseSessionActivity.RENDER_TYPE_ZOOMRENDERER)
                     putExtra("lectureId", parentViewModel.getLecture().id)
-                    putExtra("lessonId", viewModel.getLesson().id)
+                    putExtra("lessonId", viewModel.getLesson().lessonId)
                 }
             )
         } ?: run {

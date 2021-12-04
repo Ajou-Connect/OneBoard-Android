@@ -82,7 +82,7 @@ class LessonListAdapter : ListAdapter<Lesson, RecyclerView.ViewHolder>(LessonDif
 
 class LessonDiffUtil : DiffUtil.ItemCallback<Lesson>() {
     override fun areItemsTheSame(oldItem: Lesson, newItem: Lesson): Boolean {
-        return oldItem.id == newItem.id
+        return oldItem.lessonId == newItem.lessonId
     }
 
     override fun areContentsTheSame(oldItem: Lesson, newItem: Lesson): Boolean {

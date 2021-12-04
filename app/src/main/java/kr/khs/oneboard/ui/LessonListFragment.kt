@@ -93,10 +93,10 @@ class LessonListFragment : BaseFragment<FragmentLessonListBinding, LessonListVie
                                 LessonListFragmentDirections.actionLessonListFragmentToLessonWriteFragment()
                                     .apply {
                                         this.item = item.toLessonUpdateRequestDto()
-                                        this.lessonId = item.id
+                                        this.lessonId = item.lessonId
                                     })
                         },
-                        { viewModel.deleteItem(parentViewModel.getLecture().id, item.id) }
+                        { viewModel.deleteItem(parentViewModel.getLecture().id, item.lessonId) }
                     )
 
                 }
