@@ -6,6 +6,7 @@ import kotlinx.coroutines.withContext
 import kr.khs.oneboard.api.ApiService
 import kr.khs.oneboard.core.UseCase
 import kr.khs.oneboard.utils.SUCCESS
+import org.json.JSONObject
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -68,13 +69,17 @@ class SessionRepositoryImpl @Inject constructor(
     override suspend fun postUnderStanding(
         lectureId: Int,
         lessonId: Int,
-        liveId: Int
+        liveId: Int,
+        select: String
     ): UseCase<Boolean> {
         var returnValue: UseCase<Boolean>
 
         try {
             withContext(Dispatchers.IO) {
-                val response = apiService.postUnderStanding(lectureId, lessonId, liveId)
+                val body = JSONObject().apply {
+                    put("select", select)
+                }
+                val response = apiService.postUnderStanding(lectureId, lessonId, liveId, body)
 
                 returnValue = UseCase.success(response.result == SUCCESS)
             }
@@ -130,13 +135,17 @@ class SessionRepositoryImpl @Inject constructor(
         lectureId: Int,
         lessonId: Int,
         liveId: Int,
-        quizId: Int
+        quizId: Int,
+        answer: Int
     ): UseCase<Boolean> {
         var returnValue: UseCase<Boolean>
 
         try {
             withContext(Dispatchers.IO) {
-                val response = apiService.postQuiz(lectureId, lessonId, liveId, quizId)
+                val body = JSONObject().apply {
+                    put("answer", answer)
+                }
+                val response = apiService.postQuiz(lectureId, lessonId, liveId, quizId, body)
 
                 returnValue = UseCase.success(response.result == SUCCESS)
             }

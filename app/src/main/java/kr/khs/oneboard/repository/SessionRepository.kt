@@ -21,7 +21,8 @@ interface SessionRepository {
     suspend fun postUnderStanding(
         lectureId: Int,
         lessonId: Int,
-        liveId: Int
+        liveId: Int,
+        select: String
     ): UseCase<Boolean>
 
     suspend fun getUnderStanding(
@@ -41,6 +42,7 @@ interface SessionRepository {
         lectureId: Int,
         lessonId: Int,
         liveId: Int,
-        quizId: Int
+        quizId: Int,
+        answer: Int
     ): UseCase<Boolean>
 }

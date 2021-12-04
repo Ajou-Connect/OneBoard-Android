@@ -8,6 +8,7 @@ import kr.khs.oneboard.data.request.GradeUpdateRequestDto
 import kr.khs.oneboard.data.request.NoticeUpdateRequestDto
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import org.json.JSONObject
 import retrofit2.http.*
 
 interface ApiService {
@@ -215,7 +216,8 @@ interface ApiService {
     suspend fun postUnderStanding(
         @Path("lectureId") lectureId: Int,
         @Path("lessonId") lessonId: Int,
-        @Path("liveId") liveId: Int
+        @Path("liveId") liveId: Int,
+        @Body body: JSONObject
     ): BasicResponseImpl
 
     // TODO: 2021/12/03 이해도 평가 결과 확인
@@ -241,6 +243,7 @@ interface ApiService {
         @Path("lectureId") lectureId: Int,
         @Path("lessonId") lessonId: Int,
         @Path("liveId") liveId: Int,
-        @Path("quizId") quizId: Int
+        @Path("quizId") quizId: Int,
+        @Body body: JSONObject
     ): BasicResponseImpl
 }
