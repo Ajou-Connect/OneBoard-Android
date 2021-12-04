@@ -107,6 +107,17 @@ class LessonWriteFragment : BaseFragment<FragmentLessonWriteBinding, LessonWrite
             if (it)
                 requireActivity().onBackPressed()
         }
+
+        viewModel.defaultInfo.observe(viewLifecycleOwner) {
+            it.defaultDateTime?.split(" ")?.let { datetime ->
+                binding.lessonWriteDate.text = datetime[0]
+                binding.lessonWriteTime.text = datetime[1]
+            }
+
+            binding.lessonWriteTitle.setText(it.defaultTitle ?: "강의실 미정")
+
+            lessonRoom = it.defaultRoom
+        }
     }
 
     override fun getFragmentViewBinding(
@@ -123,6 +134,9 @@ class LessonWriteFragment : BaseFragment<FragmentLessonWriteBinding, LessonWrite
         initShowButton()
         initNoteAdd()
         initDefaultData()
+
+        if (isEdit.not())
+            viewModel.getDefaultLessonInfo(parentViewModel.getLecture().id)
     }
 
     private fun initDefaultData() {
@@ -156,16 +170,11 @@ class LessonWriteFragment : BaseFragment<FragmentLessonWriteBinding, LessonWrite
     }
 
     private fun getDefaultLectureValue() {
-        parentViewModel.getLectureDayTime()?.let {
-            lessonDate = it.first
-            lessonTime = it.second
-        } ?: run {
-            binding.lessonWriteCheckbox.isSelected = true
-            lessonDate = "날짜 선택"
-            lessonTime = "시간 선택"
-        }
+        binding.lessonWriteCheckbox.isSelected = true
+        lessonDate = "날짜 선택"
+        lessonTime = "시간 선택"
 
-        lessonRoom = parentViewModel.getLecture().defaultRoom ?: "강의실 미정"
+        lessonRoom = "강의실 미정"
     }
 
     private fun initTimeDate() {
