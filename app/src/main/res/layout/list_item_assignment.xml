@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:background="@color/white"
+        android:background="@drawable/round_corner"
         android:onClick="@{clickListener}">
 
         <TextView
@@ -45,7 +45,7 @@
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/text_size_subtitle"
             android:singleLine="true"
-            app:layout_constraintEnd_toStartOf="@+id/listItemAssignmentStart"
+            app:layout_constraintEnd_toStartOf="@id/listItemAssignmentDelete"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="제목" />
@@ -62,7 +62,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/listItemAssignmentScore"
             app:layout_constraintStart_toStartOf="@+id/listItemAssignmentTitle"
-            app:layout_constraintTop_toBottomOf="@+id/listItemAssignmentTitle"
+            app:layout_constraintTop_toBottomOf="@+id/listItemAssignmentStart"
             tools:text="내용" />
 
         <TextView
@@ -73,9 +73,9 @@
             android:text="@{item.startDt}"
             android:textColor="@color/date_text_color"
             android:textSize="@dimen/text_size_date"
-            app:layout_constraintBottom_toBottomOf="@+id/listItemAssignmentEnd"
-            app:layout_constraintEnd_toStartOf="@+id/listItemAssignmentEnd"
-            app:layout_constraintTop_toTopOf="@+id/listItemAssignmentEnd"
+            android:layout_marginTop="4dp"
+            app:layout_constraintStart_toStartOf="@id/listItemAssignmentTitle"
+            app:layout_constraintTop_toBottomOf="@id/listItemAssignmentTitle"
             tools:text="2020.10.27 부터 " />
 
         <TextView
@@ -86,9 +86,8 @@
             android:text="@{item.endDt}"
             android:textColor="@color/date_text_color"
             android:textSize="@dimen/text_size_date"
-            app:layout_constraintBottom_toBottomOf="@+id/listItemAssignmentTitle"
-            app:layout_constraintEnd_toStartOf="@+id/listItemAssignmentDelete"
-            app:layout_constraintTop_toTopOf="@+id/listItemAssignmentTitle"
+            app:layout_constraintBottom_toBottomOf="@+id/listItemAssignmentStart"
+            app:layout_constraintStart_toEndOf="@+id/listItemAssignmentStart"
             tools:text="2020.10.27 까지" />
 
         <ImageButton

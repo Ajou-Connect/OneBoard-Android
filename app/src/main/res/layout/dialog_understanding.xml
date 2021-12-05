@@ -3,8 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingHorizontal="16dp"
-    android:paddingVertical="32dp">
+    android:paddingTop="16dp">
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintBottom_toTopOf="@+id/dialogUnderstandingO"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <View
+        android:id="@+id/view3"
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/dialogUnderstandingX" />
 
     <TextView
         android:id="@+id/dialogUnderstandingTitle"
@@ -25,7 +43,6 @@
         android:background="?attr/selectableItemBackgroundBorderless"
         android:text="O"
         android:textColor="@color/black"
-        android:layout_marginEnd="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,10 +52,9 @@
         android:id="@+id/dialogUnderstandingX"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:text="X"
-        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
