@@ -238,7 +238,7 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
             ) {
                 viewModel.setErrorMessage("빈 칸을 전부 채워주세요.")
                 return@setOnClickListener
-            } else if (binding.writeExposeTimeTextView.text == "날짜, 시간 선택") {
+            } else if (binding.writeExposeTimeCheckBox.isChecked.not() && binding.writeExposeTimeTextView.text == "날짜, 시간 선택") {
                 viewModel.setErrorMessage("날짜, 시간을 선택해주세요.")
                 return@setOnClickListener
             }
