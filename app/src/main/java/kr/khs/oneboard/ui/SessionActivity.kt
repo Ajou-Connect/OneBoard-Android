@@ -66,7 +66,7 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
         socket.emit("Hello!", "Android")
         launch(coroutineContext) {
             Timber.tag("Socket").d("Connect Listener!!")
-            ToastUtil.shortToast(this@SessionActivity, "Socket Connected!!")
+//            ToastUtil.shortToast(this@SessionActivity, "Socket Connected!!")
         }
     }
 
@@ -74,7 +74,7 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
         Timber.tag("Socket").d("Disconnect Listener!")
         launch(coroutineContext) {
             Timber.tag("Socket").d("Disconnect Listener!!")
-            ToastUtil.shortToast(this@SessionActivity, "Socket DisConnected!!")
+//            ToastUtil.shortToast(this@SessionActivity, "Socket DisConnected!!")
         }
     }
 
