@@ -26,6 +26,7 @@ import kr.khs.oneboard.utils.*
 import kr.khs.oneboard.viewmodels.LectureWriteViewModel
 import okhttp3.MultipartBody
 import timber.log.Timber
+import java.text.ParseException
 import java.util.*
 import kotlin.properties.Delegates
 
@@ -216,7 +217,13 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
                 setMaxMinDisplayDate(
                     minDate = Calendar.getInstance().timeInMillis
                 )
-                setDate(Date(binding.writeExposeTimeTextView.text.toString().toTimeInMillis()))
+                setDate(
+                    try {
+                        Date(binding.writeExposeTimeTextView.text.toString().toTimeInMillis())
+                    } catch (e: ParseException) {
+                        Date(System.currentTimeMillis())
+                    }
+                )
             }.showDialog()
         }
     }
