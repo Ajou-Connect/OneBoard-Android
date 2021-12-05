@@ -23,6 +23,7 @@
             android:layout_marginTop="8dp"
             android:textColor="@color/black"
             android:text="@{item.studentNumber}"
+            android:textSize="@dimen/text_size_subtitle"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="201520930" />
@@ -33,6 +34,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:text="@{item.studentName}"
+            android:textSize="@dimen/text_size_subtitle"
             app:layout_constraintEnd_toStartOf="@+id/attendanceRatio"
             app:layout_constraintStart_toStartOf="@+id/attendanceMajor"
             app:layout_constraintTop_toBottomOf="@+id/attendanceMajor"

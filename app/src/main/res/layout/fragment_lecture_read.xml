@@ -14,19 +14,59 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="8dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintBottom_toTopOf="@+id/readStartDT"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/readTime" />
+
+    <View
+        android:id="@+id/view6"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="8dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintBottom_toTopOf="@+id/readFileUrl"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/readStartDT" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="8dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintBottom_toTopOf="@+id/readContent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/readFileUrl" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="8dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintBottom_toTopOf="@+id/readSubmitAssignmentView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/readContent" />
+
     <TextView
         android:id="@+id/readTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:background="@drawable/round_corner"
-        android:backgroundTint="@color/primaryLightColor"
         android:padding="8dp"
+        android:singleLine="true"
         android:textColor="@color/black"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toStartOf="@+id/readTime"
+        android:textSize="@dimen/text_size_title"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/viewTitle"
         tools:text="제목" />
@@ -36,29 +76,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:background="@drawable/round_corner"
-        android:backgroundTint="@color/primaryLightColor"
+        android:layout_marginTop="8dp"
         android:padding="8dp"
-        android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="@+id/readTitle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/readTitle"
+        android:textColor="@color/date_text_color"
+        android:textSize="@dimen/text_size_date"
+        app:layout_constraintStart_toStartOf="@+id/readTitle"
+        app:layout_constraintTop_toBottomOf="@+id/readTitle"
         tools:text="시간" />
 
     <TextView
         android:id="@+id/readStartDT"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:background="@drawable/round_corner"
-        android:backgroundTint="@color/primaryLightColor"
         android:padding="8dp"
-        android:textColor="@color/black"
+        android:textColor="@color/date_text_color"
         android:visibility="gone"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/readTitle"
-        app:layout_constraintTop_toBottomOf="@+id/readTitle"
+        app:layout_constraintTop_toBottomOf="@+id/readTime"
         tools:text="시작 시간"
         tools:visibility="visible" />
 
@@ -67,13 +104,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:background="@drawable/round_corner"
-        android:backgroundTint="@color/primaryLightColor"
         android:padding="8dp"
-        android:textColor="@color/black"
+        android:textColor="@color/date_text_color"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/readStartDT"
-        app:layout_constraintEnd_toEndOf="@+id/readTime"
+        app:layout_constraintEnd_toEndOf="@id/readTitle"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toTopOf="@+id/readStartDT"
         tools:text="마감 시간"
@@ -84,12 +119,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/round_corner"
-        android:backgroundTint="@color/primaryLightColor"
         android:padding="8dp"
         android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="@+id/readTime"
+        app:layout_constraintEnd_toEndOf="@+id/readTitle"
         app:layout_constraintStart_toStartOf="@+id/readTitle"
         app:layout_constraintTop_toBottomOf="@+id/readFileUrl"
         tools:text="글 내용" />
@@ -100,8 +132,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:background="@drawable/round_corner"
-        android:backgroundTint="@color/primaryLightColor"
         android:padding="8dp"
         android:textColor="@color/black"
         android:visibility="gone"
@@ -125,7 +155,7 @@
         android:layout_height="wrap_content"
         android:textColor="#FF0000"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/readTime"
+        app:layout_constraintEnd_toEndOf="@+id/readTitle"
         app:layout_constraintStart_toStartOf="@+id/readTitle"
         app:layout_constraintTop_toBottomOf="@+id/readContent"
         tools:text="제출한 과제가 없습니다." />
@@ -138,9 +168,10 @@
         android:layout_marginTop="16dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/readTime"
+        app:layout_constraintEnd_toEndOf="@+id/readContent"
         app:layout_constraintStart_toStartOf="@+id/readTitle"
-        app:layout_constraintTop_toBottomOf="@+id/readContent" />
+        app:layout_constraintTop_toBottomOf="@+id/readContent"
+        tools:visibility="visible" />
 
     <Button
         android:id="@+id/readFileDownloadBtn"

@@ -19,22 +19,28 @@
 
     <Button
         android:id="@+id/dialogUnderstandingO"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:text="O"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/dialogUnderstandingTitle" />
 
     <Button
         android:id="@+id/dialogUnderstandingX"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:text="X"
-        android:textColor="@color/white"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@id/dialogUnderstandingTitle" />

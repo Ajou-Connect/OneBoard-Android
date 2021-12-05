@@ -30,4 +30,9 @@
     <dimen name="dp_15">15dp</dimen>
     <dimen name="textsize_20">20sp</dimen>
     <dimen name="textsize_12">12sp</dimen>
+
+    <dimen name="text_size_title">22sp</dimen>
+    <dimen name="text_size_subtitle">18sp</dimen>
+    <dimen name="text_size_date">12sp</dimen>
+    <dimen name="text_size_content">14sp</dimen>
 </resources>

@@ -25,6 +25,7 @@
             android:layout_margin="8dp"
             android:text="@{item.lessonDate}"
             android:textColor="@color/black"
+            android:textSize="@dimen/text_size_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/attendanceLessonCheckbox"
             app:layout_constraintStart_toStartOf="parent"

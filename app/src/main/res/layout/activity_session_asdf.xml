@@ -129,7 +129,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/userVideoList"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="@dimen/dp_100"
         android:clipChildren="true"
         app:layout_constraintBottom_toTopOf="@+id/tv_input"

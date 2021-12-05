@@ -21,7 +21,38 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/round_corner">
+        android:background="@drawable/round_corner"
+        android:paddingBottom="8dp">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="8dp"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintBottom_toTopOf="@+id/submitFileUrl"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/submitStudentName" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="8dp"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintBottom_toTopOf="@+id/submitContent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/submitFileUrl" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="8dp"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintBottom_toTopOf="@+id/submitScore"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/submitContent" />
 
         <TextView
             android:id="@+id/submitStudentName"
@@ -31,6 +62,7 @@
             android:layout_marginTop="8dp"
             android:text="@{item.userName}"
             android:textColor="@color/black"
+            android:textSize="@dimen/text_size_subtitle"
             android:padding="4dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -42,6 +74,7 @@
             android:layout_height="wrap_content"
             android:padding="4dp"
             android:text="제출 파일 확인하기"
+            android:layout_marginTop="8dp"
             android:textColor="@drawable/leave_text_color"
             app:layout_constraintStart_toStartOf="@+id/submitStudentName"
             app:layout_constraintTop_toBottomOf="@+id/submitStudentName" />
@@ -53,6 +86,8 @@
             android:text="@{item.content}"
             android:textColor="@color/black"
             android:padding="4dp"
+            android:layout_marginTop="16dp"
+            android:textSize="@dimen/text_size_content"
             app:layout_constraintStart_toStartOf="@+id/submitStudentName"
             app:layout_constraintTop_toBottomOf="@+id/submitFileUrl"
             tools:text="제출 내용" />
@@ -63,6 +98,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:padding="4dp"
+            android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="@+id/submitStudentName"
             app:layout_constraintTop_toBottomOf="@+id/submitContent"
             tools:text="30" />
@@ -72,11 +108,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:text="@{item.createdDt}"
-            android:textColor="@color/black"
             android:padding="4dp"
+            android:text="@{item.createdDt}"
+            android:textColor="@color/date_text_color"
+            android:textSize="@dimen/text_size_date"
+            app:layout_constraintBottom_toBottomOf="@+id/submitStudentName"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/submitStudentName"
             tools:text="2021.01.01" />
 
         <TextView
@@ -85,6 +122,8 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:padding="4dp"
+            android:layout_marginTop="8dp"
+            android:textSize="@dimen/text_size_content"
             app:layout_constraintStart_toStartOf="@+id/submitStudentName"
             app:layout_constraintTop_toBottomOf="@+id/submitScore"
             tools:text="Feed back" />
