@@ -44,7 +44,7 @@ class LectureDetailFragment : BaseFragment<FragmentLectureDetailBinding, Lecture
         }
 
         viewModel.latestLesson.observe(viewLifecycleOwner) {
-            binding.lectureDetailLesson.text = "${it.title}\n${it.date}"
+            binding.lectureDetailLesson.text = "${it.title}\n\n${it.date}"
         }
 
         viewModel.latestAssignment.observe(viewLifecycleOwner) {
