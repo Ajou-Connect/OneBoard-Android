@@ -1,6 +1,7 @@
 package kr.khs.oneboard.repository
 
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 import kr.khs.oneboard.api.ApiService
 import kr.khs.oneboard.core.UseCase
@@ -21,17 +22,40 @@ import javax.inject.Named
 class LectureRepositoryImpl @Inject constructor(
     @Named("withJWT") private val apiService: ApiService
 ) : LectureRepository {
-    override suspend fun getDetailLecture(lectureId: Int): UseCase<Lecture> {
-        val response: Response<Lecture>
+    override suspend fun getDetailLecture(lectureId: Int): UseCase<Triple<Notice?, Lesson?, Assignment?>> {
+        val returnValue: UseCase<Triple<Notice?, Lesson?, Assignment?>>
         try {
             withContext(Dispatchers.IO) {
-                response = apiService.getDetailLecture(lectureId)
+                val notice = async {
+                    try {
+                        apiService.getNoticeList(lectureId).data[0]
+                    } catch (e: Exception) {
+                        null
+                    }
+                }
+                val lesson = async {
+                    try {
+                        apiService.getLessonList(lectureId).data[0]
+                    } catch (e: Exception) {
+                        null
+                    }
+                }
+                val assignment = async {
+                    try {
+                        apiService.getAssignmentList(lectureId).data[0]
+                    } catch (e: Exception) {
+                        null
+                    }
+                }
+
+                returnValue =
+                    UseCase.success(Triple(notice.await(), lesson.await(), assignment.await()))
             }
         } catch (e: Exception) {
             return UseCase.error("Error")
         }
 
-        return UseCase.success(response.data)
+        return returnValue
     }
 
     override suspend fun getNoticeList(lectureId: Int): UseCase<List<Notice>> {

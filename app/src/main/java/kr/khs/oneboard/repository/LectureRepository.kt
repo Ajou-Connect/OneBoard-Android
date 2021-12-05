@@ -8,7 +8,7 @@ import kr.khs.oneboard.data.request.NoticeUpdateRequestDto
 import okhttp3.MultipartBody
 
 interface LectureRepository {
-    suspend fun getDetailLecture(lectureId: Int): UseCase<Lecture>
+    suspend fun getDetailLecture(lectureId: Int): UseCase<Triple<Notice?, Lesson?, Assignment?>>
 
     suspend fun getNoticeList(lectureId: Int): UseCase<List<Notice>>
 
