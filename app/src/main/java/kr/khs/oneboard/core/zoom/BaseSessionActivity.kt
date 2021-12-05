@@ -737,12 +737,13 @@ abstract class BaseSessionActivity : AppCompatActivity(), ZoomVideoSDKDelegate,
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun updateSessionInfo() {
         if (zoom.isInSession) {
             var size = UserHelper.getAllUsers().size
             if (size <= 0)
                 size = 1
-            binding.textMeetingUserSize.text = "Participants: $size"
+            binding.textMeetingUserSize.text = "참여자 수 : ${size}명"
 
             binding.tvInput.visibility = View.VISIBLE
             textFps.visibility = View.VISIBLE
