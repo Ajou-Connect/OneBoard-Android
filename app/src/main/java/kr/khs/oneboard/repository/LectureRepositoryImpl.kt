@@ -144,7 +144,16 @@ class LectureRepositoryImpl @Inject constructor(
         } catch (e: Exception) {
             return UseCase.error("Error")
         }
-        return if (response.result == SUCCESS) UseCase.success(response.data) else UseCase.error("Error")
+        return if (response.result == SUCCESS)
+            UseCase.success(
+                response.data.map { assignment ->
+                    assignment.apply {
+                        startDt = startDt.substring(0, startDt.length - 3)
+                        endDt = endDt.substring(0, endDt.length - 3)
+                    }
+                }
+            ) else
+            UseCase.error("Error")
     }
 
     override suspend fun postAssignment(
