@@ -24,7 +24,11 @@ class LessonRepositoryImpl @Inject constructor(@Named("withJWT") val apiService:
 
                 if (response.result == SUCCESS)
                     returnValue = UseCase.success(
-                        response.data
+                        response.data.map { lesson ->
+                            lesson.apply {
+                                date = date.substring(0, date.length - 3)
+                            }
+                        }
                     )
                 else
                     throw Exception()
