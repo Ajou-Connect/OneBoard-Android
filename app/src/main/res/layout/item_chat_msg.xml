@@ -22,15 +22,15 @@
             android:layout_marginRight="2dp"
             android:text="Loki:"
             android:textColor="#BABACC"
-            android:visibility="gone"
-            android:textSize="13sp" />
+            android:textSize="13sp"
+            android:visibility="gone" />
 
         <TextView
-            android:layout_marginLeft="12dp"
             android:id="@+id/chat_msg_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginVertical="8dp"
+            android:layout_marginLeft="12dp"
             android:layout_marginRight="12dp"
             android:text="OK"
             android:textColor="@color/white"

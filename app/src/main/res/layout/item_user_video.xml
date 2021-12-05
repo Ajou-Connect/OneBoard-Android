@@ -11,8 +11,8 @@
         android:id="@+id/videoRenderer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:render_textureView="false"
-        android:visibility="gone">
+        android:visibility="gone"
+        tools:render_textureView="false">
 
     </us.zoom.sdk.ZoomVideoSDKVideoView>
 

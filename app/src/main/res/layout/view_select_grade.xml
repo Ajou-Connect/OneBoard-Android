@@ -17,8 +17,8 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="A+"
-            android:textSize="20sp"
-            android:textColor="#000000" />
+            android:textColor="#000000"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/selectGradeA"
@@ -27,8 +27,8 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="A"
-            android:textSize="20sp"
-            android:textColor="#000000" />
+            android:textColor="#000000"
+            android:textSize="20sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -41,20 +41,20 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="B+"
             android:gravity="center"
-            android:textSize="20sp"
-            android:textColor="#000000" />
+            android:text="B+"
+            android:textColor="#000000"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/selectGradeB"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="B"
             android:gravity="center"
-            android:textSize="20sp"
-            android:textColor="#000000" />
+            android:text="B"
+            android:textColor="#000000"
+            android:textSize="20sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -69,8 +69,8 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="C+"
-            android:textSize="20sp"
-            android:textColor="#000000" />
+            android:textColor="#000000"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/selectGradeC"
@@ -79,8 +79,8 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="C"
-            android:textSize="20sp"
-            android:textColor="#000000" />
+            android:textColor="#000000"
+            android:textSize="20sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -95,8 +95,8 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="D"
-            android:textSize="20sp"
-            android:textColor="#000000" />
+            android:textColor="#000000"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/selectGradeF"
@@ -105,7 +105,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="F"
-            android:textSize="20sp"
-            android:textColor="#000000" />
+            android:textColor="#000000"
+            android:textSize="20sp" />
     </LinearLayout>
 </LinearLayout>

@@ -9,11 +9,11 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:background="@drawable/loading_animation"
+        android:contentDescription="Loading Image"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="Loading Image" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/loadingText"

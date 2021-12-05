@@ -7,9 +7,9 @@
     android:orientation="vertical"
     android:scrollbars="none"
     android:visibility="visible"
+    app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintBottom_toBottomOf="parent">
+    app:layout_constraintTop_toTopOf="parent">
 
     <ScrollView
         android:id="@+id/action_bar_scroll"
