@@ -69,7 +69,13 @@ class LectureRepositoryImpl @Inject constructor(
             return UseCase.error("Error")
         }
 
-        return UseCase.success(response.data)
+        return UseCase.success(
+            response.data.map { notice ->
+                notice.apply {
+                    exposeDt = exposeDt.substring(0, exposeDt.length - 3)
+                }
+            }
+        )
     }
 
     override suspend fun postNotice(
