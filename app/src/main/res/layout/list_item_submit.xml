@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -21,7 +21,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/round_corner"
+        android:background="?attr/selectableItemBackground"
         android:paddingBottom="8dp">
 
         <View
@@ -60,10 +60,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:padding="4dp"
             android:text="@{item.userName}"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_subtitle"
-            android:padding="4dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="김희승" />
@@ -72,9 +72,9 @@
             android:id="@+id/submitFileUrl"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:padding="4dp"
             android:text="제출 파일 확인하기"
-            android:layout_marginTop="8dp"
             android:textColor="@drawable/leave_text_color"
             app:layout_constraintStart_toStartOf="@+id/submitStudentName"
             app:layout_constraintTop_toBottomOf="@+id/submitStudentName" />
@@ -83,10 +83,10 @@
             android:id="@+id/submitContent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:padding="4dp"
             android:text="@{item.content}"
             android:textColor="@color/black"
-            android:padding="4dp"
-            android:layout_marginTop="16dp"
             android:textSize="@dimen/text_size_content"
             app:layout_constraintStart_toStartOf="@+id/submitStudentName"
             app:layout_constraintTop_toBottomOf="@+id/submitFileUrl"
@@ -96,9 +96,9 @@
             android:id="@+id/submitScore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:padding="4dp"
             android:layout_marginTop="16dp"
+            android:padding="4dp"
+            android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="@+id/submitStudentName"
             app:layout_constraintTop_toBottomOf="@+id/submitContent"
             tools:text="30" />
@@ -120,9 +120,9 @@
             android:id="@+id/submitFeedback"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:padding="4dp"
             android:layout_marginTop="8dp"
+            android:padding="4dp"
+            android:textColor="@color/black"
             android:textSize="@dimen/text_size_content"
             app:layout_constraintStart_toStartOf="@+id/submitStudentName"
             app:layout_constraintTop_toBottomOf="@+id/submitScore"

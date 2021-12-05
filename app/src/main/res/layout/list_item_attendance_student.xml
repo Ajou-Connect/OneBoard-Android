@@ -13,7 +13,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/round_corner">
+        android:background="?attr/selectableItemBackground">
 
         <TextView
             android:id="@+id/attendanceMajor"
@@ -21,8 +21,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:textColor="@color/black"
             android:text="@{item.studentNumber}"
+            android:textColor="@color/black"
             android:textSize="@dimen/text_size_subtitle"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -32,8 +32,8 @@
             android:id="@+id/attendanceName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
             android:text="@{item.studentName}"
+            android:textColor="@color/black"
             android:textSize="@dimen/text_size_subtitle"
             app:layout_constraintEnd_toStartOf="@+id/attendanceRatio"
             app:layout_constraintStart_toStartOf="@+id/attendanceMajor"

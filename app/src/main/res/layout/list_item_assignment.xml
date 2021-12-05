@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:background="@drawable/round_corner"
+        android:background="?attr/selectableItemBackground"
         android:onClick="@{clickListener}">
 
         <TextView
@@ -41,10 +41,10 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
+            android:singleLine="true"
             android:text="@{item.title}"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/text_size_subtitle"
-            android:singleLine="true"
             app:layout_constraintEnd_toStartOf="@id/listItemAssignmentDelete"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -69,11 +69,11 @@
             android:id="@+id/listItemAssignmentStart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             android:layout_marginEnd="16dp"
             android:text="@{item.startDt}"
             android:textColor="@color/date_text_color"
             android:textSize="@dimen/text_size_date"
-            android:layout_marginTop="4dp"
             app:layout_constraintStart_toStartOf="@id/listItemAssignmentTitle"
             app:layout_constraintTop_toBottomOf="@id/listItemAssignmentTitle"
             tools:text="2020.10.27 부터 " />
