@@ -74,7 +74,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="@{@string/grade_attendance_score(item.totalScore)}"
+            android:text="@{@string/grade_total_score(item.totalScore)}"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_content"
             app:layout_constraintStart_toEndOf="@id/gradeAttendanceScore"
