@@ -139,7 +139,7 @@ class LessonDetailFragment : BaseFragment<FragmentLessonDetailBinding, LessonDet
 
         with(binding.lessonDetailWebView) {
             val url =
-                "https://docs.google.com/gview?embedded=true&url=http://115.85.182.194:8080/lecture/${parentViewModel.getLecture().id}/lesson/${viewModel.getLesson().lessonId}/note"
+                "https://docs.google.com/gview?embedded=true&url=https://oneboard.connect.o-r.kr:8080/lecture/${parentViewModel.getLecture().id}/lesson/${viewModel.getLesson().lessonId}/note"
 
             webViewClient = WebViewClient() // 클릭 시 새창 안뜨게
             with(this.settings) {
