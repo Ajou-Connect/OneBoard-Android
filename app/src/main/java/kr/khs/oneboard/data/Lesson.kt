@@ -6,14 +6,14 @@ import kr.khs.oneboard.data.request.LessonUpdateRequestDto
 
 @Parcelize
 data class Lesson(
-    val id: Int,
+    val lessonId: Int,
     val lectureId: Int,
     val title: String,
     val date: String,
     val noteUrl: String? = null,
     val type: Int,
     val room: String? = null,
-    val meetingId: String? = null,
+    val session: String? = null,
     val videoUrl: String? = null
 ) : Parcelable {
     fun toLessonUpdateRequestDto() = LessonUpdateRequestDto(
@@ -21,7 +21,12 @@ data class Lesson(
         date = date,
         type = type,
         room = room,
-        meetingId = meetingId,
         videoUrl = videoUrl
     )
 }
+
+data class LessonDefaultInfo(
+    val defaultTitle: String?,
+    val defaultDateTime: String?,
+    val defaultRoom: String?
+)

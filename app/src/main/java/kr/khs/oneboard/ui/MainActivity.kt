@@ -138,6 +138,13 @@ class MainActivity : AppCompatActivity() {
                     startActivity(Intent(this, SplashActivity::class.java))
                     finish()
                 }
+                R.id.lecture_menu_home -> {
+                    navController.navigate(
+                        R.id.lectureDetailFragment,
+                        null,
+                        NavOptions.Builder().setPopUpTo(R.id.lectureListFragment, false).build()
+                    )
+                }
                 R.id.lecture_menu_plan -> {
                     navController.navigate(R.id.lecturePlanFragment)
                 }

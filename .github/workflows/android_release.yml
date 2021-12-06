@@ -29,11 +29,17 @@ jobs:
       - name: Get current date
         id: date
         run: echo "::set-output name=date::$(date + '%Y-%m-%d')"
+        
+      - name: Change Mode Executable gradlew
+        run: chmod +x ./gradlew
 
+      - name: Clean Gradle
+        run: bash ./gradlew clean
+        
       - name: Build Release APK
         run: bash ./gradlew assembleRelease --stacktrace
-        
-      - run: './gradlew assembleRelease'
+
+      - run: './gradlew assembleRelease --stacktrace'
 
       - name: Slack File Upload
         uses: adrey/slack-file-upload-action@1.0.5

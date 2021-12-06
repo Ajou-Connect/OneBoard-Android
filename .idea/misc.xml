@@ -17,6 +17,7 @@
         <entry key="app/src/main/res/layout/fragment_attendance.xml" value="0.18697916666666667" />
         <entry key="app/src/main/res/layout/fragment_content_detail.xml" value="0.5114583333333333" />
         <entry key="app/src/main/res/layout/fragment_grade.xml" value="0.3596014492753623" />
+        <entry key="app/src/main/res/layout/fragment_grade_student.xml" value="0.24974670719351572" />
         <entry key="app/src/main/res/layout/fragment_lecture_detail.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_lecture_read.xml" value="0.5041666666666667" />
         <entry key="app/src/main/res/layout/fragment_lecture_write.xml" value="0.46517857142857144" />
@@ -27,10 +28,13 @@
         <entry key="app/src/main/res/layout/list_item_assignment.xml" value="0.5114583333333333" />
         <entry key="app/src/main/res/layout/list_item_attendance_lesson.xml" value="0.5114583333333333" />
         <entry key="app/src/main/res/layout/list_item_attendance_student.xml" value="0.5114583333333333" />
+        <entry key="app/src/main/res/layout/list_item_grade.xml" value="0.28396739130434784" />
         <entry key="app/src/main/res/layout/list_item_grade_detail.xml" value="0.3596014492753623" />
         <entry key="app/src/main/res/layout/list_item_lecture.xml" value="0.2803442028985507" />
         <entry key="app/src/main/res/layout/list_item_lesson.xml" value="0.30117753623188404" />
+        <entry key="app/src/main/res/layout/list_item_submit_grade.xml" value="0.24974670719351572" />
         <entry key="app/src/main/res/layout/spinner_item.xml" value="0.2803442028985507" />
+        <entry key="app/src/main/res/layout/view_assignment_detail.xml" value="0.24974670719351572" />
       </map>
     </option>
   </component>

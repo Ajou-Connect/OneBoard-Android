@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/lecture_menu_home"
+        android:title="과목 홈 화면" />
+    <item
         android:id="@+id/lecture_menu_plan"
         android:title="강의 계획서" />
     <item

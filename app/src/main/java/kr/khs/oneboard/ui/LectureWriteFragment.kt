@@ -155,12 +155,14 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
             binding.writeAssignmentScore.setText(assignment?.score.toString())
         }
 
-        DialogUtil.createDialog(
-            requireContext(),
-            "파일 다시 업로드를 해주어야 합니다.",
-            positiveText = "알겠습니다.",
-            positiveAction = { }
-        )
+        if (type == TYPE_ASSIGNMENT) {
+            DialogUtil.createDialog(
+                requireContext(),
+                "파일 다시 업로드를 해주어야 합니다.",
+                positiveText = "알겠습니다.",
+                positiveAction = { }
+            )
+        }
     }
 
     private fun initExposeTime() {
@@ -168,8 +170,9 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
             binding.writeExposeTimeTextView.visibility =
                 if (isChecked) View.INVISIBLE else View.VISIBLE
         }
+        binding.writeExposeTimeCheckBox.isChecked = true
 
-        binding.writeExposeTimeTextView.text = System.currentTimeMillis().toDateTime()
+        binding.writeExposeTimeTextView.text = "날짜, 시간 선택"
 
         binding.writeExposeTimeTextView.setOnClickListener { textview ->
             CustomDateTimePicker(
@@ -195,13 +198,12 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
                         AM_PM: String
                     ) {
                         (textview as TextView).text = String.format(
-                            "%04d-%02d-%02d %02d:%02d:%02d",
+                            "%04d-%02d-%02d %02d:%02d:00",
                             year,
                             monthNumber + 1,
                             day,
                             hour24,
-                            min,
-                            sec
+                            min
                         )
                     }
                 }).apply {
@@ -209,14 +211,26 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
                 setMaxMinDisplayDate(
                     minDate = Calendar.getInstance().timeInMillis
                 )
-                setDate(Calendar.getInstance())
+                setDate(Date(binding.writeExposeTimeTextView.text.toString().toTimeInMillis()))
             }.showDialog()
         }
     }
 
     private fun initWriteArticleButton() {
         Timber.tag("WriteArticle").d(if (TYPE_NOTICE) "notice" else "assingment")
+
+
         binding.writeButton.setOnClickListener {
+            if (binding.writeTitleEditText.text.toString().isEmpty()
+                || binding.writeContentEditText.html == null
+            ) {
+                viewModel.setErrorMessage("빈 칸을 전부 채워주세요.")
+                return@setOnClickListener
+            } else if (binding.writeExposeTimeTextView.text == "날짜, 시간 선택") {
+                viewModel.setErrorMessage("날짜, 시간을 선택해주세요.")
+                return@setOnClickListener
+            }
+
             if (isEdit) {
                 viewModel.editContent(
                     parentViewModel.getLecture().id,

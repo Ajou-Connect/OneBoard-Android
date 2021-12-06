@@ -7,6 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kr.khs.oneboard.core.BaseViewModel
 import kr.khs.oneboard.core.UseCase
+import kr.khs.oneboard.data.LessonDefaultInfo
 import kr.khs.oneboard.repository.LessonRepository
 import kr.khs.oneboard.utils.TYPE_FACE_TO_FACE
 import okhttp3.MultipartBody
@@ -23,6 +24,9 @@ class LessonWriteViewModel @Inject constructor(private val lessonRepository: Les
     private val _updateLesson = MutableLiveData(false)
     val updateLesson: LiveData<Boolean>
         get() = _updateLesson
+
+    private val _defaultInfo = MutableLiveData<LessonDefaultInfo>()
+    val defaultInfo: LiveData<LessonDefaultInfo> = _defaultInfo
 
     fun setLessonType(type: Int) {
         if (_lessonType.value == type)
@@ -91,6 +95,20 @@ class LessonWriteViewModel @Inject constructor(private val lessonRepository: Les
             else
                 setErrorMessage("수업이 생성되지 못했습니다.")
 
+            hideProgress()
+        }
+    }
+
+    fun getDefaultLessonInfo(lectureId: Int) {
+        viewModelScope.launch {
+            showProgress()
+            val response = lessonRepository.getDefaultLessonInfo(lectureId)
+
+            if (response.status == UseCase.Status.SUCCESS) {
+                _defaultInfo.value = response.data!!
+            } else {
+                setErrorMessage("기본 수업 정보를 불러오지 못했습니다.")
+            }
             hideProgress()
         }
     }

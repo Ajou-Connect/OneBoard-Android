@@ -47,18 +47,20 @@ class GradeProfessorViewModel @Inject constructor(private val lectureRepository:
         }
     }
 
-    fun saveRatio(lectureId: Int) {
+    fun saveRatio(lectureId: Int, a: Int, b: Int) {
         viewModelScope.launch {
             showProgress()
+            setRatio(a, b)
             val response = lectureRepository.postGradeRatio(
                 lectureId,
                 GradeRatio(aRatio.value!!.toInt(), bRatio.value!!.toInt())
             )
 
             setErrorMessage(
-                if (response.status == UseCase.Status.SUCCESS)
+                if (response.status == UseCase.Status.SUCCESS) {
+                    getRatio(lectureId)
                     "저장되었습니다."
-                else
+                } else
                     "오류가 발생했습니다.\n다시 시도해주세요"
             )
             hideProgress()
