@@ -168,7 +168,11 @@ class LessonRepositoryImpl @Inject constructor(@Named("withJWT") val apiService:
         try {
             withContext(Dispatchers.IO) {
                 returnValue = UseCase.success(
-                    apiService.getDefaultLessonInfo(lectureId).data
+                    apiService.getDefaultLessonInfo(lectureId).data.apply {
+                        defaultDateTime?.let {
+                            defaultDateTime = it.substring(0, it.length - 3)
+                        }
+                    }
                 )
             }
         } catch (e: Exception) {
