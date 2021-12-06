@@ -58,19 +58,7 @@
         tools:text="SW캡스톤디자인 수업 생성" />
 
     <TextView
-        android:id="@+id/lessonWriteDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:padding="8dp"
-        android:textColor="@color/date_text_color"
-        app:layout_constraintBottom_toBottomOf="@+id/lessonWriteTime"
-        app:layout_constraintEnd_toStartOf="@+id/lessonWriteTime"
-        app:layout_constraintTop_toTopOf="@+id/lessonWriteTime"
-        tools:text="2021.11.04" />
-
-    <TextView
-        android:id="@+id/lessonWriteTime"
+        android:id="@+id/lessonWriteDateTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
