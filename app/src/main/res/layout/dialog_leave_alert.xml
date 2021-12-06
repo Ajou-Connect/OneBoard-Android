@@ -14,7 +14,7 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/leave_message"
+        android:text="수업을 종료하시겠습니까?"
         android:textColor="@color/setting_text"
         android:textSize="@dimen/textsize_16"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,9 +25,9 @@
         android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
         android:gravity="end"
         android:orientation="horizontal"
-        android:layout_marginTop="12dp"
         app:layout_constraintEnd_toEndOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/textView">
 
@@ -36,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/dp_12"
-            android:text="@string/cancel"
+            android:text="취소"
             android:textColor="@drawable/leave_text_color"
             android:textSize="@dimen/textsize_14" />
 
@@ -45,7 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/dp_12"
-            android:text="@string/leave_leave_text"
+            android:text="세션 나가기"
             android:textColor="@drawable/leave_text_color"
             android:textSize="@dimen/textsize_14" />
     </LinearLayout>

@@ -11,7 +11,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Session Information"
+        android:text="세션 정보"
         android:textColor="#232333"
         android:textSize="20sp" />
 
@@ -38,7 +38,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
-        android:text="Password"
+        android:text="비밀번호"
         android:textColor="#747487"
         android:textSize="12sp" />
 
@@ -55,7 +55,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
-        android:text="Participants"
+        android:text="참가자 수"
         android:textColor="#747487"
         android:textSize="12sp" />
 

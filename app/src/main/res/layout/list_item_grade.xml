@@ -17,7 +17,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/round_corner"
+        android:background="?attr/selectableItemBackground"
         android:paddingBottom="8dp">
 
         <TextView
@@ -28,6 +28,7 @@
             android:layout_marginTop="8dp"
             android:text="@{item.studentNumber}"
             android:textColor="@color/black"
+            android:textSize="@dimen/text_size_subtitle"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="201520930" />
@@ -36,9 +37,10 @@
             android:id="@+id/gradeName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:text="@{item.userName}"
             android:textColor="@color/black"
-            android:layout_marginStart="8dp"
+            android:textSize="@dimen/text_size_subtitle"
             app:layout_constraintStart_toEndOf="@+id/gradeStudentNumber"
             app:layout_constraintTop_toTopOf="@id/gradeStudentNumber"
             tools:text="김희승" />
@@ -47,33 +49,36 @@
             android:id="@+id/gradeSubmitScore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:text="@{@string/grade_submit_score(item.submitScore)}"
             android:textColor="@color/black"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@id/gradeStudentNumber"
+            android:textSize="@dimen/text_size_content"
             app:layout_constraintStart_toStartOf="@id/gradeStudentNumber"
+            app:layout_constraintTop_toBottomOf="@id/gradeStudentNumber"
             tools:text="제출 점수 : 30.0" />
 
         <TextView
             android:id="@+id/gradeAttendanceScore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:text="@{@string/grade_attendance_score(item.attendScore)}"
             android:textColor="@color/black"
-            android:layout_marginStart="8dp"
-            app:layout_constraintTop_toTopOf="@id/gradeSubmitScore"
+            android:textSize="@dimen/text_size_content"
             app:layout_constraintStart_toEndOf="@id/gradeSubmitScore"
+            app:layout_constraintTop_toTopOf="@id/gradeSubmitScore"
             tools:text="출석 점수 : 0.4" />
 
         <TextView
             android:id="@+id/gradeTotalScore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{@string/grade_attendance_score(item.totalScore)}"
-            android:textColor="@color/black"
             android:layout_marginStart="8dp"
-            app:layout_constraintTop_toTopOf="@id/gradeAttendanceScore"
+            android:text="@{@string/grade_total_score(item.totalScore)}"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_content"
             app:layout_constraintStart_toEndOf="@id/gradeAttendanceScore"
+            app:layout_constraintTop_toTopOf="@id/gradeAttendanceScore"
             tools:text="총 점수 : 30.4" />
 
         <TextView
@@ -83,6 +88,7 @@
             android:layout_marginEnd="8dp"
             android:text="@{item.result}"
             android:textColor="@color/black"
+            android:textSize="@dimen/text_size_subtitle"
             app:layout_constraintBottom_toBottomOf="@+id/gradeStudentNumber"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/gradeStudentNumber"

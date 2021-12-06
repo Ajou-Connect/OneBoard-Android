@@ -14,7 +14,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/round_corner"
+        android:background="?attr/selectableItemBackground"
         android:paddingHorizontal="8dp"
         android:paddingVertical="16dp">
 
@@ -25,6 +25,7 @@
             android:layout_margin="8dp"
             android:text="@{item.lessonDate}"
             android:textColor="@color/black"
+            android:textSize="@dimen/text_size_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/attendanceLessonCheckbox"
             app:layout_constraintStart_toStartOf="parent"

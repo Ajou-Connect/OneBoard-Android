@@ -65,6 +65,8 @@ class LectureListFragment : BaseFragment<FragmentLectureListBinding, LectureList
     ): FragmentLectureListBinding = FragmentLectureListBinding.inflate(inflater, container, false)
 
     override fun init() {
+        binding.viewTitle.root.text = "강의 목록"
+        requireActivity().title = "OneBoard"
         initLectureListRecyclerView()
         inflateMenu(false)
     }

@@ -32,7 +32,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/share_screen"
+            android:text="디바이스 화면 공유"
             android:textColor="@color/setting_text"
             android:textSize="@dimen/textsize_16" />
 
@@ -40,7 +40,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/share_screen_info"
+            android:text="디바이스에 보이는 모든 화면이 공유"
             android:textColor="@color/version_text"
             android:textSize="@dimen/textsize_12" />
 
@@ -62,14 +62,14 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/share_picture"
+            android:text="사진 공유"
             android:textColor="@color/setting_text"
             android:textSize="@dimen/textsize_16" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/share_picture_info"
+            android:text="디바이스에서 사진 공유"
             android:textColor="@color/version_text"
             android:textSize="@dimen/textsize_12" />
 

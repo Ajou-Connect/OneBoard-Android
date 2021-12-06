@@ -104,6 +104,7 @@ class LectureReadFragment : BaseFragment<FragmentLectureReadBinding, LectureRead
                 assignment = it.getParcelable("assignment")
         } ?: goBackWhenError()
 
+        binding.viewTitle.root.text = if (type == TYPE_NOTICE) "공지 사항" else "과제"
         initView()
     }
 

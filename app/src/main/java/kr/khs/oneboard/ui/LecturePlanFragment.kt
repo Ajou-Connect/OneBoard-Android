@@ -35,6 +35,7 @@ class LecturePlanFragment : BaseFragment<FragmentLecturePlanBinding, LecturePlan
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun init() {
+        binding.viewTitle.root.text = "강의 계획서"
         val url =
             "https://docs.google.com/gview?embedded=true&url=${API_URL}lecture/${parentViewModel.getLecture().id}/plan"
         Timber.tag("PlanUrl").d(url)

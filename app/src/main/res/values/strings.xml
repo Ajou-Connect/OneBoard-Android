@@ -39,4 +39,7 @@
     <string name="grade_submit_score">제출 점수 : %.1f</string>
     <string name="grade_attendance_score">출석 점수 : %.1f</string>
     <string name="grade_total_score">총합 점수 : %.1f</string>
+
+    <string name="from_date">%s부터</string>
+    <string name="to_date">%s까지</string>
 </resources>

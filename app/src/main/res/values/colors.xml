@@ -34,4 +34,5 @@
     <color name="naturePalette4">#E6F4F1</color>
 
     <color name="fabColor">#5a87d6</color>
+    <color name="date_text_color">#505050</color>
 </resources>

@@ -1,5 +1,6 @@
 package kr.khs.oneboard.ui
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
@@ -25,6 +26,7 @@ import kr.khs.oneboard.utils.*
 import kr.khs.oneboard.viewmodels.LectureWriteViewModel
 import okhttp3.MultipartBody
 import timber.log.Timber
+import java.text.ParseException
 import java.util.*
 import kotlin.properties.Delegates
 
@@ -79,6 +81,7 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
     ): FragmentLectureWriteBinding =
         FragmentLectureWriteBinding.inflate(layoutInflater, container, false)
 
+    @SuppressLint("SetTextI18n")
     override fun init() {
         arguments?.let {
             type = it.getBoolean("type")
@@ -88,6 +91,9 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
             else if (isEdit && type == TYPE_ASSIGNMENT)
                 assignment = it.getParcelable("assignment")
         } ?: goBackWhenError()
+
+        binding.viewTitle.root.text =
+            "${if (type == TYPE_NOTICE) "공지 사항" else "과제"} ${if (isEdit) "수정" else "작성"}"
 
         initHtmlEditor()
         initExposeTime()
@@ -211,7 +217,13 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
                 setMaxMinDisplayDate(
                     minDate = Calendar.getInstance().timeInMillis
                 )
-                setDate(Date(binding.writeExposeTimeTextView.text.toString().toTimeInMillis()))
+                setDate(
+                    try {
+                        Date(binding.writeExposeTimeTextView.text.toString().toTimeInMillis())
+                    } catch (e: ParseException) {
+                        Date(System.currentTimeMillis())
+                    }
+                )
             }.showDialog()
         }
     }
@@ -226,7 +238,7 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
             ) {
                 viewModel.setErrorMessage("빈 칸을 전부 채워주세요.")
                 return@setOnClickListener
-            } else if (binding.writeExposeTimeTextView.text == "날짜, 시간 선택") {
+            } else if (binding.writeExposeTimeCheckBox.isChecked.not() && binding.writeExposeTimeTextView.text == "날짜, 시간 선택") {
                 viewModel.setErrorMessage("날짜, 시간을 선택해주세요.")
                 return@setOnClickListener
             }

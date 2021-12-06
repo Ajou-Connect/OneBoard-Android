@@ -17,10 +17,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/white"
-        android:onClick="@{clickListener}"
         android:layout_margin="8dp"
-        android:background="@drawable/round_corner">
+        android:background="?attr/selectableItemBackground"
+        android:onClick="@{clickListener}">
 
         <TextView
             android:id="@+id/listItemLectureTitle"
@@ -30,7 +29,7 @@
             android:layout_marginBottom="8dp"
             android:text="@{item.title}"
             android:textColor="@color/colorBlack"
-            android:textSize="18sp"
+            android:textSize="@dimen/text_size_subtitle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:text="SW 캡스톤 디자인" />
@@ -42,7 +41,7 @@
             android:layout_marginTop="8dp"
             android:text="@{@string/semester(item.semester)}"
             android:textColor="@color/colorBlack"
-            android:textSize="13sp"
+            android:textSize="16sp"
             app:layout_constraintBottom_toTopOf="@+id/listItemLectureTitle"
             app:layout_constraintStart_toStartOf="@+id/listItemLectureTitle"
             app:layout_constraintTop_toTopOf="parent"
@@ -55,6 +54,7 @@
             android:layout_marginEnd="8dp"
             android:text="@{item.professor}"
             android:textColor="@color/colorBlack"
+            android:textSize="@dimen/text_size_content"
             app:layout_constraintBottom_toBottomOf="@+id/listItemLectureTitle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/listItemLectureTitle"

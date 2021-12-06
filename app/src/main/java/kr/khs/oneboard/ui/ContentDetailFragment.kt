@@ -51,6 +51,7 @@ class ContentDetailFragment : BaseFragment<FragmentContentDetailBinding, Content
         FragmentContentDetailBinding.inflate(inflater, container, false)
 
     override fun init() {
+        binding.viewTitle.root.text = "과제 출제 상세"
         arguments?.let {
             it.getParcelable<Assignment>("assignment")?.let { assignment ->
                 this.assignment = assignment

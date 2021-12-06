@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -17,10 +17,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/white"
-        android:onClick="@{clickListener}"
         android:layout_margin="8dp"
-        android:background="@drawable/round_corner">
+        android:background="?attr/selectableItemBackground"
+        android:onClick="@{clickListener}">
 
         <TextView
             android:id="@+id/listItemNoticeTitle"
@@ -29,9 +28,9 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:textSize="14sp"
-            android:textColor="@color/colorBlack"
             android:text="@{item.title}"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/text_size_subtitle"
             app:layout_constraintEnd_toStartOf="@+id/listItemNoticeDate"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -45,7 +44,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:textColor="@color/colorBlack"
-            android:textSize="12sp"
+            android:textSize="@dimen/text_size_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/listItemNoticeTitle"
@@ -59,8 +58,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:text="@{item.exposeDt}"
-            android:textColor="@color/colorBlack"
-            android:textSize="13sp"
+            android:textColor="@color/date_text_color"
+            android:textSize="@dimen/text_size_date"
             app:layout_constraintBottom_toBottomOf="@+id/listItemNoticeTitle"
             app:layout_constraintEnd_toStartOf="@+id/listItemNoticeDelete"
             app:layout_constraintTop_toTopOf="@+id/listItemNoticeTitle"
@@ -68,14 +67,14 @@
 
         <ImageButton
             android:id="@+id/listItemNoticeDelete"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/listItemNoticeTitle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/listItemNoticeTitle"
-            app:srcCompat="@android:drawable/ic_delete" />
+            app:srcCompat="@drawable/ic_kebap" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

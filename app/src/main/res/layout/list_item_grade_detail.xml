@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -13,7 +13,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/round_corner">
+        android:background="?attr/selectableItemBackground"
+        android:padding="8dp">
 
         <TextView
             android:id="@+id/gradeDetailName"
@@ -25,6 +26,7 @@
             android:layout_marginBottom="8dp"
             android:text="@{String.valueOf(item.first)}"
             android:textColor="@color/black"
+            android:textSize="@dimen/text_size_subtitle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/gradeDetailScore"
             app:layout_constraintStart_toStartOf="parent"
@@ -40,6 +42,7 @@
             android:layout_marginBottom="8dp"
             android:text="@{String.valueOf(item.second)}"
             android:textColor="@color/black"
+            android:textSize="@dimen/text_size_subtitle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

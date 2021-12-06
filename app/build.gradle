@@ -38,6 +38,13 @@ android {
         viewBinding true
         dataBinding true
     }
+
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
 }
 
 dependencies {
@@ -111,7 +118,7 @@ dependencies {
     implementation 'jp.wasabeef:richeditor-android:2.0.0'
 
     // Socket
-    implementation('io.socket:socket.io-client:2.0.0') {
+    implementation('io.socket:socket.io-client:0.9.0') {
         exclude group: 'org.json', module: 'json'
     }
 }

@@ -5,7 +5,9 @@ import android.content.pm.ActivityInfo
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup.LayoutParams
 import android.widget.FrameLayout
+import android.widget.LinearLayout
 import android.widget.RadioButton
 import androidx.activity.viewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -60,9 +62,11 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
 
     private val socketConnectListener = Emitter.Listener {
         Timber.tag("Socket").d("Connect Listener!")
+        Timber.tag("Socket").d("$it")
+        socket.emit("Hello!", "Android")
         launch(coroutineContext) {
             Timber.tag("Socket").d("Connect Listener!!")
-            ToastUtil.shortToast(this@SessionActivity, "Socket Connected!!")
+//            ToastUtil.shortToast(this@SessionActivity, "Socket Connected!!")
         }
     }
 
@@ -70,12 +74,13 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
         Timber.tag("Socket").d("Disconnect Listener!")
         launch(coroutineContext) {
             Timber.tag("Socket").d("Disconnect Listener!!")
-            ToastUtil.shortToast(this@SessionActivity, "Socket DisConnected!!")
+//            ToastUtil.shortToast(this@SessionActivity, "Socket DisConnected!!")
         }
     }
 
     private val socketTestListener = Emitter.Listener {
         Timber.tag("Socket").d("Listener!")
+        Timber.tag("Socket").d(it[0] as String)
 
         launch(coroutineContext) {
             Timber.tag("Socket").d("Listener!!")
@@ -96,8 +101,10 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
                 .setMessage("출석 체크를 해주세요.")
                 .setCancelable(false)
                 .setPositiveButton("확인") { _, _ ->
-                    viewModel.postAttendance()
+//                    viewModel.postAttendance()
+                    ToastUtil.shortToast(this@SessionActivity, "출석체크가 되었습니다.")
                 }
+                .show()
         }
     }
 
@@ -109,73 +116,79 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
 
     private val socketUnderstandingRequestListener = Emitter.Listener {
         launch(coroutineContext) {
+            val dialogBinding = DialogUnderstandingBinding.inflate(layoutInflater)
 
+            val dialog = MaterialAlertDialogBuilder(this@SessionActivity)
+                .setView(dialogBinding.root)
+                .setCancelable(false)
+                .create()
+
+            dialogBinding.dialogUnderstandingO.setOnClickListener {
+//                viewModel.postUnderStanding("O")
+                dialog.dismiss()
+            }
+
+            dialogBinding.dialogUnderstandingX.setOnClickListener {
+//                viewModel.postUnderStanding("X")
+                dialog.dismiss()
+            }
+
+            dialog.show()
         }
     }
 
     private val socketUnderstandingResponseListener = Emitter.Listener {
         launch(coroutineContext) {
-            val dialogBinding = DialogUnderstandingBinding.inflate(layoutInflater)
-            var select = ""
 
-            dialogBinding.dialogUnderstandingO.setOnClickListener {
-                select = "O"
-            }
-            dialogBinding.dialogUnderstandingX.setOnClickListener {
-                select = "X"
-            }
-
-            MaterialAlertDialogBuilder(this@SessionActivity)
-                .setView(dialogBinding.root)
-                .setCancelable(false)
-                .setPositiveButton("전송") { dialogView, _ ->
-                    if (select == "")
-                        viewModel.setErrorMessage("선택해주세요.")
-                    else {
-                        viewModel.postUnderStanding(select)
-                        dialogView.dismiss()
-                    }
-                }
-                .show()
         }
     }
 
     private val socketQuizRequestListener = Emitter.Listener {
         launch(coroutineContext) {
-
-        }
-    }
-
-    private val socketQuizResponseListener = Emitter.Listener {
-        launch(coroutineContext) {
             val dialogBinding = DialogQuizBinding.inflate(layoutInflater)
+
+            val dialog = MaterialAlertDialogBuilder(this@SessionActivity)
+                .setView(dialogBinding.root)
+                .setCancelable(false)
+                .create()
+
+            dialogBinding.dialogQuizTitle.text = "퀴즈!!!"
+
+            val layoutParams =
+                LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+                    .apply {
+                        setMargins(0, 8, 0, 8)
+                    }
 
             val radioButtonList = Array(5) {
                 RadioButton(this@SessionActivity).apply {
-                    text = "RadioGroup Button $it"
+                    text = "RadioGroup Button1111111212121212121211111111 ${it * 999}"
                     id = it + 100
+                    this.layoutParams = layoutParams
                 }
             }
 
             for (radioButton in radioButtonList)
                 dialogBinding.dialogQuizList.addView(radioButton)
 
-            MaterialAlertDialogBuilder(this@SessionActivity)
-                .setView(dialogBinding.root)
-                .setCancelable(false)
-                .setPositiveButton("정답") { dialogView, _ ->
-                    val checkId = dialogBinding.dialogQuizList.checkedRadioButtonId
+            dialogBinding.dialogQuizSubmitButton.setOnClickListener {
+                val checkId = dialogBinding.dialogQuizList.checkedRadioButtonId
 
-                    // 선택되지 않았을 경우
-                    if (checkId == 0) {
-                        viewModel.setErrorMessage("정답을 선택해 주세요.")
-                    } else {
-                        // TODO: 2021/12/04 quizId
-                        viewModel.postQuiz(1, checkId - 100)
-                        dialogView.dismiss()
-                    }
+                // 선택되지 않았을 경우
+                if (checkId == 0) {
+                    viewModel.setErrorMessage("정답을 선택해 주세요.")
+                } else {
+//                    viewModel.postQuiz(1, checkId - 100)
+                    dialog.dismiss()
                 }
-                .show()
+            }
+
+            dialog.show()
+        }
+    }
+
+    private val socketQuizResponseListener = Emitter.Listener {
+        launch(coroutineContext) {
         }
     }
 
@@ -229,7 +242,7 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
         socket.on(Socket.EVENT_CONNECT, socketConnectListener)
         socket.on(Socket.EVENT_DISCONNECT, socketDisconnectListener)
 
-        socket.on(SOCKET_TEST, socketTestListener)
+//        socket.on(SOCKET_TEST, socketTestListener)
 
         if (UserInfoUtil.type == TYPE_PROFESSOR) {
             socket.on(PROFESSOR_ATTENDANCE, socketAttendanceResponseListener)

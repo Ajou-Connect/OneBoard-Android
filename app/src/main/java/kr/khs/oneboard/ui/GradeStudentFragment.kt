@@ -65,6 +65,7 @@ class GradeStudentFragment : BaseFragment<FragmentGradeStudentBinding, GradeStud
     ): FragmentGradeStudentBinding = FragmentGradeStudentBinding.inflate(layoutInflater)
 
     override fun init() {
+        binding.viewTitle.root.text = "학생 성적 목록"
         initArguments()
         initResultChange()
         initSubmitGradeList()

@@ -4,155 +4,200 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primaryBackgroundColor"
     tools:context=".ui.LectureDetailFragment">
 
-    <View
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@drawable/round_corner"
-        android:backgroundTint="#E6F4F1"
-        app:layout_constraintBottom_toBottomOf="@+id/lectureDetailNotice"
-        app:layout_constraintEnd_toEndOf="@+id/lectureDetailNotice"
-        app:layout_constraintStart_toStartOf="@+id/lectureDetailNotice"
-        app:layout_constraintTop_toTopOf="@+id/lectureDetailNoticeTitle" />
-
-    <View
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@drawable/round_corner"
-        android:backgroundTint="#E6F4F1"
-        app:layout_constraintBottom_toBottomOf="@+id/lectureDetailLesson"
-        app:layout_constraintEnd_toEndOf="@+id/lectureDetailLesson"
-        app:layout_constraintStart_toStartOf="@+id/lectureDetailLesson"
-        app:layout_constraintTop_toTopOf="@+id/lectureDetailLessonTitle" />
-
-    <View
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@drawable/round_corner"
-        android:backgroundTint="#E6F4F1"
-        app:layout_constraintBottom_toBottomOf="@+id/lectureDetailAssignment"
-        app:layout_constraintEnd_toEndOf="@+id/lectureDetailAssignment"
-        app:layout_constraintStart_toStartOf="@+id/lectureDetailAssignment"
-        app:layout_constraintTop_toTopOf="@+id/lectureDetailAssignmentTitle" />
-
-    <TextView
-        android:id="@+id/lectureDetailLessonTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:padding="8dp"
-        android:textColor="#000000"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/lectureDetailNoticeTitle"
-        app:layout_constraintTop_toBottomOf="@+id/lectureDetailNotice"
-        android:text="다음 수업" />
-
-    <TextView
-        android:id="@+id/lectureDetailLesson"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:padding="8dp"
-        android:textColor="#000000"
-        app:layout_constraintEnd_toEndOf="@+id/lectureDetailNotice"
-        app:layout_constraintStart_toStartOf="@+id/lectureDetailNotice"
-        app:layout_constraintTop_toBottomOf="@+id/lectureDetailLessonTitle"
-        tools:text="내일 오후 3시" />
-
-    <TextView
-        android:id="@+id/lectureDetailAssignmentTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:padding="8dp"
-        android:textColor="#000000"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="@+id/lectureDetailLessonTitle"
-        app:layout_constraintTop_toBottomOf="@+id/lectureDetailLesson"
-        android:text="마감 임박 과제" />
-
-    <TextView
-        android:id="@+id/lectureDetailAssignment"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:padding="8dp"
-        android:textColor="#000000"
-        app:layout_constraintEnd_toEndOf="@+id/lectureDetailLesson"
-        app:layout_constraintStart_toStartOf="@+id/lectureDetailLesson"
-        app:layout_constraintTop_toBottomOf="@+id/lectureDetailAssignmentTitle"
-        tools:text="과제가 없습니다." />
-
-    <TextView
-        android:id="@+id/lectureDetailTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
-        android:background="@drawable/round_corner"
-        android:backgroundTint="@color/naturePalette1"
-        android:padding="16dp"
-        android:paddingVertical="8dp"
-        android:textColor="#FFFFFF"
-        android:textSize="32sp"
+    <include
+        android:id="@+id/viewTitle"
+        layout="@layout/view_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="SW 캡스톤 디자인" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/lectureDetailSemester"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:paddingVertical="8dp"
-        android:textColor="#000000"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lectureDetailTitle"
-        tools:text="2021-2학기" />
-
-    <TextView
-        android:id="@+id/lectureDetailNoticeTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:padding="8dp"
-        android:textColor="#000000"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lectureDetailProfessor"
-        tools:text="중간 발표 공지사항" />
-
-    <TextView
-        android:id="@+id/lectureDetailNotice"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:padding="8dp"
-        android:textColor="#000000"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lectureDetailNoticeTitle"
-        tools:text="11월 22일" />
+        app:layout_constraintTop_toBottomOf="@id/viewTitle">
 
-    <TextView
-        android:id="@+id/lectureDetailProfessor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textColor="#000000"
-        app:layout_constraintEnd_toEndOf="@+id/lectureDetailSemester"
-        app:layout_constraintTop_toBottomOf="@+id/lectureDetailSemester"
-        tools:text="윤대균" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="8dp"
+                android:background="@android:color/darker_gray"
+                app:layout_constraintBottom_toTopOf="@+id/view5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view3" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="8dp"
+                android:background="@android:color/darker_gray"
+                app:layout_constraintBottom_toTopOf="@+id/view3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view4" />
+
+            <View
+                android:id="@+id/view4"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/round_corner"
+                android:backgroundTint="#B3CDFF"
+                app:layout_constraintBottom_toBottomOf="@+id/lectureDetailNotice"
+                app:layout_constraintEnd_toEndOf="@+id/lectureDetailNotice"
+                app:layout_constraintStart_toStartOf="@+id/lectureDetailNotice"
+                app:layout_constraintTop_toTopOf="@+id/lectureDetailNoticeTitle" />
+
+            <View
+                android:id="@+id/view3"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/round_corner"
+                android:backgroundTint="#FFB3CDFF"
+                app:layout_constraintBottom_toBottomOf="@+id/lectureDetailLesson"
+                app:layout_constraintEnd_toEndOf="@+id/lectureDetailLesson"
+                app:layout_constraintStart_toStartOf="@+id/lectureDetailLesson"
+                app:layout_constraintTop_toTopOf="@+id/lectureDetailLessonTitle" />
+
+            <View
+                android:id="@+id/view5"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/round_corner"
+                android:backgroundTint="#FFB3CDFF"
+                app:layout_constraintBottom_toBottomOf="@+id/lectureDetailAssignment"
+                app:layout_constraintEnd_toEndOf="@+id/lectureDetailAssignment"
+                app:layout_constraintStart_toStartOf="@+id/lectureDetailAssignment"
+                app:layout_constraintTop_toTopOf="@+id/lectureDetailAssignmentTitle" />
+
+            <TextView
+                android:id="@+id/lectureDetailLessonTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:padding="8dp"
+                android:text="다음 수업"
+                android:textColor="#000000"
+                android:textSize="@dimen/text_size_subtitle"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/lectureDetailNoticeTitle"
+                app:layout_constraintTop_toBottomOf="@+id/lectureDetailNotice" />
+
+            <TextView
+                android:id="@+id/lectureDetailLesson"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:padding="8dp"
+                android:textColor="#000000"
+                android:textSize="@dimen/text_size_content"
+                app:layout_constraintEnd_toEndOf="@+id/lectureDetailNotice"
+                app:layout_constraintStart_toStartOf="@+id/lectureDetailNotice"
+                app:layout_constraintTop_toBottomOf="@+id/lectureDetailLessonTitle"
+                tools:text="내일 오후 3시" />
+
+            <TextView
+                android:id="@+id/lectureDetailAssignmentTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:padding="8dp"
+                android:text="마감 임박 과제"
+                android:textColor="#000000"
+                android:textSize="@dimen/text_size_subtitle"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/lectureDetailLessonTitle"
+                app:layout_constraintTop_toBottomOf="@+id/lectureDetailLesson" />
+
+            <TextView
+                android:id="@+id/lectureDetailAssignment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:padding="8dp"
+                android:textColor="#000000"
+                android:textSize="@dimen/text_size_content"
+                app:layout_constraintEnd_toEndOf="@+id/lectureDetailLesson"
+                app:layout_constraintStart_toStartOf="@+id/lectureDetailLesson"
+                app:layout_constraintTop_toBottomOf="@+id/lectureDetailAssignmentTitle"
+                tools:text="과제가 없습니다." />
+
+            <TextView
+                android:id="@+id/lectureDetailTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/round_corner"
+                android:padding="16dp"
+                android:paddingVertical="8dp"
+                android:textColor="#232333"
+                android:textSize="32sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/viewTitle"
+                tools:text="SW 캡스톤 디자인" />
+
+            <TextView
+                android:id="@+id/lectureDetailSemester"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:paddingVertical="8dp"
+                android:textColor="#000000"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lectureDetailTitle"
+                tools:text="2021-2학기" />
+
+            <TextView
+                android:id="@+id/lectureDetailNoticeTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:padding="8dp"
+                android:textColor="#000000"
+                android:textSize="@dimen/text_size_subtitle"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lectureDetailProfessor"
+                tools:text="중간 발표 공지사항" />
+
+            <TextView
+                android:id="@+id/lectureDetailNotice"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:padding="8dp"
+                android:textColor="#000000"
+                android:textSize="@dimen/text_size_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lectureDetailNoticeTitle"
+                tools:text="11월 22일" />
+
+            <TextView
+                android:id="@+id/lectureDetailProfessor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                app:layout_constraintEnd_toEndOf="@+id/lectureDetailSemester"
+                app:layout_constraintTop_toBottomOf="@+id/lectureDetailSemester"
+                tools:text="윤대균" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
