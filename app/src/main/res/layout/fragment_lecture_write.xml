@@ -386,6 +386,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="2"
+            android:background="@drawable/round_corner"
+            android:backgroundTint="@color/naturePalette4"
+            android:padding="4dp"
             android:text="2021-11-12 12:43"
             android:textColor="@color/black" />
 
@@ -403,6 +406,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="2"
+            android:background="@drawable/round_corner"
+            android:backgroundTint="@color/naturePalette4"
+            android:padding="4dp"
             android:text="2021-11-12 12:43"
             android:textColor="@color/black" />
 
