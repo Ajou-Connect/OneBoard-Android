@@ -13,4 +13,10 @@
         android:title="저장"
         app:showAsAction="always"
         tools:ignore="AlwaysShowAction" />
+
+    <item
+        android:id="@+id/option_menu_kebap"
+        android:icon="@drawable/ic_kebap"
+        android:title="메뉴"
+        app:showAsAction="always" />
 </menu>
