@@ -21,22 +21,27 @@ class AssignmentViewModel @Inject constructor(private val lectureRepository: Lec
 
     fun getList(lectureId: Int) {
         viewModelScope.launch {
+            showProgress()
+            _list.value = listOf()
             val response = lectureRepository.getAssignmentList(lectureId)
             if (response.status == UseCase.Status.SUCCESS) {
                 _list.value = response.data!!
             } else {
                 setErrorMessage("과제 목록을 불러오지 못했습니다.")
             }
+            hideProgress()
         }
     }
 
     fun deleteItem(lectureId: Int, item: Assignment) {
         viewModelScope.launch {
+            showProgress()
             val success = lectureRepository.deleteAssignment(lectureId, item.id)
             if (success.status == UseCase.Status.SUCCESS)
                 _list.value = _list.value!!.filter { it != item }
             else
                 setErrorMessage("삭제가 올바르게 되지 않았습니다.")
+            hideProgress()
         }
     }
 }
