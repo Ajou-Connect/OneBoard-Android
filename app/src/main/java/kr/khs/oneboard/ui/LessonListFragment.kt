@@ -109,5 +109,12 @@ class LessonListFragment : BaseFragment<FragmentLessonListBinding, LessonListVie
         }
 
         viewModel.getLessonList(parentViewModel.getLecture().id)
+
+        binding.rvRefreshLayout.setOnRefreshListener {
+            viewModel.getLessonList(parentViewModel.getLecture().id)
+            binding.rvLessonList.scrollToPosition(0)
+
+            binding.rvRefreshLayout.isRefreshing = false
+        }
     }
 }

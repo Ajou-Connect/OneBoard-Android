@@ -22,6 +22,7 @@ class LessonListViewModel @Inject constructor(private val lessonRepository: Less
     fun getLessonList(id: Int) {
         viewModelScope.launch {
             showProgress()
+            _lessonList.value = listOf()
             val response = lessonRepository.getLessonList(id)
             if (response.status == UseCase.Status.SUCCESS) {
                 _lessonList.value = response.data ?: listOf()
