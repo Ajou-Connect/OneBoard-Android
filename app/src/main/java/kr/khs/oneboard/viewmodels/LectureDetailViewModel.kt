@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kr.khs.oneboard.core.BaseViewModel
-import kr.khs.oneboard.core.UseCase
+import kr.khs.oneboard.core.NetworkResult
 import kr.khs.oneboard.data.Assignment
 import kr.khs.oneboard.data.Lecture
 import kr.khs.oneboard.data.Lesson
@@ -38,7 +38,7 @@ class LectureDetailViewModel @Inject constructor(private val repository: Lecture
             showProgress()
             _lectureInfo.value = lecture
             val response = repository.getDetailLecture(lecture.id)
-            if (response.status == UseCase.Status.SUCCESS) {
+            if (response.status == NetworkResult.Status.SUCCESS) {
                 _latestNotice.value =
                     response.data!!.first ?: Notice(0, "공지사항이 없습니다.", "공지사항이 없습니다.", "", "")
                 _latestLesson.value =

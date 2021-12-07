@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kr.khs.oneboard.core.BaseViewModel
-import kr.khs.oneboard.core.UseCase
+import kr.khs.oneboard.core.NetworkResult
 import kr.khs.oneboard.data.Lesson
 import kr.khs.oneboard.repository.LessonRepository
 import javax.inject.Inject
@@ -33,7 +33,7 @@ class LessonDetailViewModel @Inject constructor(private val repository: LessonRe
             showProgress()
             val response = repository.createLesson(lectureId, lessonId)
 
-            if (response.status == UseCase.Status.SUCCESS) {
+            if (response.status == NetworkResult.Status.SUCCESS) {
                 _isCreateLesson.value = response.data!!
 
                 if (response.data.not())
@@ -49,7 +49,7 @@ class LessonDetailViewModel @Inject constructor(private val repository: LessonRe
         viewModelScope.launch {
             showProgress()
             val response = repository.enterLesson(lectureId, lessonId)
-            if (response.status == UseCase.Status.SUCCESS) {
+            if (response.status == NetworkResult.Status.SUCCESS) {
                 _isCreateLesson.value = response.data!!
 
                 if (response.data.not())

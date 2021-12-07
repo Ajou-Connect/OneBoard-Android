@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kr.khs.oneboard.core.BaseViewModel
-import kr.khs.oneboard.core.UseCase
+import kr.khs.oneboard.core.NetworkResult
 import kr.khs.oneboard.data.AttendanceStudent
 import kr.khs.oneboard.data.Lesson
 import kr.khs.oneboard.data.request.AttendanceUpdateRequestDto
@@ -33,7 +33,7 @@ class AttendanceViewModel @Inject constructor(
         viewModelScope.launch {
             showProgress()
             val response = lectureRepository.getAttendanceList(lectureId)
-            if (response.status == UseCase.Status.SUCCESS) {
+            if (response.status == NetworkResult.Status.SUCCESS) {
                 lessonList.value = lessonRepository.getLessonList(lectureId).data!!
                 _attendanceList.value = response.data!!
             } else {
@@ -68,7 +68,7 @@ class AttendanceViewModel @Inject constructor(
             Timber.tag("CompareAttendance").d("$requestDto")
             val response = lectureRepository.postAttendanceList(lectureId, requestDto)
 
-            if (response.status == UseCase.Status.SUCCESS && response.data!!) {
+            if (response.status == NetworkResult.Status.SUCCESS && response.data!!) {
                 setErrorMessage("저장되었습니다.")
             } else {
                 setErrorMessage("출석 현황 업데이트를 실패했습니다.\n다시 시도해주세요.")
@@ -87,7 +87,7 @@ class AttendanceViewModel @Inject constructor(
         viewModelScope.launch {
             showProgress()
             val response = lectureRepository.getMyAttendance(lectureId)
-            if (response.status == UseCase.Status.SUCCESS) {
+            if (response.status == NetworkResult.Status.SUCCESS) {
                 _attendanceList.value = listOf(response.data!!)
             } else {
                 setErrorMessage("출석 목록을 불러오지 못했습니다.")
@@ -144,7 +144,7 @@ class AttendanceViewModel @Inject constructor(
 
             val response = lectureRepository.postAttendanceList(lectureId, requestDto)
 
-            if (response.status == UseCase.Status.SUCCESS && response.data!!) {
+            if (response.status == NetworkResult.Status.SUCCESS && response.data!!) {
                 setErrorMessage("저장되었습니다.")
             } else {
                 setErrorMessage("출석 현황 업데이트를 실패했습니다.\n다시 시도해주세요.")

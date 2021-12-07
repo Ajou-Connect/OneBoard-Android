@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kr.khs.oneboard.core.BaseViewModel
-import kr.khs.oneboard.core.UseCase
+import kr.khs.oneboard.core.NetworkResult
 import kr.khs.oneboard.data.Lecture
 import kr.khs.oneboard.repository.UserRepository
 import javax.inject.Inject
@@ -22,7 +22,7 @@ class LectureListViewModel @Inject constructor(private val userRepository: UserR
         viewModelScope.launch {
             showProgress()
             val response = userRepository.getUserLectures()
-            if (response.status == UseCase.Status.SUCCESS)
+            if (response.status == NetworkResult.Status.SUCCESS)
                 _lectures.value = response.data!!
             hideProgress()
         }

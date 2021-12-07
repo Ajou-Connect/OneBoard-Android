@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kr.khs.oneboard.core.BaseViewModel
-import kr.khs.oneboard.core.UseCase
+import kr.khs.oneboard.core.NetworkResult
 import kr.khs.oneboard.repository.SessionRepository
 import kr.khs.oneboard.utils.TYPE_PROFESSOR
 import kr.khs.oneboard.utils.UserInfoUtil
@@ -35,7 +35,7 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
                 else
                     repository.postAttendanceStudent(lectureId, lessonId)
 
-            if (response.status == UseCase.Status.SUCCESS && response.data!!) {
+            if (response.status == NetworkResult.Status.SUCCESS && response.data!!) {
                 setErrorMessage(
                     if (UserInfoUtil.type == TYPE_PROFESSOR)
                         "출석 체크 요청을 보냈습니다."
@@ -54,7 +54,7 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
             showProgress()
             val response = repository.getUnderStanding(lectureId, lessonId, liveId, understandingId)
 
-            if (response.status == UseCase.Status.SUCCESS) {
+            if (response.status == NetworkResult.Status.SUCCESS) {
                 val data = response.data!!
 
                 // TODO: 2021/12/04 데이터 처리
@@ -70,7 +70,7 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
             showProgress()
             val response = repository.postUnderStanding(lectureId, lessonId, liveId, select)
 
-            if (response.status == UseCase.Status.SUCCESS) {
+            if (response.status == NetworkResult.Status.SUCCESS) {
                 setErrorMessage(
                     if (response.data!!) {
                         "전송 완료"
@@ -90,7 +90,7 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
             showProgress()
             val response = repository.getQuiz(lectureId, lessonId, liveId)
 
-            if (response.status == UseCase.Status.SUCCESS) {
+            if (response.status == NetworkResult.Status.SUCCESS) {
                 val data = response.data!!
 
                 // TODO: 2021/12/04 데이터 처리
@@ -106,7 +106,7 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
             showProgress()
             val response = repository.postQuiz(lectureId, lessonId, liveId, quizId, answer)
 
-            if (response.status == UseCase.Status.SUCCESS) {
+            if (response.status == NetworkResult.Status.SUCCESS) {
                 setErrorMessage(
                     if (response.data!!) {
                         "전송 완료"
@@ -126,7 +126,7 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
             showProgress()
             val response = repository.leaveLesson(lectureId, lessonId)
 
-            if (response.status == UseCase.Status.SUCCESS && response.data!!) {
+            if (response.status == NetworkResult.Status.SUCCESS && response.data!!) {
                 _isLeave.value = true
             } else {
                 setErrorMessage("다시 시도해주세요.")

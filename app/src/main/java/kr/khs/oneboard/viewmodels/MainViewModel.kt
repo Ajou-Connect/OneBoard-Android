@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kr.khs.oneboard.core.BaseViewModel
-import kr.khs.oneboard.core.UseCase
+import kr.khs.oneboard.core.NetworkResult
 import kr.khs.oneboard.data.Lecture
 import kr.khs.oneboard.data.User
 import kr.khs.oneboard.repository.UserRepository
@@ -60,7 +60,7 @@ class MainViewModel @Inject constructor(private val userRepository: UserReposito
         viewModelScope.launch {
             showProgress()
             val response = userRepository.getUserInfo()
-            _user.value = if (response.status == UseCase.Status.SUCCESS)
+            _user.value = if (response.status == NetworkResult.Status.SUCCESS)
                 response.data
             else
                 null

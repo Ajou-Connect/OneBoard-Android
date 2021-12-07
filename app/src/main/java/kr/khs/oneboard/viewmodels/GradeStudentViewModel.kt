@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kr.khs.oneboard.core.BaseViewModel
-import kr.khs.oneboard.core.UseCase
+import kr.khs.oneboard.core.NetworkResult
 import kr.khs.oneboard.data.GradeStudent
 import kr.khs.oneboard.repository.LectureRepository
 import javax.inject.Inject
@@ -32,7 +32,7 @@ class GradeStudentViewModel @Inject constructor(private val repository: LectureR
                 repository.getStudentGrade(lectureId, it)
             } ?: repository.getStudentOwnGrade(lectureId)
 
-            if (response.status == UseCase.Status.SUCCESS) {
+            if (response.status == NetworkResult.Status.SUCCESS) {
                 _gradeInfo.value = response.data!!
                 grade.value = _gradeInfo.value!!.result
             } else
@@ -47,8 +47,9 @@ class GradeStudentViewModel @Inject constructor(private val repository: LectureR
             val response = repository.postStudentGrade(
                 lectureId, studentId, newGrade
             )
-            if (response.status == UseCase.Status.SUCCESS && response.data!!) {
-                _gradeResult.value = (response.status == UseCase.Status.SUCCESS && response.data)
+            if (response.status == NetworkResult.Status.SUCCESS && response.data!!) {
+                _gradeResult.value =
+                    (response.status == NetworkResult.Status.SUCCESS && response.data)
                 _gradeInfo.value!!.result = grade.value!!
             } else {
                 grade.value = _gradeInfo.value!!.result

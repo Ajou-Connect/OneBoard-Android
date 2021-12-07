@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import kr.khs.oneboard.core.UseCase
+import kr.khs.oneboard.core.NetworkResult
 import kr.khs.oneboard.repository.BasicRepository
 import javax.inject.Inject
 
@@ -28,10 +28,10 @@ class SplashViewModel @Inject constructor(private val repository: BasicRepositor
         viewModelScope.launch {
             val response = repository.healthCheck()
             _healthCheck.value = when (response.status) {
-                UseCase.Status.SUCCESS -> {
+                NetworkResult.Status.SUCCESS -> {
                     true
                 }
-                UseCase.Status.ERROR -> {
+                NetworkResult.Status.ERROR -> {
                     false
                 }
             }
@@ -45,10 +45,10 @@ class SplashViewModel @Inject constructor(private val repository: BasicRepositor
             viewModelScope.launch {
                 val response = repository.loginCheck(token)
                 _loginCheck.value = when (response.status) {
-                    UseCase.Status.SUCCESS -> {
+                    NetworkResult.Status.SUCCESS -> {
                         true
                     }
-                    UseCase.Status.ERROR -> {
+                    NetworkResult.Status.ERROR -> {
                         false
                     }
                 }

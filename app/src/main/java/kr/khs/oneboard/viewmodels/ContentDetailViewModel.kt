@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kr.khs.oneboard.core.BaseViewModel
-import kr.khs.oneboard.core.UseCase
+import kr.khs.oneboard.core.NetworkResult
 import kr.khs.oneboard.data.Submit
 import kr.khs.oneboard.repository.LectureRepository
 import javax.inject.Inject
@@ -23,7 +23,7 @@ class ContentDetailViewModel @Inject constructor(private val lectureRepository: 
         viewModelScope.launch {
             showProgress()
             val response = lectureRepository.getSubmitAssignmentList(lectureId, assignmentId)
-            if (response.status == UseCase.Status.SUCCESS)
+            if (response.status == NetworkResult.Status.SUCCESS)
                 _assignmentList.value = response.data!!
             else
                 setErrorMessage("제출된 과제 목록을 받아오지 못했습니다.")
