@@ -21,22 +21,27 @@ class NoticeViewModel @Inject constructor(private val lectureRepository: Lecture
 
     fun getList(lectureId: Int) {
         viewModelScope.launch {
+            showProgress()
+            _list.value = listOf()
             val response = lectureRepository.getNoticeList(lectureId)
             if (response.status == UseCase.Status.SUCCESS) {
                 _list.value = response.data!!
             } else {
                 setErrorMessage("공지사항을 불러오지 못했습니다.")
             }
+            hideProgress()
         }
     }
 
     fun deleteItem(lectureId: Int, noticeId: Int) {
         viewModelScope.launch {
+            showProgress()
             val success = lectureRepository.deleteNotice(lectureId, noticeId)
             if (success.status == UseCase.Status.SUCCESS)
                 _list.value = _list.value!!.filter { it.id != noticeId }
             else
                 setErrorMessage("삭제가 올바르게 되지 않았습니다.")
+            hideProgress()
         }
     }
 }
