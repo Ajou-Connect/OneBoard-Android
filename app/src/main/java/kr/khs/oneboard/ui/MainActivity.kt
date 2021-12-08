@@ -127,9 +127,11 @@ class MainActivity : AppCompatActivity() {
         binding.navigationView.setNavigationItemSelectedListener { menuItem ->
             Timber.tag("currentDestination").d("${navController.currentDestination}")
             when (menuItem.itemId) {
-                R.id.list_menu_attendance -> {
+                R.id.list_menu_onboarding -> {
+                    navController.navigate(R.id.onBoardingFragment)
                 }
-                R.id.list_menu_grade -> {
+                R.id.lecture_menu_onboarding -> {
+                    navController.navigate(R.id.onBoardingFragment)
                 }
                 R.id.list_menu_lecture -> {
                 }
