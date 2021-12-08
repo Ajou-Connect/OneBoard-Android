@@ -6,12 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import kr.khs.oneboard.R
 import kr.khs.oneboard.adapters.LectureListAdapter
 import kr.khs.oneboard.core.BaseFragment
 import kr.khs.oneboard.databinding.FragmentLectureListBinding
+import kr.khs.oneboard.utils.UserInfoUtil
 import kr.khs.oneboard.viewmodels.LectureListViewModel
 
 @AndroidEntryPoint
@@ -69,5 +72,11 @@ class LectureListFragment : BaseFragment<FragmentLectureListBinding, LectureList
         requireActivity().title = "OneBoard"
         initLectureListRecyclerView()
         inflateMenu(false)
+        initOnBoarding()
+    }
+
+    private fun initOnBoarding() {
+        if (UserInfoUtil.getOnBoarding(requireContext()).not())
+            findNavController().navigate(R.id.onBoardingFragment)
     }
 }
