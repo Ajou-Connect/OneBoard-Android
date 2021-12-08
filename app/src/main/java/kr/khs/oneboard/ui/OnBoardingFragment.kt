@@ -12,6 +12,7 @@ import kr.khs.oneboard.R
 import kr.khs.oneboard.adapters.OnBoardingAdapter
 import kr.khs.oneboard.core.BaseFragment
 import kr.khs.oneboard.databinding.FragmentOnBoardingBinding
+import kr.khs.oneboard.utils.UserInfoUtil
 import kr.khs.oneboard.viewmodels.OnBoardingViewModel
 
 @AndroidEntryPoint
@@ -27,6 +28,8 @@ class OnBoardingFragment : BaseFragment<FragmentOnBoardingBinding, OnBoardingVie
 
     override fun init() {
         initViewPager()
+
+        UserInfoUtil.setOnBoarding(requireContext())
 
         binding.onboardingSkip.setOnClickListener {
             requireActivity().onBackPressed()
