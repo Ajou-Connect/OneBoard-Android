@@ -25,6 +25,8 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        UserInfoUtil.setOnBoarding(this, true)
+
         initLoginButton()
         initEditTextWatcher()
 
