@@ -13,6 +13,53 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <LinearLayout
+        android:id="@+id/attendanceProfessorLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/viewTitle"
+        tools:visibility="visible">
+
+        <Button
+            android:id="@+id/attendanceReset"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:drawablePadding="4dp"
+            android:text="초기화"
+            android:textColor="@color/white"
+            app:icon="@drawable/ic_reset"
+            app:iconTint="@color/white" />
+
+        <Button
+            android:id="@+id/attendanceSave"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:drawablePadding="4dp"
+            android:text="저장"
+            android:textColor="@color/white"
+            app:icon="@drawable/ic_save"
+            app:iconTint="@color/white" />
+
+        <Button
+            android:id="@+id/attendanceChange"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:drawablePadding="4dp"
+            android:text="일괄 변경"
+            android:textColor="@color/white"
+            app:iconTint="@color/white" />
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listAttendance"
         android:layout_width="0dp"
@@ -24,5 +71,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/viewTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/attendanceProfessorLayout" />
 </androidx.constraintlayout.widget.ConstraintLayout>

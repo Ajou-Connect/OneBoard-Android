@@ -75,6 +75,8 @@ class AttendanceViewModel @Inject constructor(
             }
 
             hideProgress()
+            _attendanceList.value = listOf()
+            getAttendanceList(lectureId)
         }
     }
 

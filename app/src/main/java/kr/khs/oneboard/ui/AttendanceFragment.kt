@@ -1,7 +1,9 @@
 package kr.khs.oneboard.ui
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.viewModels
@@ -54,29 +56,6 @@ class AttendanceFragment : BaseFragment<FragmentAttendanceBinding, AttendanceVie
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        if (UserInfoUtil.type == TYPE_PROFESSOR) {
-            super.onCreateOptionsMenu(menu, inflater)
-            inflater.inflate(R.menu.option_menu_attendance, menu)
-        }
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (UserInfoUtil.type == TYPE_PROFESSOR) {
-            when (item.itemId) {
-                R.id.option_menu_reset -> {
-                    viewModel.resetAttendanceList(parentViewModel.getLecture().id)
-                }
-                R.id.option_menu_save -> {
-                    viewModel.saveAttendanceList(parentViewModel.getLecture().id)
-                }
-                R.id.option_menu_kebap -> {
-                    createOptionDialog()
-                }
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
 
     override fun getFragmentViewBinding(
         inflater: LayoutInflater,
@@ -87,6 +66,25 @@ class AttendanceFragment : BaseFragment<FragmentAttendanceBinding, AttendanceVie
         binding.viewTitle.root.text = "출석 목록"
         initAttendanceList()
         initData()
+
+        if (UserInfoUtil.type == TYPE_PROFESSOR)
+            initOptionMenu()
+    }
+
+    private fun initOptionMenu() {
+        binding.attendanceProfessorLayout.visibility = View.VISIBLE
+
+        binding.attendanceReset.setOnClickListener {
+            viewModel.resetAttendanceList(parentViewModel.getLecture().id)
+        }
+
+        binding.attendanceSave.setOnClickListener {
+            viewModel.saveAttendanceList(parentViewModel.getLecture().id)
+        }
+
+        binding.attendanceChange.setOnClickListener {
+            createOptionDialog()
+        }
     }
 
     private fun initData() {
