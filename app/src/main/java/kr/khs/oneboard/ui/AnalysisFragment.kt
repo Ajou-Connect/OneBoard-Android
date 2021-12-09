@@ -26,6 +26,10 @@ class AnalysisFragment : BaseFragment<FragmentAnalysisBinding, AnalysisViewModel
     }
 
     private fun initViews() {
+        initPlot()
+    }
+
+    private fun initPlot() {
         val bottomTextList = ArrayList<String>()
         val sampleDataList = ArrayList<ArrayList<Int>>()
         val sample1 = ArrayList<Int>()
