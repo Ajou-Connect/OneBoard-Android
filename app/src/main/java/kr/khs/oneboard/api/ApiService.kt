@@ -209,7 +209,7 @@ interface ApiService {
         @Path("lessonId") lessonId: Int
     ): BasicResponseImpl
 
-    // TODO: 2021/12/03 출석 체크 요청 - 교수
+    // TODO: 2021/12/03 출석 체크 요청 - 학생
     @POST("lecture/{lectureId}/lesson/{lessonId}/live/attendance/student")
     suspend fun postAttendanceStudent(
         @Path("lectureId") lectureId: Int,
