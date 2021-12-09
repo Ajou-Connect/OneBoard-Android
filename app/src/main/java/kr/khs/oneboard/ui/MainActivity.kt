@@ -218,5 +218,3 @@ class MainActivity : AppCompatActivity() {
         UserInfoUtil.univ = university
     }
 }
-
-// TODO: 2021/11/19 파일 다운로드 찾아보기
