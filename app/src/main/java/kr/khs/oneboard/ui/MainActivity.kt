@@ -171,6 +171,7 @@ class MainActivity : AppCompatActivity() {
                     )
                 }
                 R.id.lecture_menu_understanding -> {
+                    navController.navigate(R.id.analysisFragment)
                 }
                 R.id.lecture_menu_go_list -> {
                     navController.navigate(
