@@ -3,7 +3,7 @@ package kr.khs.oneboard.utils;
 import android.content.Context;
 
 /*
-* Copy from https://github.com/HackPlan/AndroidCharts
+ * Copy from https://github.com/HackPlan/AndroidCharts
  */
 public class MyUtils {
     public static int dip2px(Context context, float dipValue) {
