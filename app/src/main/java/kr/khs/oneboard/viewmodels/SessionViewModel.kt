@@ -19,6 +19,7 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
 
     private var lectureId by Delegates.notNull<Int>()
     private var lessonId by Delegates.notNull<Int>()
+    private var understandingId by Delegates.notNull<Int>()
 
     // TODO: 2021/12/04 Set live ID
     private var liveId = 0
@@ -49,10 +50,11 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
         }
     }
 
-    fun getUnderStanding(understandingId: Int) {
+    fun getUnderStandingProfessor() {
         viewModelScope.launch {
             showProgress()
-            val response = repository.getUnderStanding(lectureId, lessonId, liveId, understandingId)
+            val response =
+                repository.getUnderStandingProfessor(lectureId, lessonId, understandingId)
 
             if (response.status == NetworkResult.Status.SUCCESS) {
                 val data = response.data!!
@@ -65,22 +67,33 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
         }
     }
 
-    fun postUnderStanding(select: String) {
+    fun postUnderStandingProfessor() {
         viewModelScope.launch {
             showProgress()
-            val response = repository.postUnderStanding(lectureId, lessonId, liveId, select)
+            val response = repository.postUnderStandingProfessor(lectureId, lessonId)
 
             if (response.status == NetworkResult.Status.SUCCESS) {
-                setErrorMessage(
-                    if (response.data!!) {
-                        "전송 완료"
-                    } else {
-                        "전송 실패"
-                    }
-                )
+                setErrorMessage("전송 완료")
             } else {
                 setErrorMessage("이해도 평가 중 오류가 발생했습니다.")
             }
+
+            hideProgress()
+        }
+    }
+
+    fun postUnderStandingStudent(select: String) {
+        viewModelScope.launch {
+            showProgress()
+            val response =
+                repository.postUnderStandingStudent(lectureId, lessonId, understandingId, select)
+
+            if (response.status == NetworkResult.Status.SUCCESS) {
+                setErrorMessage("전송 완료")
+            } else {
+                setErrorMessage("이해도 평가 중 오류가 발생했습니다.")
+            }
+
             hideProgress()
         }
     }

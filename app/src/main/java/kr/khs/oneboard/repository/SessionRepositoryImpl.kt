@@ -5,6 +5,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import kr.khs.oneboard.api.ApiService
 import kr.khs.oneboard.core.NetworkResult
+import kr.khs.oneboard.data.Understanding
 import kr.khs.oneboard.utils.SUCCESS
 import org.json.JSONObject
 import javax.inject.Inject
@@ -72,22 +73,20 @@ class SessionRepositoryImpl @Inject constructor(
         return returnValue
     }
 
-    override suspend fun postUnderStanding(
+    override suspend fun postUnderStandingProfessor(
         lectureId: Int,
         lessonId: Int,
-        liveId: Int,
-        select: String
-    ): NetworkResult<Boolean> {
-        var returnValue: NetworkResult<Boolean>
+    ): NetworkResult<Int> {
+        var returnValue: NetworkResult<Int>
 
         try {
             withContext(Dispatchers.IO) {
-                val body = JSONObject().apply {
-                    put("select", select)
-                }
-                val response = apiService.postUnderStanding(lectureId, lessonId, liveId, body)
+                val response = apiService.professorPostUnderstanding(lectureId, lessonId)
 
-                returnValue = NetworkResult.success(response.result == SUCCESS)
+                returnValue = if (response["result"] == SUCCESS)
+                    NetworkResult.success(response.getJSONObject("data").getInt("understandId"))
+                else
+                    NetworkResult.error("result Fail")
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -97,18 +96,52 @@ class SessionRepositoryImpl @Inject constructor(
         return returnValue
     }
 
-    override suspend fun getUnderStanding(
+    override suspend fun getUnderStandingProfessor(
         lectureId: Int,
         lessonId: Int,
-        liveId: Int,
         understandingId: Int
+    ): NetworkResult<Understanding> {
+        var returnValue: NetworkResult<Understanding>
+
+        try {
+            withContext(Dispatchers.IO) {
+                val response =
+                    apiService.professorGetUnderStanding(
+                        lectureId,
+                        lessonId,
+                        understandingId
+                    )
+
+                returnValue = if (response.result == SUCCESS)
+                    NetworkResult.success(response.data)
+                else
+                    NetworkResult.error("Result Fail")
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            returnValue = NetworkResult.error("error")
+        }
+
+        return returnValue
+    }
+
+    override suspend fun postUnderStandingStudent(
+        lectureId: Int,
+        lessonId: Int,
+        understandingId: Int,
+        response: String
     ): NetworkResult<Boolean> {
         var returnValue: NetworkResult<Boolean>
 
         try {
             withContext(Dispatchers.IO) {
-                val response =
-                    apiService.getUnderStanding(lectureId, lessonId, liveId, understandingId)
+                val body = JSONObject("\"response\": ${if (response == "O") 1 else 0}")
+                val response = apiService.studentPostUnderStanding(
+                    lectureId,
+                    lessonId,
+                    understandingId,
+                    body
+                )
 
                 returnValue = NetworkResult.success(response.result == SUCCESS)
             }
