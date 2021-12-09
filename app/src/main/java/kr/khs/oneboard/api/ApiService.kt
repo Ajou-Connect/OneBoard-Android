@@ -217,21 +217,27 @@ interface ApiService {
     ): BasicResponseImpl
 
     // TODO: 2021/12/03 이해도 평가 요청
-    @POST("lecture/{lectureId}/lesson/{lessonId}/live/{liveId}/understanding/professor")
-    suspend fun postUnderStanding(
+    @GET("lecture/{lectureId}/lesson/{lessonId}/live/understanding/professor")
+    suspend fun professorPostUnderstanding(
         @Path("lectureId") lectureId: Int,
-        @Path("lessonId") lessonId: Int,
-        @Path("liveId") liveId: Int,
-        @Body body: JSONObject
-    ): BasicResponseImpl
+        @Path("lessonId") lessonId: Int
+    ): JSONObject
 
     // TODO: 2021/12/03 이해도 평가 결과 확인
-    @GET("lecture/{lectureId}/lesson/{lessonId}/live/{liveId}/understanding/{understandingId}/professor")
-    suspend fun getUnderStanding(
+    @GET("lecture/{lectureId}/lesson/{lessonId}/live/understanding/{understandingId}/professor")
+    suspend fun professorGetUnderStanding(
         @Path("lectureId") lectureId: Int,
         @Path("lessonId") lessonId: Int,
-        @Path("liveId") liveId: Int,
         @Path("understandingId") underStandingId: Int
+    ): Response<Understanding>
+
+    // TODO: 2021/12/09 이해도 평가 요청 응답 - 학생
+    @GET("lecture/{lectureId}/lesson/{lessonId}/live/understanding/{understandId}/student")
+    suspend fun studentPostUnderStanding(
+        @Path("lectureId") lectureId: Int,
+        @Path("lessonId") lessonId: Int,
+        @Path("understandId") underStandingId: Int,
+        @Body body: JSONObject
     ): BasicResponseImpl
 
     // TODO: 2021/12/03 퀴즈 요청 확인
