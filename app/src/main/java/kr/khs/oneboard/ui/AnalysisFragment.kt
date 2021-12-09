@@ -7,8 +7,10 @@ import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import kr.khs.oneboard.core.BaseFragment
 import kr.khs.oneboard.databinding.FragmentAnalysisBinding
+import kr.khs.oneboard.utils.DialogUtil
 import kr.khs.oneboard.viewmodels.AnalysisViewModel
 import kr.khs.oneboard.views.LineView
+import kr.khs.oneboard.views.PieHelper
 
 @AndroidEntryPoint
 class AnalysisFragment : BaseFragment<FragmentAnalysisBinding, AnalysisViewModel>() {
@@ -27,6 +29,25 @@ class AnalysisFragment : BaseFragment<FragmentAnalysisBinding, AnalysisViewModel
 
     private fun initViews() {
         initPlot()
+        initPie()
+    }
+
+    private fun initPie() {
+        val pieHelperList = ArrayList<PieHelper>()
+        pieHelperList.add(PieHelper(80f, "O", Color.BLUE))
+        pieHelperList.add(PieHelper(20f, "X", Color.RED))
+
+        with(binding.analysisPie) {
+            setDate(pieHelperList)
+            setOnPieClickListener {
+                DialogUtil.createDialog(
+                    requireContext(),
+                    "${pieHelperList[it].title} : ${pieHelperList[it].percentStr}",
+                    positiveText = "확인",
+                    positiveAction = { }
+                )
+            }
+        }
     }
 
     private fun initPlot() {
