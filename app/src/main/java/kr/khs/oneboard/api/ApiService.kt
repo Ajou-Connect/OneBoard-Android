@@ -181,22 +181,16 @@ interface ApiService {
         @Path("lessonId") lessonId: Int
     )
 
-    // TODO: 2021/12/03 비대면 수업 생성
-    @GET("lecture/{lectureId}/lesson/{lessonId}/live/open")
-    suspend fun openLesson(
-        @Path("lectureId") lectureId: Int,
-        @Path("lessonId") lessonId: Int
-    ): BasicResponseImpl
-
     // TODO: 2021/12/03 비대면 수업 입장
     @GET("lecture/{lectureId}/lesson/{lessonId}/live/entrance")
     suspend fun enterLesson(
         @Path("lectureId") lectureId: Int,
-        @Path("lessonId") lessonId: Int
+        @Path("lessonId") lessonId: Int,
+        @Query("session") sessionName: String
     ): BasicResponseImpl
 
     // TODO: 2021/12/03 비대면 수업 종료
-    @GET("lecture/{lectureId}/lesson/{lessonId}/live/clos")
+    @GET("lecture/{lectureId}/lesson/{lessonId}/live/exit")
     suspend fun leaveLesson(
         @Path("lectureId") lectureId: Int,
         @Path("lessonId") lessonId: Int
