@@ -1,7 +1,6 @@
 package kr.khs.oneboard.repository
 
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import kr.khs.oneboard.api.ApiService
 import kr.khs.oneboard.core.NetworkResult
@@ -182,37 +181,22 @@ class LessonRepositoryImpl @Inject constructor(@Named("withJWT") val apiService:
         return returnValue
     }
 
-    override suspend fun createLesson(lectureId: Int, lessonId: Int): NetworkResult<Boolean> {
+    override suspend fun enterLesson(
+        lectureId: Int,
+        lessonId: Int,
+        sessionName: String
+    ): NetworkResult<Boolean> {
         var returnValue: NetworkResult<Boolean>
-        delay(1000)
-        returnValue = NetworkResult.success(true)
-//        try {
-//            withContext(Dispatchers.IO) {
-//                val response = apiService.openLesson(lectureId, lessonId)
-//                returnValue = UseCase.success(response.result == SUCCESS)
-//            }
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//            returnValue = UseCase.error("Error!")
-//        }
 
-        return returnValue
-    }
-
-    override suspend fun enterLesson(lectureId: Int, lessonId: Int): NetworkResult<Boolean> {
-        var returnValue: NetworkResult<Boolean>
-        delay(1000)
-        returnValue = NetworkResult.success(true)
-
-//        try {
-//            withContext(Dispatchers.IO) {
-//                val response = apiService.enterLesson(lectureId, lessonId)
-//                returnValue = UseCase.success(response.result == SUCCESS)
-//            }
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//            returnValue = UseCase.error("Error!")
-//        }
+        try {
+            withContext(Dispatchers.IO) {
+                val response = apiService.enterLesson(lectureId, lessonId, sessionName)
+                returnValue = NetworkResult.success(response.result == SUCCESS)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            returnValue = NetworkResult.error("Error!")
+        }
 
         return returnValue
     }

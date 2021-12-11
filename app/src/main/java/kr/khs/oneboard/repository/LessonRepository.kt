@@ -37,13 +37,9 @@ interface LessonRepository {
 
     suspend fun getDefaultLessonInfo(lectureId: Int): NetworkResult<LessonDefaultInfo>
 
-    suspend fun createLesson(
-        lectureId: Int,
-        lessonId: Int
-    ): NetworkResult<Boolean>
-
     suspend fun enterLesson(
         lectureId: Int,
-        lessonId: Int
+        lessonId: Int,
+        sessionName: String
     ): NetworkResult<Boolean>
 }

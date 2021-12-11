@@ -28,27 +28,27 @@ class LessonDetailViewModel @Inject constructor(private val repository: LessonRe
 
     fun getLesson() = lesson
 
-    fun createLesson(lectureId: Int, lessonId: Int) {
+//    fun createLesson(lectureId: Int, lessonId: Int) {
+//        viewModelScope.launch {
+//            showProgress()
+//            val response = repository.createLesson(lectureId, lessonId)
+//
+//            if (response.status == NetworkResult.Status.SUCCESS) {
+//                _isCreateLesson.value = response.data!!
+//
+//                if (response.data.not())
+//                    setSessionErrorMessage("다시 시도해주세요.")
+//            } else {
+//                setErrorMessage("수업을 생성하는데 오류가 생겼습니다.")
+//            }
+//            hideProgress()
+//        }
+//    }
+
+    fun enterLesson(lectureId: Int, lessonId: Int, sessionName: String) {
         viewModelScope.launch {
             showProgress()
-            val response = repository.createLesson(lectureId, lessonId)
-
-            if (response.status == NetworkResult.Status.SUCCESS) {
-                _isCreateLesson.value = response.data!!
-
-                if (response.data.not())
-                    setSessionErrorMessage("다시 시도해주세요.")
-            } else {
-                setErrorMessage("수업을 생성하는데 오류가 생겼습니다.")
-            }
-            hideProgress()
-        }
-    }
-
-    fun enterLesson(lectureId: Int, lessonId: Int) {
-        viewModelScope.launch {
-            showProgress()
-            val response = repository.enterLesson(lectureId, lessonId)
+            val response = repository.enterLesson(lectureId, lessonId, sessionName)
             if (response.status == NetworkResult.Status.SUCCESS) {
                 _isCreateLesson.value = response.data!!
 
