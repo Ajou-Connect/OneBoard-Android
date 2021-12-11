@@ -51,7 +51,7 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
 
     private val viewModel: SessionViewModel by viewModels()
 
-    override val sessionLeaveProfessor: () -> Unit by lazy { { viewModel.leaveSession() } }
+    override val sessionLeaveProfessor: () -> Unit by lazy { { viewModel.leaveSession(sessionName) } }
 
     @Inject
     lateinit var socket: Socket
@@ -216,6 +216,7 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
 
         viewModel.isLeave.observe(this) {
             if (it) {
+                Timber.tag("SessionLeave").d("$it")
                 sessionLeaveAction()
 
                 super.releaseResource()

@@ -134,10 +134,10 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
         }
     }
 
-    fun leaveSession() {
+    fun leaveSession(sessionName: String) {
         viewModelScope.launch {
             showProgress()
-            val response = repository.leaveLesson(lectureId, lessonId)
+            val response = repository.leaveLesson(lectureId, lessonId, sessionName)
 
             if (response.status == NetworkResult.Status.SUCCESS && response.data!!) {
                 _isLeave.value = true

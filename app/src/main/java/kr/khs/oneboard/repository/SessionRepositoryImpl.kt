@@ -1,7 +1,6 @@
 package kr.khs.oneboard.repository
 
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import kr.khs.oneboard.api.ApiService
 import kr.khs.oneboard.core.NetworkResult
@@ -14,21 +13,23 @@ import javax.inject.Named
 class SessionRepositoryImpl @Inject constructor(
     @Named("withJWT") private val apiService: ApiService,
 ) : SessionRepository {
-    override suspend fun leaveLesson(lectureId: Int, lessonId: Int): NetworkResult<Boolean> {
+    override suspend fun leaveLesson(
+        lectureId: Int,
+        lessonId: Int,
+        sessionName: String
+    ): NetworkResult<Boolean> {
         var returnValue: NetworkResult<Boolean>
-        delay(1000)
-        returnValue = NetworkResult.success(true)
 
-//        try {
-//            withContext(Dispatchers.IO) {
-//                val response = apiService.leaveLesson(lectureId, lessonId)
-//
-//                returnValue = UseCase.success(response.result == SUCCESS)
-//            }
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//            returnValue = UseCase.error("error")
-//        }
+        try {
+            withContext(Dispatchers.IO) {
+                val response = apiService.leaveLesson(lectureId, lessonId, sessionName)
+
+                returnValue = NetworkResult.success(response.result == SUCCESS)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            returnValue = NetworkResult.error("error")
+        }
 
         return returnValue
     }

@@ -193,7 +193,8 @@ interface ApiService {
     @GET("lecture/{lectureId}/lesson/{lessonId}/live/exit")
     suspend fun leaveLesson(
         @Path("lectureId") lectureId: Int,
-        @Path("lessonId") lessonId: Int
+        @Path("lessonId") lessonId: Int,
+        @Query("session") sessionName: String
     ): BasicResponseImpl
 
     // TODO: 2021/12/03 출석 체크 요청 - 교수

@@ -6,7 +6,8 @@ import kr.khs.oneboard.data.Understanding
 interface SessionRepository {
     suspend fun leaveLesson(
         lectureId: Int,
-        lessonId: Int
+        lessonId: Int,
+        sessionName: String
     ): NetworkResult<Boolean>
 
     suspend fun postAttendanceProfessor(
