@@ -14,10 +14,7 @@ import kr.khs.oneboard.adapters.AssignmentListAdapter
 import kr.khs.oneboard.core.BaseFragment
 import kr.khs.oneboard.databinding.FragmentAssignmentBinding
 import kr.khs.oneboard.extensions.toTimeInMillis
-import kr.khs.oneboard.utils.DialogUtil
-import kr.khs.oneboard.utils.TYPE_ASSIGNMENT
-import kr.khs.oneboard.utils.TYPE_PROFESSOR
-import kr.khs.oneboard.utils.UserInfoUtil
+import kr.khs.oneboard.utils.*
 import kr.khs.oneboard.viewmodels.AssignmentViewModel
 
 @AndroidEntryPoint
@@ -141,4 +138,10 @@ class AssignmentFragment : BaseFragment<FragmentAssignmentBinding, AssignmentVie
         }
     }
 
+
+    override fun initOnBoarding() {
+        if (getOnBoardingSpf(this.javaClass.simpleName).not()) {
+            createOnBoardingDialog()
+        }
+    }
 }

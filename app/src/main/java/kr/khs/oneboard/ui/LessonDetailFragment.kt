@@ -377,4 +377,10 @@ class LessonDetailFragment : BaseFragment<FragmentLessonDetailBinding, LessonDet
     override fun onShareAudioRawDataReceived(p0: ZoomVideoSDKAudioRawData?) {
         Timber.tag("ZoomListener").d("onShareAudioRawDataReceived()")
     }
+
+    override fun initOnBoarding() {
+        if (getOnBoardingSpf(this.javaClass.simpleName).not()) {
+            createOnBoardingDialog()
+        }
+    }
 }

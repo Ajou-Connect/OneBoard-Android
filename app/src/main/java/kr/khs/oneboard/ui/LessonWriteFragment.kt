@@ -288,4 +288,10 @@ class LessonWriteFragment : BaseFragment<FragmentLessonWriteBinding, LessonWrite
             }
         }
     }
+
+    override fun initOnBoarding() {
+        if (getOnBoardingSpf(this.javaClass.simpleName).not()) {
+            createOnBoardingDialog()
+        }
+    }
 }

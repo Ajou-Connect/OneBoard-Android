@@ -12,6 +12,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kr.khs.oneboard.core.BaseFragment
 import kr.khs.oneboard.databinding.FragmentLecturePlanBinding
 import kr.khs.oneboard.utils.API_URL
+import kr.khs.oneboard.utils.createOnBoardingDialog
+import kr.khs.oneboard.utils.getOnBoardingSpf
 import kr.khs.oneboard.viewmodels.LecturePlanViewModel
 import timber.log.Timber
 
@@ -61,4 +63,9 @@ class LecturePlanFragment : BaseFragment<FragmentLecturePlanBinding, LecturePlan
         }
     }
 
+    override fun initOnBoarding() {
+        if (getOnBoardingSpf(this.javaClass.simpleName).not()) {
+            createOnBoardingDialog()
+        }
+    }
 }

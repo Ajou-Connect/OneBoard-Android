@@ -8,6 +8,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kr.khs.oneboard.core.BaseFragment
 import kr.khs.oneboard.databinding.FragmentAnalysisBinding
 import kr.khs.oneboard.utils.DialogUtil
+import kr.khs.oneboard.utils.createOnBoardingDialog
+import kr.khs.oneboard.utils.getOnBoardingSpf
 import kr.khs.oneboard.viewmodels.AnalysisViewModel
 import kr.khs.oneboard.views.LineView
 import kr.khs.oneboard.views.PieHelper
@@ -75,4 +77,9 @@ class AnalysisFragment : BaseFragment<FragmentAnalysisBinding, AnalysisViewModel
         }
     }
 
+    override fun initOnBoarding() {
+        if (getOnBoardingSpf(this.javaClass.simpleName).not()) {
+            createOnBoardingDialog()
+        }
+    }
 }

@@ -18,9 +18,7 @@ import kr.khs.oneboard.core.BaseFragment
 import kr.khs.oneboard.databinding.DialogAttendanceListOptionMenuBinding
 import kr.khs.oneboard.databinding.DialogAttendanceSpinnerBinding
 import kr.khs.oneboard.databinding.FragmentAttendanceBinding
-import kr.khs.oneboard.utils.DialogUtil
-import kr.khs.oneboard.utils.TYPE_PROFESSOR
-import kr.khs.oneboard.utils.UserInfoUtil
+import kr.khs.oneboard.utils.*
 import kr.khs.oneboard.viewmodels.AttendanceViewModel
 import timber.log.Timber
 
@@ -281,5 +279,11 @@ class AttendanceFragment : BaseFragment<FragmentAttendanceBinding, AttendanceVie
                 )
             }
             .show()
+    }
+
+    override fun initOnBoarding() {
+        if (getOnBoardingSpf(this.javaClass.simpleName).not()) {
+            createOnBoardingDialog()
+        }
     }
 }

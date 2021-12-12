@@ -97,4 +97,6 @@ class OnBoardingFragment : BaseFragment<FragmentOnBoardingBinding, OnBoardingVie
             )
         }
     }
+
+    override fun initOnBoarding() {}
 }
