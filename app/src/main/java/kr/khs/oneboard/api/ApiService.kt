@@ -181,7 +181,6 @@ interface ApiService {
         @Path("lessonId") lessonId: Int
     )
 
-    // TODO: 2021/12/03 비대면 수업 입장
     @GET("lecture/{lectureId}/lesson/{lessonId}/live/entrance")
     suspend fun enterLesson(
         @Path("lectureId") lectureId: Int,
@@ -189,7 +188,6 @@ interface ApiService {
         @Query("session") sessionName: String
     ): BasicResponseImpl
 
-    // TODO: 2021/12/03 비대면 수업 종료
     @GET("lecture/{lectureId}/lesson/{lessonId}/live/exit")
     suspend fun leaveLesson(
         @Path("lectureId") lectureId: Int,
@@ -197,18 +195,18 @@ interface ApiService {
         @Query("session") sessionName: String
     ): BasicResponseImpl
 
-    // TODO: 2021/12/03 출석 체크 요청 - 교수
     @GET("lecture/{lectureId}/lesson/{lessonId}/live/attendance/professor")
     suspend fun postAttendanceProfessor(
         @Path("lectureId") lectureId: Int,
-        @Path("lessonId") lessonId: Int
+        @Path("lessonId") lessonId: Int,
+        @Query("session") sessionName: String
     ): BasicResponseImpl
 
-    // TODO: 2021/12/03 출석 체크 요청 - 학생
     @POST("lecture/{lectureId}/lesson/{lessonId}/live/attendance/student")
     suspend fun postAttendanceStudent(
         @Path("lectureId") lectureId: Int,
-        @Path("lessonId") lessonId: Int
+        @Path("lessonId") lessonId: Int,
+        @Query("session") sessionName: String
     ): BasicResponseImpl
 
     // TODO: 2021/12/03 이해도 평가 요청
