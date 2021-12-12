@@ -1,6 +1,7 @@
 package kr.khs.oneboard.repository
 
 import kr.khs.oneboard.core.NetworkResult
+import kr.khs.oneboard.data.AnalysisResponseDto
 import kr.khs.oneboard.data.Lesson
 import kr.khs.oneboard.data.LessonDefaultInfo
 import okhttp3.MultipartBody
@@ -42,4 +43,9 @@ interface LessonRepository {
         lessonId: Int,
         sessionName: String
     ): NetworkResult<Boolean>
+
+    suspend fun getAnalysis(
+        lectureId: Int,
+        lessonId: Int
+    ): NetworkResult<AnalysisResponseDto>
 }

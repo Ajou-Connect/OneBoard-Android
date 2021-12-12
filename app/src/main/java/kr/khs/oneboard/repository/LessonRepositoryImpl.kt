@@ -4,6 +4,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kr.khs.oneboard.api.ApiService
 import kr.khs.oneboard.core.NetworkResult
+import kr.khs.oneboard.data.AnalysisResponseDto
 import kr.khs.oneboard.data.Lesson
 import kr.khs.oneboard.data.LessonDefaultInfo
 import kr.khs.oneboard.utils.SUCCESS
@@ -201,4 +202,26 @@ class LessonRepositoryImpl @Inject constructor(@Named("withJWT") val apiService:
         return returnValue
     }
 
+    override suspend fun getAnalysis(
+        lectureId: Int,
+        lessonId: Int
+    ): NetworkResult<AnalysisResponseDto> {
+        var returnValue: NetworkResult<AnalysisResponseDto>
+
+        try {
+            withContext(Dispatchers.IO) {
+                val response = apiService.getLessonAnalysis(lectureId, lessonId)
+
+                returnValue = if (response.result == SUCCESS)
+                    NetworkResult.success(response.data)
+                else
+                    NetworkResult.error("No Data")
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            returnValue = NetworkResult.error("Error")
+        }
+
+        return returnValue
+    }
 }

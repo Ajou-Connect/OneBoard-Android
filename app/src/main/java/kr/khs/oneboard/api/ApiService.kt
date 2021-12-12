@@ -180,7 +180,7 @@ interface ApiService {
     suspend fun getLessonAnalysis(
         @Path("lectureId") lectureId: Int,
         @Path("lessonId") lessonId: Int
-    )
+    ): Response<AnalysisResponseDto>
 
     @GET("lecture/{lectureId}/lesson/{lessonId}/live/entrance")
     suspend fun enterLesson(

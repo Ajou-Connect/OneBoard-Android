@@ -18,6 +18,13 @@ data class UnderstandingItem(
     val response: Int
 )
 
+data class UnderstandingAnalysis(
+    val understandId: Int,
+    val createdDt: String,
+    val yes: Int,
+    val no: Int
+)
+
 data class UnderstandingIdWrapper(
     val understandId: Int
 )
