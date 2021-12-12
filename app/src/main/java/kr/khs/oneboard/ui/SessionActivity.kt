@@ -23,6 +23,8 @@ import kr.khs.oneboard.core.rawdata.RawDataRenderer
 import kr.khs.oneboard.core.zoom.AudioRawDataUtil
 import kr.khs.oneboard.core.zoom.BaseSessionActivity
 import kr.khs.oneboard.core.zoom.NotificationService
+import kr.khs.oneboard.data.request.QuizRequestDto
+import kr.khs.oneboard.databinding.DialogCreateQuizBinding
 import kr.khs.oneboard.databinding.DialogQuizBinding
 import kr.khs.oneboard.databinding.DialogUnderstandingBinding
 import kr.khs.oneboard.utils.*
@@ -246,8 +248,52 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
         }
 
         binding.requestQuiz.setOnClickListener {
-
+            createQuizDialog()
         }
+    }
+
+    private fun createQuizDialog() {
+        val quizBinding = DialogCreateQuizBinding.inflate(layoutInflater)
+
+        val builder = MaterialAlertDialogBuilder(this)
+            .setView(quizBinding.root)
+            .create()
+
+        quizBinding.createQuizButton.setOnClickListener {
+            if (quizBinding.createQuizQuestion.text.toString().isEmpty() ||
+                quizBinding.createQuizAnswer1.text.toString().isEmpty() ||
+                quizBinding.createQuizAnswer2.text.toString().isEmpty() ||
+                quizBinding.createQuizAnswer3.text.toString().isEmpty() ||
+                quizBinding.createQuizAnswer4.text.toString().isEmpty() ||
+                quizBinding.createQuizAnswer5.text.toString().isEmpty() ||
+                quizBinding.createQuizRadioGroup.checkedRadioButtonId == -1
+            ) {
+                viewModel.setErrorMessage("공백 없이 모두 입력해주세요.")
+                return@setOnClickListener
+            }
+
+            val requestDto = QuizRequestDto(
+                question = quizBinding.createQuizQuestion.text.toString(),
+                answer1 = quizBinding.createQuizAnswer1.text.toString(),
+                answer2 = quizBinding.createQuizAnswer2.text.toString(),
+                answer3 = quizBinding.createQuizAnswer3.text.toString(),
+                answer4 = quizBinding.createQuizAnswer4.text.toString(),
+                answer5 = quizBinding.createQuizAnswer5.text.toString(),
+                answer = when (quizBinding.createQuizRadioGroup.checkedRadioButtonId) {
+                    R.id.quizRadio1 -> 1
+                    R.id.quizRadio2 -> 2
+                    R.id.quizRadio3 -> 3
+                    R.id.quizRadio4 -> 4
+                    R.id.quizRadio5 -> 5
+                    else -> 0
+                }
+            )
+
+            viewModel.postQuizProfessor(requestDto)
+            builder.dismiss()
+        }
+
+        builder.show()
     }
 
     override fun parseIntent() {
