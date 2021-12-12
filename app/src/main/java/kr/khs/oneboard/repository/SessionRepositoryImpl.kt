@@ -36,13 +36,14 @@ class SessionRepositoryImpl @Inject constructor(
 
     override suspend fun postAttendanceProfessor(
         lectureId: Int,
-        lessonId: Int
+        lessonId: Int,
+        sessionName: String
     ): NetworkResult<Boolean> {
         var returnValue: NetworkResult<Boolean>
 
         try {
             withContext(Dispatchers.IO) {
-                val response = apiService.postAttendanceStudent(lectureId, lessonId)
+                val response = apiService.postAttendanceProfessor(lectureId, lessonId, sessionName)
 
                 returnValue = NetworkResult.success(response.result == SUCCESS)
             }
@@ -56,13 +57,14 @@ class SessionRepositoryImpl @Inject constructor(
 
     override suspend fun postAttendanceStudent(
         lectureId: Int,
-        lessonId: Int
+        lessonId: Int,
+        sessionName: String
     ): NetworkResult<Boolean> {
         var returnValue: NetworkResult<Boolean>
 
         try {
             withContext(Dispatchers.IO) {
-                val response = apiService.postAttendanceProfessor(lectureId, lessonId)
+                val response = apiService.postAttendanceStudent(lectureId, lessonId, sessionName)
 
                 returnValue = NetworkResult.success(response.result == SUCCESS)
             }

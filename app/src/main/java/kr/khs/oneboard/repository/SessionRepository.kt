@@ -12,12 +12,14 @@ interface SessionRepository {
 
     suspend fun postAttendanceProfessor(
         lectureId: Int,
-        lessonId: Int
+        lessonId: Int,
+        sessionName: String
     ): NetworkResult<Boolean>
 
     suspend fun postAttendanceStudent(
         lectureId: Int,
-        lessonId: Int
+        lessonId: Int,
+        sessionName: String
     ): NetworkResult<Boolean>
 
     suspend fun postUnderStandingProfessor(

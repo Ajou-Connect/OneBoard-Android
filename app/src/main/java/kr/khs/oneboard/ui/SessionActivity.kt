@@ -64,7 +64,7 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
 
     private val socketConnectListener = Emitter.Listener {
         Timber.tag("Socket").d("Connect Listener!")
-        Timber.tag("Socket").d("$it")
+
         val initObject = JSONObject().apply {
             put("userType", if (UserInfoUtil.type == TYPE_PROFESSOR) "T" else "S")
             put("room", sessionName)
@@ -102,13 +102,14 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
     }
 
     private val socketAttendanceRequestListener = Emitter.Listener {
+        Timber.tag("Socket").d("Attendance Request to student")
+
         launch(coroutineContext) {
             MaterialAlertDialogBuilder(this@SessionActivity)
                 .setMessage("출석 체크를 해주세요.")
                 .setCancelable(false)
                 .setPositiveButton("확인") { _, _ ->
-//                    viewModel.postAttendance()
-                    ToastUtil.shortToast(this@SessionActivity, "출석체크가 되었습니다.")
+                    viewModel.postAttendance()
                 }
                 .show()
         }
@@ -241,7 +242,7 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
         }
 
         binding.requestUnderstanding.setOnClickListener {
-
+            viewModel.postUnderStandingProfessor()
         }
 
         binding.requestQuiz.setOnClickListener {
@@ -265,8 +266,6 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
 
         socket.on(Socket.EVENT_CONNECT, socketConnectListener)
         socket.on(Socket.EVENT_DISCONNECT, socketDisconnectListener)
-
-//        socket.on(SOCKET_TEST, socketTestListener)
 
         if (UserInfoUtil.type == TYPE_PROFESSOR) {
             socket.on(PROFESSOR_ATTENDANCE, socketAttendanceResponseListener)
