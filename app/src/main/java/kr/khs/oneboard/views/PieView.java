@@ -9,6 +9,7 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+
 import java.util.ArrayList;
 
 import kr.khs.oneboard.utils.MyUtils;
@@ -38,7 +39,8 @@ public class PieView extends View {
     private int selectedIndex = NO_SELECTED_INDEX;
     private boolean showPercentLabel = true;
     private Runnable animator = new Runnable() {
-        @Override public void run() {
+        @Override
+        public void run() {
             boolean needNewFrame = false;
             for (PieHelper pie : pieHelperList) {
                 pie.update();
@@ -132,7 +134,8 @@ public class PieView extends View {
         postInvalidate();
     }
 
-    @Override protected void onDraw(Canvas canvas) {
+    @Override
+    protected void onDraw(Canvas canvas) {
         if (pieHelperList.isEmpty()) {
             return;
         }
@@ -194,7 +197,8 @@ public class PieView extends View {
         canvas.drawText(pieHelper.getTitle(), x, y, textPaint);
     }
 
-    @Override public boolean onTouchEvent(MotionEvent event) {
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_UP) {
             int clickedIndex = findPointAt((int) event.getX(), (int) event.getY());
             if (clickedIndex == selectedIndex) {
@@ -227,7 +231,8 @@ public class PieView extends View {
         return NO_SELECTED_INDEX;
     }
 
-    @Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         mViewWidth = measureWidth(widthMeasureSpec);
         mViewHeight = measureHeight(heightMeasureSpec);
         margin = mViewWidth / 16;
