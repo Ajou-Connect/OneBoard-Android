@@ -6,6 +6,7 @@ import kr.khs.oneboard.data.api.Response
 import kr.khs.oneboard.data.request.AttendanceUpdateRequestDto
 import kr.khs.oneboard.data.request.GradeUpdateRequestDto
 import kr.khs.oneboard.data.request.NoticeUpdateRequestDto
+import kr.khs.oneboard.data.request.QuizRequestDto
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import org.json.JSONObject
@@ -233,20 +234,34 @@ interface ApiService {
         @Body body: JSONObject
     ): BasicResponseImpl
 
+    // TODO: 2021/12/12 교수 - 퀴즈 요청
+    @POST("lecture/{lectureId}/lesson/{lessonId}/live/quiz/professor")
+    suspend fun postQuizProfessor(
+        @Path("lectureId") lectureId: Int,
+        @Path("lessonId") lessonId: Int,
+        @Body body: QuizRequestDto
+    ): JSONObject
+
+    @GET("lecture/{lectureId}/lesson/{lessonId}/live/quiz/{quizId}/professor")
+    suspend fun getQuizProfessor(
+        @Path("lectureId") lectureId: Int,
+        @Path("lessonId") lessonId: Int,
+        @Path("quizId") quizId: Int
+    ): Response<Quiz>
+
     // TODO: 2021/12/03 퀴즈 요청 확인
     @GET("lecture/{lectureId}/lesson/{lessonId}/live/{liveId}/quiz/student")
-    suspend fun getQuiz(
+    suspend fun getQuizStudent(
         @Path("lectureId") lectureId: Int,
         @Path("lessonId") lessonId: Int,
-        @Path("liveId") liveId: Int,
-    ): BasicResponseImpl
+        @Path("quizId") quizId: Int
+    ): Response<StudentQuizResponse>
 
     // TODO: 2021/12/03 퀴즈 요청 응답
-    @POST("lecture/{lectureId}/lesson/{lessonId}/live/{liveId}/quiz/{quizId}/student")
-    suspend fun postQuiz(
+    @POST("lecture/{lectureId}/lesson/{lessonId}/live/quiz/{quizId}/student")
+    suspend fun postQuizStudent(
         @Path("lectureId") lectureId: Int,
         @Path("lessonId") lessonId: Int,
-        @Path("liveId") liveId: Int,
         @Path("quizId") quizId: Int,
         @Body body: JSONObject
     ): BasicResponseImpl
