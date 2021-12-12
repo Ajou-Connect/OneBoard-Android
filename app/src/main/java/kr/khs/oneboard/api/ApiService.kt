@@ -215,7 +215,7 @@ interface ApiService {
     suspend fun professorPostUnderstanding(
         @Path("lectureId") lectureId: Int,
         @Path("lessonId") lessonId: Int
-    ): JSONObject
+    ): Response<UnderstandingIdWrapper>
 
     // TODO: 2021/12/03 이해도 평가 결과 확인
     @GET("lecture/{lectureId}/lesson/{lessonId}/live/understanding/{understandingId}/professor")
@@ -240,7 +240,7 @@ interface ApiService {
         @Path("lectureId") lectureId: Int,
         @Path("lessonId") lessonId: Int,
         @Body body: QuizRequestDto
-    ): JSONObject
+    ): Response<QuizIdWrapper>
 
     @GET("lecture/{lectureId}/lesson/{lessonId}/live/quiz/{quizId}/professor")
     suspend fun getQuizProfessor(

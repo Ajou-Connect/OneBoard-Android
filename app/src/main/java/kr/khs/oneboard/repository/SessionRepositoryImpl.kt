@@ -89,8 +89,8 @@ class SessionRepositoryImpl @Inject constructor(
             withContext(Dispatchers.IO) {
                 val response = apiService.professorPostUnderstanding(lectureId, lessonId)
 
-                returnValue = if (response["result"] == SUCCESS)
-                    NetworkResult.success(response.getJSONObject("data").getInt("understandId"))
+                returnValue = if (response.result == SUCCESS)
+                    NetworkResult.success(response.data.understandId)
                 else
                     NetworkResult.error("result Fail")
             }
@@ -170,8 +170,8 @@ class SessionRepositoryImpl @Inject constructor(
             withContext(Dispatchers.IO) {
                 val response = apiService.postQuizProfessor(lectureId, lessonId, quizRequestDto)
 
-                returnValue = if (response["result"] == SUCCESS)
-                    NetworkResult.success(response.getJSONObject("data").getInt("quizId"))
+                returnValue = if (response.result == SUCCESS)
+                    NetworkResult.success(response.data.quizId)
                 else
                     NetworkResult.success(-1)
             }

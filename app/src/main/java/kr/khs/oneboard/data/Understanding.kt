@@ -17,3 +17,7 @@ data class UnderstandingItem(
     val studentNumber: String,
     val response: Int
 )
+
+data class UnderstandingIdWrapper(
+    val understandId: Int
+)

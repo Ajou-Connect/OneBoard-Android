@@ -30,3 +30,7 @@ data class StudentQuizResponse(
     val correctNum: Int,
     val incorrectNum: Int
 )
+
+data class QuizIdWrapper(
+    val quizId: Int
+)
