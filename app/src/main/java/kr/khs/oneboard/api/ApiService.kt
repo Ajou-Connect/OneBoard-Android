@@ -202,7 +202,7 @@ interface ApiService {
         @Query("session") sessionName: String
     ): BasicResponseImpl
 
-    @POST("lecture/{lectureId}/lesson/{lessonId}/live/attendance/student")
+    @GET("lecture/{lectureId}/lesson/{lessonId}/live/attendance/student")
     suspend fun postAttendanceStudent(
         @Path("lectureId") lectureId: Int,
         @Path("lessonId") lessonId: Int,
