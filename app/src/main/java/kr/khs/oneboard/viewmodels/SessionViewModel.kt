@@ -7,6 +7,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kr.khs.oneboard.core.BaseViewModel
 import kr.khs.oneboard.core.NetworkResult
+import kr.khs.oneboard.data.Quiz
+import kr.khs.oneboard.data.StudentQuizResponse
+import kr.khs.oneboard.data.request.QuizRequestDto
 import kr.khs.oneboard.repository.SessionRepository
 import kr.khs.oneboard.utils.TYPE_PROFESSOR
 import kr.khs.oneboard.utils.UserInfoUtil
@@ -21,12 +24,17 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
     private var lessonId by Delegates.notNull<Int>()
     private var understandingId by Delegates.notNull<Int>()
     private var sessionName by Delegates.notNull<String>()
+    private var latestQuizId by Delegates.notNull<Int>()
 
     // TODO: 2021/12/04 Set live ID
     private var liveId = 0
 
     private val _isLeave = MutableLiveData(false)
     val isLeave: LiveData<Boolean> = _isLeave
+
+    val studentQuizResponse = MutableLiveData<StudentQuizResponse>()
+
+    val professorQuizResponse = MutableLiveData<Quiz>()
 
     fun postAttendance() {
         viewModelScope.launch {
@@ -99,15 +107,41 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
         }
     }
 
-    fun getQuiz() {
+    fun postQuizProfessor(quizRequestDto: QuizRequestDto) {
         viewModelScope.launch {
             showProgress()
-            val response = repository.getQuiz(lectureId, lessonId, liveId)
+            val response = repository.postQuizProfessor(lectureId, lessonId, quizRequestDto)
+
+            if (response.status == NetworkResult.Status.SUCCESS)
+                latestQuizId = response.data!!
+            else
+                setErrorMessage("퀴즈 출제 중 오류가 발생하였습니다.")
+
+            hideProgress()
+        }
+    }
+
+    fun getQuizProfessor() {
+        viewModelScope.launch {
+            showProgress()
+            val response = repository.getQuizProfessor(lectureId, lessonId, latestQuizId)
 
             if (response.status == NetworkResult.Status.SUCCESS) {
-                val data = response.data!!
+                professorQuizResponse.value = response.data!!
+            } else {
+                setErrorMessage("퀴즈 정보를 가져오지 못했습니다.")
+            }
+        }
+    }
 
-                // TODO: 2021/12/04 데이터 처리
+    fun getQuizStudent(quizId: Int) {
+        viewModelScope.launch {
+            showProgress()
+            latestQuizId = quizId
+            val response = repository.getQuizStudent(lectureId, lessonId, quizId)
+
+            if (response.status == NetworkResult.Status.SUCCESS) {
+                studentQuizResponse.value = response.data!!
             } else {
                 setErrorMessage("이해도 평가 정보를 가져오지 못했습니다.")
             }
@@ -115,10 +149,10 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
         }
     }
 
-    fun postQuiz(quizId: Int, answer: Int) {
+    fun postQuizStudent(quizId: Int, answer: Int) {
         viewModelScope.launch {
             showProgress()
-            val response = repository.postQuiz(lectureId, lessonId, liveId, quizId, answer)
+            val response = repository.postQuizStudent(lectureId, lessonId, quizId, answer)
 
             if (response.status == NetworkResult.Status.SUCCESS) {
                 setErrorMessage(
