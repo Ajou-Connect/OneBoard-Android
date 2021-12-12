@@ -20,6 +20,7 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
     private var lectureId by Delegates.notNull<Int>()
     private var lessonId by Delegates.notNull<Int>()
     private var understandingId by Delegates.notNull<Int>()
+    private var sessionName by Delegates.notNull<String>()
 
     // TODO: 2021/12/04 Set live ID
     private var liveId = 0
@@ -32,9 +33,9 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
             showProgress()
             val response =
                 if (UserInfoUtil.type == TYPE_PROFESSOR)
-                    repository.postAttendanceProfessor(lectureId, lessonId)
+                    repository.postAttendanceProfessor(lectureId, lessonId, sessionName)
                 else
-                    repository.postAttendanceStudent(lectureId, lessonId)
+                    repository.postAttendanceStudent(lectureId, lessonId, sessionName)
 
             if (response.status == NetworkResult.Status.SUCCESS && response.data!!) {
                 setErrorMessage(
@@ -134,7 +135,7 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
         }
     }
 
-    fun leaveSession(sessionName: String) {
+    fun leaveSession() {
         viewModelScope.launch {
             showProgress()
             val response = repository.leaveLesson(lectureId, lessonId, sessionName)
@@ -148,10 +149,9 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
         }
     }
 
-    fun setId(lectureId: Int, lessonId: Int) {
+    fun setId(lectureId: Int, lessonId: Int, sessionName: String) {
         this.lectureId = lectureId
         this.lessonId = lessonId
+        this.sessionName = sessionName
     }
 }
-
-// TODO: 2021/12/03 테스트하기 : 줌 세션 나가기(강의자, 학생) 

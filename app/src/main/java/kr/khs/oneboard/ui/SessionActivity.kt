@@ -27,6 +27,7 @@ import kr.khs.oneboard.databinding.DialogQuizBinding
 import kr.khs.oneboard.databinding.DialogUnderstandingBinding
 import kr.khs.oneboard.utils.*
 import kr.khs.oneboard.viewmodels.SessionViewModel
+import org.json.JSONObject
 import timber.log.Timber
 import us.zoom.sdk.*
 import javax.inject.Inject
@@ -37,6 +38,7 @@ import kotlin.random.Random
 class SessionActivity : BaseSessionActivity(), CoroutineScope {
     companion object {
         const val SOCKET_TEST = "Hello!"
+        const val INIT_Socket = "init"
         const val STUDENT_ATTENDANCE = "attendance request"
         const val PROFESSOR_ATTENDANCE = "attendance response"
         const val STUDENT_UNDERSTANDING = "understanding request"
@@ -51,7 +53,7 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
 
     private val viewModel: SessionViewModel by viewModels()
 
-    override val sessionLeaveProfessor: () -> Unit by lazy { { viewModel.leaveSession(sessionName) } }
+    override val sessionLeaveProfessor: () -> Unit by lazy { { viewModel.leaveSession() } }
 
     @Inject
     lateinit var socket: Socket
@@ -63,7 +65,11 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
     private val socketConnectListener = Emitter.Listener {
         Timber.tag("Socket").d("Connect Listener!")
         Timber.tag("Socket").d("$it")
-        socket.emit("Hello!", "Android")
+        val initObject = JSONObject().apply {
+            put("userType", if (UserInfoUtil.type == TYPE_PROFESSOR) "T" else "S")
+            put("room", sessionName)
+        }
+        socket.emit(INIT_Socket, initObject)
         launch(coroutineContext) {
             Timber.tag("Socket").d("Connect Listener!!")
 //            ToastUtil.shortToast(this@SessionActivity, "Socket Connected!!")
@@ -199,6 +205,9 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
 
         addSocketListener()
 
+        if (UserInfoUtil.type == TYPE_PROFESSOR)
+            initProfessorView()
+
         viewModel.isLoading.observe(this) {
             if (it) {
                 DialogUtil.onLoadingDialog(this)
@@ -226,6 +235,20 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
         }
     }
 
+    private fun initProfessorView() {
+        binding.requestAttendance.setOnClickListener {
+            viewModel.postAttendance()
+        }
+
+        binding.requestUnderstanding.setOnClickListener {
+
+        }
+
+        binding.requestQuiz.setOnClickListener {
+
+        }
+    }
+
     override fun parseIntent() {
         super.parseIntent()
 
@@ -233,7 +256,7 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
             val lectureId = it.getInt("lectureId", 0)
             val lessonId = it.getInt("lessonId", 0)
 
-            viewModel.setId(lectureId, lessonId)
+            viewModel.setId(lectureId, lessonId, sessionName)
         }
     }
 
@@ -366,6 +389,8 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
         }
 
         actionBarBinding.actionBar.visibility = if (show) View.VISIBLE else View.GONE
+        if (UserInfoUtil.type == TYPE_PROFESSOR)
+            binding.sessionProfessor.visibility = if (show) View.VISIBLE else View.GONE
         binding.chatList.visibility = if (show) View.VISIBLE else View.GONE
         Timber.tag("toggleView").d(
             """
