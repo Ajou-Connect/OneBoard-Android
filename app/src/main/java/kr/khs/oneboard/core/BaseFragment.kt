@@ -29,6 +29,7 @@ abstract class BaseFragment<T : ViewBinding, VM : BaseViewModel> : Fragment() {
         _binding = getFragmentViewBinding(inflater, container)
 
         init()
+        initOnBoarding()
 
         return binding.root
     }
@@ -73,4 +74,6 @@ abstract class BaseFragment<T : ViewBinding, VM : BaseViewModel> : Fragment() {
             positiveAction = { requireActivity().onBackPressed() }
         )
     }
+
+    abstract fun initOnBoarding()
 }
