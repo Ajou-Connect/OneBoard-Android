@@ -1,7 +1,10 @@
 package kr.khs.oneboard.repository
 
 import kr.khs.oneboard.core.NetworkResult
+import kr.khs.oneboard.data.Quiz
+import kr.khs.oneboard.data.StudentQuizResponse
 import kr.khs.oneboard.data.Understanding
+import kr.khs.oneboard.data.request.QuizRequestDto
 
 interface SessionRepository {
     suspend fun leaveLesson(
@@ -40,16 +43,27 @@ interface SessionRepository {
         response: String
     ): NetworkResult<Boolean>
 
-    suspend fun getQuiz(
+    suspend fun postQuizProfessor(
         lectureId: Int,
         lessonId: Int,
-        liveId: Int
-    ): NetworkResult<Boolean>
+        quizRequestDto: QuizRequestDto
+    ): NetworkResult<Int>
 
-    suspend fun postQuiz(
+    suspend fun getQuizProfessor(
         lectureId: Int,
         lessonId: Int,
-        liveId: Int,
+        quizId: Int
+    ): NetworkResult<Quiz>
+
+    suspend fun getQuizStudent(
+        lectureId: Int,
+        lessonId: Int,
+        quizId: Int
+    ): NetworkResult<StudentQuizResponse>
+
+    suspend fun postQuizStudent(
+        lectureId: Int,
+        lessonId: Int,
         quizId: Int,
         answer: Int
     ): NetworkResult<Boolean>

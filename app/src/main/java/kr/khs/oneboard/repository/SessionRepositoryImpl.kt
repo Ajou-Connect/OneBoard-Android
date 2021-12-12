@@ -4,7 +4,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kr.khs.oneboard.api.ApiService
 import kr.khs.oneboard.core.NetworkResult
+import kr.khs.oneboard.data.Quiz
+import kr.khs.oneboard.data.StudentQuizResponse
 import kr.khs.oneboard.data.Understanding
+import kr.khs.oneboard.data.request.QuizRequestDto
 import kr.khs.oneboard.utils.SUCCESS
 import org.json.JSONObject
 import javax.inject.Inject
@@ -156,18 +159,42 @@ class SessionRepositoryImpl @Inject constructor(
         return returnValue
     }
 
-    override suspend fun getQuiz(
+    override suspend fun postQuizProfessor(
         lectureId: Int,
         lessonId: Int,
-        liveId: Int
-    ): NetworkResult<Boolean> {
-        var returnValue: NetworkResult<Boolean>
+        quizRequestDto: QuizRequestDto
+    ): NetworkResult<Int> {
+        var returnValue: NetworkResult<Int>
 
         try {
             withContext(Dispatchers.IO) {
-                val response = apiService.getQuiz(lectureId, lessonId, liveId)
+                val response = apiService.postQuizProfessor(lectureId, lessonId, quizRequestDto)
 
-                returnValue = NetworkResult.success(response.result == SUCCESS)
+                returnValue = if (response["result"] == SUCCESS)
+                    NetworkResult.success(response.getJSONObject("data").getInt("quizId"))
+                else
+                    NetworkResult.success(-1)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            returnValue = NetworkResult.error("Error")
+        }
+
+        return returnValue
+    }
+
+    override suspend fun getQuizProfessor(
+        lectureId: Int,
+        lessonId: Int,
+        quizId: Int
+    ): NetworkResult<Quiz> {
+        var returnValue: NetworkResult<Quiz>
+
+        try {
+            withContext(Dispatchers.IO) {
+                val response = apiService.getQuizProfessor(lectureId, lessonId, quizId)
+
+                returnValue = NetworkResult.success(response.data)
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -177,10 +204,30 @@ class SessionRepositoryImpl @Inject constructor(
         return returnValue
     }
 
-    override suspend fun postQuiz(
+    override suspend fun getQuizStudent(
         lectureId: Int,
         lessonId: Int,
-        liveId: Int,
+        quizId: Int
+    ): NetworkResult<StudentQuizResponse> {
+        var returnValue: NetworkResult<StudentQuizResponse>
+
+        try {
+            withContext(Dispatchers.IO) {
+                val response = apiService.getQuizStudent(lectureId, lessonId, quizId)
+
+                returnValue = NetworkResult.success(response.data)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            returnValue = NetworkResult.error("error")
+        }
+
+        return returnValue
+    }
+
+    override suspend fun postQuizStudent(
+        lectureId: Int,
+        lessonId: Int,
         quizId: Int,
         answer: Int
     ): NetworkResult<Boolean> {
@@ -189,9 +236,9 @@ class SessionRepositoryImpl @Inject constructor(
         try {
             withContext(Dispatchers.IO) {
                 val body = JSONObject().apply {
-                    put("answer", answer)
+                    put("response", answer)
                 }
-                val response = apiService.postQuiz(lectureId, lessonId, liveId, quizId, body)
+                val response = apiService.postQuizStudent(lectureId, lessonId, quizId, body)
 
                 returnValue = NetworkResult.success(response.result == SUCCESS)
             }
