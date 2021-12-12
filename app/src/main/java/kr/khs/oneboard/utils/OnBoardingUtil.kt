@@ -28,6 +28,7 @@ fun Fragment.createOnBoardingDialog(type: Boolean? = null) {
 
     val builder = MaterialAlertDialogBuilder(requireContext())
         .setView(binding.root)
+        .setCancelable(false)
 
     val drawableRes = when (this.javaClass.simpleName) {
         "AnalysisFragment" -> R.drawable.onboarding_sample1
