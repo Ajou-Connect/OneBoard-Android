@@ -446,7 +446,7 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
 
     override fun initOnBoarding() {
         if (getOnBoardingSpf(this.javaClass.simpleName).not()) {
-            createOnBoardingDialog()
+            createOnBoardingDialog(type)
         }
     }
 }

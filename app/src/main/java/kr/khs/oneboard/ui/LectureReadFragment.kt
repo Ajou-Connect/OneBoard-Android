@@ -14,7 +14,9 @@ import kr.khs.oneboard.data.Notice
 import kr.khs.oneboard.data.Submit
 import kr.khs.oneboard.databinding.FragmentLectureReadBinding
 import kr.khs.oneboard.databinding.ViewAssignmentDetailBinding
-import kr.khs.oneboard.utils.*
+import kr.khs.oneboard.utils.API_URL_WITHOUT_SLASH
+import kr.khs.oneboard.utils.TYPE_NOTICE
+import kr.khs.oneboard.utils.fileDownload
 import kr.khs.oneboard.viewmodels.LectureReadViewModel
 import timber.log.Timber
 import kotlin.properties.Delegates
@@ -138,9 +140,5 @@ class LectureReadFragment : BaseFragment<FragmentLectureReadBinding, LectureRead
         }
     }
 
-    override fun initOnBoarding() {
-        if (getOnBoardingSpf(this.javaClass.simpleName).not()) {
-            createOnBoardingDialog()
-        }
-    }
+    override fun initOnBoarding() {}
 }
