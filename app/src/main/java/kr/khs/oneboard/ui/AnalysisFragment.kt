@@ -31,6 +31,13 @@ class AnalysisFragment : BaseFragment<FragmentAnalysisBinding, AnalysisViewModel
         }
 
         viewModel.understandingList.observe(viewLifecycleOwner) { understandingList ->
+            if (understandingList.isEmpty()) {
+                binding.analysisHorizontalView.visibility = View.GONE
+                return@observe
+            }
+
+            binding.analysisHorizontalView.visibility = View.VISIBLE
+
             val bottomTextList = ArrayList<String>()
             val dataList = ArrayList<ArrayList<Int>>()
             val oList = ArrayList<Int>()
@@ -51,12 +58,17 @@ class AnalysisFragment : BaseFragment<FragmentAnalysisBinding, AnalysisViewModel
         }
 
         viewModel.quizList.observe(viewLifecycleOwner) { quizList ->
-            val correct = quizList[0].correctNum
-            val incorrect = quizList[0].incorrectNum
+            if (quizList.isEmpty()) {
+                binding.analysisQuizSpinner.visibility = View.GONE
+                binding.analysisPie.visibility = View.GONE
+                return@observe
+            }
 
-            initPie(
-                (correct / (correct + incorrect.toFloat())) * 100,
-                (incorrect / (correct + incorrect.toFloat())) * 100
+            binding.analysisQuizSpinner.visibility = View.VISIBLE
+            binding.analysisPie.visibility = View.VISIBLE
+
+            initQuizSpinner(
+                quizList.map { it.question }
             )
         }
     }
@@ -92,13 +104,40 @@ class AnalysisFragment : BaseFragment<FragmentAnalysisBinding, AnalysisViewModel
 
                 }
             }
+            setSelection(0, false)
+        }
+    }
+
+    private fun initQuizSpinner(list: List<String>) {
+        with(binding.analysisQuizSpinner) {
+            adapter = ArrayAdapter(requireContext(), R.layout.spinner_item, list)
+            onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    val correct = viewModel.quizList.value!![position].correctNum
+                    val incorrect = viewModel.quizList.value!![position].incorrectNum
+
+                    initPie(
+                        (correct / (correct + incorrect.toFloat())) * 100,
+                        (incorrect / (correct + incorrect.toFloat())) * 100
+                    )
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
+
+            }
+            setSelection(0, false)
         }
     }
 
     private fun initPie(oRatio: Float, xRatio: Float) {
         val pieHelperList = ArrayList<PieHelper>()
-        pieHelperList.add(PieHelper(oRatio, "O", Color.BLUE))
-        pieHelperList.add(PieHelper(xRatio, "X", Color.RED))
+        pieHelperList.add(PieHelper(oRatio, "맞은 사람", Color.BLUE))
+        pieHelperList.add(PieHelper(xRatio, "틀린 사람", Color.RED))
 
         with(binding.analysisPie) {
             setDate(pieHelperList)

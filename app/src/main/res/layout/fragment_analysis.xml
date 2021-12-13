@@ -9,6 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <include
             android:id="@+id/viewTitle"
             layout="@layout/view_title"
@@ -20,47 +21,62 @@
             android:id="@+id/analysisSpinner"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/viewTitle"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/viewTitle" />
 
         <TextView
+            android:id="@+id/analysisTitlePieView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/analysisTitlePieView"
+            android:layout_marginTop="16dp"
             android:text="퀴즈 정보"
             android:textColor="@color/black"
-            android:layout_marginTop="16dp"
             android:textSize="@dimen/text_size_subtitle"
-            app:layout_constraintTop_toBottomOf="@id/analysisHorizontalView"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/analysisHorizontalView" />
+
+        <Spinner
+            android:id="@+id/analysisQuizSpinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/analysisTitlePieView"
+            tools:visibility="visible" />
 
         <TextView
+            android:id="@+id/analysisTitleLineView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/analysisTitleLineView"
+            android:layout_marginTop="16dp"
             android:text="이해도 정보"
             android:textColor="@color/black"
-            android:layout_marginTop="16dp"
             android:textSize="@dimen/text_size_subtitle"
-            app:layout_constraintTop_toBottomOf="@id/analysisSpinner"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/analysisSpinner" />
 
         <kr.khs.oneboard.views.PieView
             android:id="@+id/analysisPie"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/analysisTitlePieView" />
+            app:layout_constraintTop_toBottomOf="@id/analysisQuizSpinner"
+            tools:visibility="visible" />
 
         <HorizontalScrollView
             android:id="@+id/analysisHorizontalView"
             android:layout_width="0dp"
             android:layout_height="300dp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/analysisTitleLineView">
+            app:layout_constraintTop_toBottomOf="@id/analysisTitleLineView"
+            tools:visibility="visible">
 
             <kr.khs.oneboard.views.LineView
                 android:id="@+id/analysisPlot"
