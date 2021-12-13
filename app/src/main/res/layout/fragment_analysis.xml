@@ -83,6 +83,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </HorizontalScrollView>
+
+        <TextView
+            android:id="@+id/analysisNoUnderstanding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="이해도 평가 정보가 없습니다."
+            android:textColor="@android:color/holo_red_light"
+            app:layout_constraintBottom_toBottomOf="@id/analysisHorizontalView"
+            app:layout_constraintEnd_toEndOf="@id/analysisHorizontalView"
+            app:layout_constraintStart_toStartOf="@id/analysisHorizontalView"
+            app:layout_constraintTop_toTopOf="@id/analysisHorizontalView" />
+
+        <TextView
+            android:id="@+id/analysisNoQuiz"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="퀴즈 정보가 없습니다."
+            android:textColor="@android:color/holo_red_light"
+            app:layout_constraintBottom_toBottomOf="@id/analysisPie"
+            app:layout_constraintEnd_toEndOf="@id/analysisPie"
+            app:layout_constraintStart_toStartOf="@id/analysisPie"
+            app:layout_constraintTop_toTopOf="@id/analysisPie" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

@@ -32,11 +32,13 @@ class AnalysisFragment : BaseFragment<FragmentAnalysisBinding, AnalysisViewModel
 
         viewModel.understandingList.observe(viewLifecycleOwner) { understandingList ->
             if (understandingList.isEmpty()) {
-                binding.analysisHorizontalView.visibility = View.GONE
+                binding.analysisHorizontalView.visibility = View.INVISIBLE
+                binding.analysisNoUnderstanding.visibility = View.VISIBLE
                 return@observe
             }
 
             binding.analysisHorizontalView.visibility = View.VISIBLE
+            binding.analysisNoUnderstanding.visibility = View.GONE
 
             val bottomTextList = ArrayList<String>()
             val dataList = ArrayList<ArrayList<Int>>()
@@ -60,12 +62,14 @@ class AnalysisFragment : BaseFragment<FragmentAnalysisBinding, AnalysisViewModel
         viewModel.quizList.observe(viewLifecycleOwner) { quizList ->
             if (quizList.isEmpty()) {
                 binding.analysisQuizSpinner.visibility = View.GONE
-                binding.analysisPie.visibility = View.GONE
+                binding.analysisPie.visibility = View.INVISIBLE
+                binding.analysisNoQuiz.visibility = View.VISIBLE
                 return@observe
             }
 
             binding.analysisQuizSpinner.visibility = View.VISIBLE
             binding.analysisPie.visibility = View.VISIBLE
+            binding.analysisNoQuiz.visibility = View.GONE
 
             initQuizSpinner(
                 quizList.map { it.question }

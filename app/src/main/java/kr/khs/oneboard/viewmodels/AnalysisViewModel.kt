@@ -40,8 +40,11 @@ class AnalysisViewModel @Inject constructor(private val repository: LessonReposi
                 _lessonList.value = response.data!!.filter {
                     it.type == TYPE_NON_FACE_TO_FACE
                 }
-            } else
+            } else {
+                _understandingList.value = listOf()
+                _quizList.value = listOf()
                 setToastMessage("수업 목록을 불러오지 못했습니다.")
+            }
 
             hideProgress()
         }
