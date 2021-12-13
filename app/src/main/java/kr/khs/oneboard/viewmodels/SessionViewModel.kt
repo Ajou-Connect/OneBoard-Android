@@ -183,13 +183,13 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
     fun leaveSession() {
         viewModelScope.launch {
             showProgress()
-//            val response = repository.leaveLesson(lectureId, lessonId, sessionName)
-//
-//            if (response.status == NetworkResult.Status.SUCCESS && response.data!!) {
-            _isLeave.value = true
-//            } else {
-//                setToastMessage("다시 시도해주세요.")
-//            }
+            val response = repository.leaveLesson(lectureId, lessonId, sessionName)
+
+            if (response.status == NetworkResult.Status.SUCCESS && response.data!!) {
+                _isLeave.value = true
+            } else {
+                setToastMessage("다시 시도해주세요.")
+            }
             hideProgress()
         }
     }
