@@ -1,5 +1,6 @@
-package kr.khs.oneboard.utils
+package kr.khs.oneboard.utils.utils
 
+import kr.khs.oneboard.utils.PatternUtil
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
