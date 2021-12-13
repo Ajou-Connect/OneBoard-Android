@@ -226,12 +226,12 @@ interface ApiService {
     ): Response<Understanding>
 
     // TODO: 2021/12/09 이해도 평가 요청 응답 - 학생
-    @GET("lecture/{lectureId}/lesson/{lessonId}/live/understanding/{understandId}/student")
+    @POST("lecture/{lectureId}/lesson/{lessonId}/live/understanding/{understandId}/student")
     suspend fun studentPostUnderStanding(
         @Path("lectureId") lectureId: Int,
         @Path("lessonId") lessonId: Int,
         @Path("understandId") underStandingId: Int,
-        @Body body: JSONObject
+        @Body body: UnderstandingStudentResponseWrapper
     ): BasicResponseImpl
 
     // TODO: 2021/12/12 교수 - 퀴즈 요청

@@ -7,6 +7,7 @@ import kr.khs.oneboard.core.NetworkResult
 import kr.khs.oneboard.data.Quiz
 import kr.khs.oneboard.data.StudentQuizResponse
 import kr.khs.oneboard.data.Understanding
+import kr.khs.oneboard.data.UnderstandingStudentResponseWrapper
 import kr.khs.oneboard.data.request.QuizRequestDto
 import kr.khs.oneboard.utils.SUCCESS
 import org.json.JSONObject
@@ -141,7 +142,7 @@ class SessionRepositoryImpl @Inject constructor(
 
         try {
             withContext(Dispatchers.IO) {
-                val body = JSONObject("\"response\": ${if (response == "O") 1 else 0}")
+                val body = UnderstandingStudentResponseWrapper(if (response == "O") 1 else 0)
                 val response = apiService.studentPostUnderStanding(
                     lectureId,
                     lessonId,

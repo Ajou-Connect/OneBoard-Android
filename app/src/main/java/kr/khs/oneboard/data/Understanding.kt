@@ -28,3 +28,7 @@ data class UnderstandingAnalysis(
 data class UnderstandingIdWrapper(
     val understandId: Int
 )
+
+data class UnderstandingStudentResponseWrapper(
+    val response: Int
+)
