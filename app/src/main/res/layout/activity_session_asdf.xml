@@ -120,6 +120,17 @@
             android:padding="0dp"
             android:text="퀴즈 출제"
             android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/responseQuiz"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorTransparent"
+            android:minHeight="0dp"
+            android:padding="0dp"
+            android:text="최근 퀴즈 결과"
+            android:textColor="@color/white"
+            android:visibility="gone" />
     </LinearLayout>
 
     <TextView

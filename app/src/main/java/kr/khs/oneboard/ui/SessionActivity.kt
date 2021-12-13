@@ -76,27 +76,6 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
 
     private val socketDisconnectListener = Emitter.Listener {
         Timber.tag("Socket").d("Disconnect Listener!")
-        launch(coroutineContext) {
-            Timber.tag("Socket").d("Disconnect Listener!!")
-//            ToastUtil.shortToast(this@SessionActivity, "Socket DisConnected!!")
-        }
-    }
-
-    private val socketTestListener = Emitter.Listener {
-        Timber.tag("Socket").d("Listener!")
-        Timber.tag("Socket").d(it[0] as String)
-
-        launch(coroutineContext) {
-            Timber.tag("Socket").d("Listener!!")
-            DialogUtil.createDialog(
-                context = this@SessionActivity,
-                message = "Test Message",
-                positiveText = "OK",
-                positiveAction = {
-                    ToastUtil.shortToast(this@SessionActivity, "Socket Test Complete!")
-                }
-            )
-        }
     }
 
     private val socketAttendanceRequestListener = Emitter.Listener {
@@ -129,12 +108,12 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
                 .create()
 
             dialogBinding.dialogUnderstandingO.setOnClickListener {
-//                viewModel.postUnderStanding("O")
+                viewModel.postUnderStandingStudent("O")
                 dialog.dismiss()
             }
 
             dialogBinding.dialogUnderstandingX.setOnClickListener {
-//                viewModel.postUnderStanding("X")
+                viewModel.postUnderStandingStudent("X")
                 dialog.dismiss()
             }
 
@@ -184,7 +163,7 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
                 if (checkId == 0) {
                     viewModel.setToastMessage("정답을 선택해 주세요.")
                 } else {
-//                    viewModel.postQuiz(1, checkId - 100)
+//                    viewModel.postQuizStudent(quizId, checkId - 100)
                     dialog.dismiss()
                 }
             }
@@ -207,6 +186,21 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
 
         if (UserInfoUtil.type == TYPE_PROFESSOR)
             initProfessorView()
+
+        viewModel.professorQuizResponse.observe(this) { quiz ->
+            quiz ?: return@observe
+
+            val quizString = """
+                정답자 수 : ${quiz.correctNum}
+                오답자 수 : ${quiz.incorrectNum}
+            """.trimIndent()
+            DialogUtil.createDialog(
+                this,
+                quizString,
+                positiveText = "확인",
+                positiveAction = { }
+            )
+        }
 
         viewModel.isLoading.observe(this) {
             if (it) {
@@ -246,6 +240,10 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
 
         binding.requestQuiz.setOnClickListener {
             createQuizDialog()
+        }
+
+        binding.responseQuiz.setOnClickListener {
+            viewModel.getQuizProfessor()
         }
     }
 
@@ -287,6 +285,7 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
             )
 
             viewModel.postQuizProfessor(requestDto)
+            binding.responseQuiz.visibility = View.VISIBLE
             builder.dismiss()
         }
 
