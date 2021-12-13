@@ -24,8 +24,6 @@ This is an android application for `Professor` and `Unversity Student`<br/>
 - minSdkVersion&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: 24
 - targetSdkVersion&nbsp;&nbsp;: 30
 
-## APIs
-
 ## MVVM Architectures + Repository Pattern
 <img src="https://developer.android.com/topic/libraries/architecture/images/final-architecture.png?hl=ko" />
 
@@ -48,7 +46,7 @@ This is an android application for `Professor` and `Unversity Student`<br/>
   - Github Actions
 
 ## MadScore
+![summary](https://user-images.githubusercontent.com/59349226/145800997-1f226b80-49fe-493c-aeb0-fc52d29a896a.png)
 ![kotlin](https://user-images.githubusercontent.com/59349226/145800977-e0ccc1e7-5ebb-4da7-9d60-7b22710db107.png)
 ![jetpack](https://user-images.githubusercontent.com/59349226/145800982-ed96ece2-4fc5-4be6-8584-fa9c3e2dbd2b.png)
-![summary](https://user-images.githubusercontent.com/59349226/145800997-1f226b80-49fe-493c-aeb0-fc52d29a896a.png)
 
