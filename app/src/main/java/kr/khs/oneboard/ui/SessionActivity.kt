@@ -99,6 +99,12 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
     }
 
     private val socketUnderstandingRequestListener = Emitter.Listener {
+        Timber.tag("Socket").d("${it[0]}")
+
+        val understandId = JSONObject(it[0].toString())["understandId"]
+
+        viewModel.understandingId = understandId as Int
+
         launch(coroutineContext) {
             val dialogBinding = DialogUnderstandingBinding.inflate(layoutInflater)
 
@@ -108,12 +114,12 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
                 .create()
 
             dialogBinding.dialogUnderstandingO.setOnClickListener {
-                viewModel.postUnderStandingStudent("O")
+                viewModel.postUnderStandingStudent(sessionName, "O")
                 dialog.dismiss()
             }
 
             dialogBinding.dialogUnderstandingX.setOnClickListener {
-                viewModel.postUnderStandingStudent("X")
+                viewModel.postUnderStandingStudent(sessionName, "X")
                 dialog.dismiss()
             }
 
@@ -128,7 +134,8 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
     }
 
     private val socketQuizRequestListener = Emitter.Listener {
-        Timber.tag("Socket").d("$it")
+        for (any in it)
+            Timber.tag("Socket").d("$any")
         launch(coroutineContext) {
             val dialogBinding = DialogQuizBinding.inflate(layoutInflater)
 

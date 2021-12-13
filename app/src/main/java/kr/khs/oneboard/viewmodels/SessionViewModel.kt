@@ -22,7 +22,7 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
 
     private var lectureId by Delegates.notNull<Int>()
     private var lessonId by Delegates.notNull<Int>()
-    private var understandingId by Delegates.notNull<Int>()
+    var understandingId by Delegates.notNull<Int>()
     private var sessionName by Delegates.notNull<String>()
     private var latestQuizId by Delegates.notNull<Int>()
 
@@ -91,11 +91,11 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
         }
     }
 
-    fun postUnderStandingStudent(select: String) {
+    fun postUnderStandingStudent(sessionName: String, select: String) {
         viewModelScope.launch {
             showProgress()
             val response =
-                repository.postUnderStandingStudent(lectureId, lessonId, understandingId, select)
+                repository.postUnderStandingStudent(lectureId, lessonId, understandingId, sessionName, select)
 
             if (response.status == NetworkResult.Status.SUCCESS) {
                 setToastMessage("전송 완료")

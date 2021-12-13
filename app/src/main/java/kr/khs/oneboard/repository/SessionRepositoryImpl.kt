@@ -136,6 +136,7 @@ class SessionRepositoryImpl @Inject constructor(
         lectureId: Int,
         lessonId: Int,
         understandingId: Int,
+        sessionName: String,
         response: String
     ): NetworkResult<Boolean> {
         var returnValue: NetworkResult<Boolean>
@@ -147,6 +148,7 @@ class SessionRepositoryImpl @Inject constructor(
                     lectureId,
                     lessonId,
                     understandingId,
+                    sessionName,
                     body
                 )
 

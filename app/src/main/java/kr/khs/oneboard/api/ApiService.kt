@@ -231,6 +231,7 @@ interface ApiService {
         @Path("lectureId") lectureId: Int,
         @Path("lessonId") lessonId: Int,
         @Path("understandId") underStandingId: Int,
+        @Query("session") sessionName: String,
         @Body body: UnderstandingStudentResponseWrapper
     ): BasicResponseImpl
 

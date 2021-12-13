@@ -40,6 +40,7 @@ interface SessionRepository {
         lectureId: Int,
         lessonId: Int,
         understandingId: Int,
+        sessionName: String,
         response: String
     ): NetworkResult<Boolean>
 
