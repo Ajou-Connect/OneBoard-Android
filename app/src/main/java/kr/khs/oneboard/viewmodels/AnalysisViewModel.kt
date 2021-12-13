@@ -41,7 +41,7 @@ class AnalysisViewModel @Inject constructor(private val repository: LessonReposi
                     it.type == TYPE_NON_FACE_TO_FACE
                 }
             } else
-                setErrorMessage("수업 목록을 불러오지 못했습니다.")
+                setToastMessage("수업 목록을 불러오지 못했습니다.")
 
             hideProgress()
         }
@@ -56,7 +56,7 @@ class AnalysisViewModel @Inject constructor(private val repository: LessonReposi
                 _understandingList.value = response.data!!.understandAnalysisDtoList
                 _quizList.value = response.data.quizAnalysisDtoList
             } else {
-                setErrorMessage("분석 정보를 불러오지 못했습니다.")
+                setToastMessage("분석 정보를 불러오지 못했습니다.")
             }
 
             hideProgress()

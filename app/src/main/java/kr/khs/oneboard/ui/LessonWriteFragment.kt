@@ -262,7 +262,7 @@ class LessonWriteFragment : BaseFragment<FragmentLessonWriteBinding, LessonWrite
             if (binding.lessonWriteTitle.text.toString()
                     .isEmpty() || binding.lessonWriteDateTime.text == "날짜, 시간 선택"
             ) {
-                viewModel.setErrorMessage("날짜, 시간을 선택해주세요.")
+                viewModel.setToastMessage("날짜, 시간을 선택해주세요.")
             }
             if (isEdit) {
                 viewModel.editLesson(

@@ -31,7 +31,7 @@ class LoginViewModel @Inject constructor(private val repository: BasicRepository
             if (response.status == NetworkResult.Status.SUCCESS)
                 _loginYN.value = response.data!!
             else
-                setErrorMessage("알 수 없는 오류가 발생했습니다.\n다시 시도해주세요.")
+                setToastMessage("알 수 없는 오류가 발생했습니다.\n다시 시도해주세요.")
             hideProgress()
         }
     }

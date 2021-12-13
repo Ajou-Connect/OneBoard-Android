@@ -46,14 +46,14 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
                     repository.postAttendanceStudent(lectureId, lessonId, sessionName)
 
             if (response.status == NetworkResult.Status.SUCCESS && response.data!!) {
-                setErrorMessage(
+                setToastMessage(
                     if (UserInfoUtil.type == TYPE_PROFESSOR)
                         "출석 체크 요청을 보냈습니다."
                     else
                         "출석이 되었습니다."
                 )
             } else {
-                setErrorMessage("오류가 발생했습니다.")
+                setToastMessage("오류가 발생했습니다.")
             }
             hideProgress()
         }
@@ -70,7 +70,7 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
 
                 // TODO: 2021/12/04 데이터 처리
             } else {
-                setErrorMessage("이해도 평가 정보를 가져오지 못했습니다.")
+                setToastMessage("이해도 평가 정보를 가져오지 못했습니다.")
             }
             hideProgress()
         }
@@ -82,9 +82,9 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
             val response = repository.postUnderStandingProfessor(lectureId, lessonId)
 
             if (response.status == NetworkResult.Status.SUCCESS) {
-                setErrorMessage("전송 완료")
+                setToastMessage("전송 완료")
             } else {
-                setErrorMessage("이해도 평가 중 오류가 발생했습니다.")
+                setToastMessage("이해도 평가 중 오류가 발생했습니다.")
             }
 
             hideProgress()
@@ -98,9 +98,9 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
                 repository.postUnderStandingStudent(lectureId, lessonId, understandingId, select)
 
             if (response.status == NetworkResult.Status.SUCCESS) {
-                setErrorMessage("전송 완료")
+                setToastMessage("전송 완료")
             } else {
-                setErrorMessage("이해도 평가 중 오류가 발생했습니다.")
+                setToastMessage("이해도 평가 중 오류가 발생했습니다.")
             }
 
             hideProgress()
@@ -115,7 +115,7 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
             if (response.status == NetworkResult.Status.SUCCESS)
                 latestQuizId = response.data!!
             else
-                setErrorMessage("퀴즈 출제 중 오류가 발생하였습니다.")
+                setToastMessage("퀴즈 출제 중 오류가 발생하였습니다.")
 
             hideProgress()
         }
@@ -129,7 +129,7 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
             if (response.status == NetworkResult.Status.SUCCESS) {
                 professorQuizResponse.value = response.data!!
             } else {
-                setErrorMessage("퀴즈 정보를 가져오지 못했습니다.")
+                setToastMessage("퀴즈 정보를 가져오지 못했습니다.")
             }
         }
     }
@@ -143,7 +143,7 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
             if (response.status == NetworkResult.Status.SUCCESS) {
                 studentQuizResponse.value = response.data!!
             } else {
-                setErrorMessage("이해도 평가 정보를 가져오지 못했습니다.")
+                setToastMessage("이해도 평가 정보를 가져오지 못했습니다.")
             }
             hideProgress()
         }
@@ -155,7 +155,7 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
             val response = repository.postQuizStudent(lectureId, lessonId, quizId, answer)
 
             if (response.status == NetworkResult.Status.SUCCESS) {
-                setErrorMessage(
+                setToastMessage(
                     if (response.data!!) {
                         "전송 완료"
                     } else {
@@ -163,7 +163,7 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
                     }
                 )
             } else {
-                setErrorMessage("퀴즈 정보를 전송하지 못했습니다.")
+                setToastMessage("퀴즈 정보를 전송하지 못했습니다.")
             }
             hideProgress()
         }
@@ -177,7 +177,7 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
             if (response.status == NetworkResult.Status.SUCCESS && response.data!!) {
                 _isLeave.value = true
             } else {
-                setErrorMessage("다시 시도해주세요.")
+                setToastMessage("다시 시도해주세요.")
             }
             hideProgress()
         }

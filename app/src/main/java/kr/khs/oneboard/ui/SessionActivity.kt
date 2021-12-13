@@ -72,10 +72,6 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
             put("room", sessionName)
         }
         socket.emit(INIT_Socket, initObject)
-        launch(coroutineContext) {
-            Timber.tag("Socket").d("Connect Listener!!")
-//            ToastUtil.shortToast(this@SessionActivity, "Socket Connected!!")
-        }
     }
 
     private val socketDisconnectListener = Emitter.Listener {
@@ -153,6 +149,7 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
     }
 
     private val socketQuizRequestListener = Emitter.Listener {
+        Timber.tag("Socket").d("$it")
         launch(coroutineContext) {
             val dialogBinding = DialogQuizBinding.inflate(layoutInflater)
 
@@ -185,7 +182,7 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
 
                 // 선택되지 않았을 경우
                 if (checkId == 0) {
-                    viewModel.setErrorMessage("정답을 선택해 주세요.")
+                    viewModel.setToastMessage("정답을 선택해 주세요.")
                 } else {
 //                    viewModel.postQuiz(1, checkId - 100)
                     dialog.dismiss()
@@ -219,10 +216,10 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
             }
         }
 
-        viewModel.isError.observe(this) {
+        viewModel.toastMessage.observe(this) {
             if (it != "") {
                 ToastUtil.shortToast(this, it)
-                viewModel.setErrorMessage()
+                viewModel.setToastMessage()
             }
         }
 
@@ -268,7 +265,7 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
                 quizBinding.createQuizAnswer5.text.toString().isEmpty() ||
                 quizBinding.createQuizRadioGroup.checkedRadioButtonId == -1
             ) {
-                viewModel.setErrorMessage("공백 없이 모두 입력해주세요.")
+                viewModel.setToastMessage("공백 없이 모두 입력해주세요.")
                 return@setOnClickListener
             }
 

@@ -45,10 +45,10 @@ abstract class BaseFragment<T : ViewBinding, VM : BaseViewModel> : Fragment() {
             }
         }
 
-        viewModel.isError.observe(viewLifecycleOwner) {
+        viewModel.toastMessage.observe(viewLifecycleOwner) {
             if (it != "") {
                 ToastUtil.shortToast(requireContext(), it)
-                viewModel.setErrorMessage()
+                viewModel.setToastMessage()
             }
         }
     }

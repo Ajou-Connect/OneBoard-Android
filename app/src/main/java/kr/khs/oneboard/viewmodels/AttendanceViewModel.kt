@@ -37,7 +37,7 @@ class AttendanceViewModel @Inject constructor(
                 lessonList.value = lessonRepository.getLessonList(lectureId).data!!
                 _attendanceList.value = response.data!!
             } else {
-                setErrorMessage("출석 목록을 불러오지 못했습니다.")
+                setToastMessage("출석 목록을 불러오지 못했습니다.")
             }
             hideProgress()
         }
@@ -69,9 +69,9 @@ class AttendanceViewModel @Inject constructor(
             val response = lectureRepository.postAttendanceList(lectureId, requestDto)
 
             if (response.status == NetworkResult.Status.SUCCESS && response.data!!) {
-                setErrorMessage("저장되었습니다.")
+                setToastMessage("저장되었습니다.")
             } else {
-                setErrorMessage("출석 현황 업데이트를 실패했습니다.\n다시 시도해주세요.")
+                setToastMessage("출석 현황 업데이트를 실패했습니다.\n다시 시도해주세요.")
             }
 
             hideProgress()
@@ -92,7 +92,7 @@ class AttendanceViewModel @Inject constructor(
             if (response.status == NetworkResult.Status.SUCCESS) {
                 _attendanceList.value = listOf(response.data!!)
             } else {
-                setErrorMessage("출석 목록을 불러오지 못했습니다.")
+                setToastMessage("출석 목록을 불러오지 못했습니다.")
             }
             hideProgress()
         }
@@ -147,9 +147,9 @@ class AttendanceViewModel @Inject constructor(
             val response = lectureRepository.postAttendanceList(lectureId, requestDto)
 
             if (response.status == NetworkResult.Status.SUCCESS && response.data!!) {
-                setErrorMessage("저장되었습니다.")
+                setToastMessage("저장되었습니다.")
             } else {
-                setErrorMessage("출석 현황 업데이트를 실패했습니다.\n다시 시도해주세요.")
+                setToastMessage("출석 현황 업데이트를 실패했습니다.\n다시 시도해주세요.")
             }
 
             hideProgress()

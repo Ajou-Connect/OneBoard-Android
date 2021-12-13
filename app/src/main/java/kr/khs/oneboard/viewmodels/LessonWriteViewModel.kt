@@ -60,7 +60,7 @@ class LessonWriteViewModel @Inject constructor(private val lessonRepository: Les
             if (response.status == NetworkResult.Status.SUCCESS)
                 _updateLesson.value = true
             else
-                setErrorMessage("수업이 생성되지 못했습니다.")
+                setToastMessage("수업이 생성되지 못했습니다.")
 
             hideProgress()
         }
@@ -93,7 +93,7 @@ class LessonWriteViewModel @Inject constructor(private val lessonRepository: Les
             if (response.status == NetworkResult.Status.SUCCESS)
                 _updateLesson.value = true
             else
-                setErrorMessage("수업이 생성되지 못했습니다.")
+                setToastMessage("수업이 생성되지 못했습니다.")
 
             hideProgress()
         }
@@ -107,7 +107,7 @@ class LessonWriteViewModel @Inject constructor(private val lessonRepository: Les
             if (response.status == NetworkResult.Status.SUCCESS) {
                 _defaultInfo.value = response.data!!
             } else {
-                setErrorMessage("기본 수업 정보를 불러오지 못했습니다.")
+                setToastMessage("기본 수업 정보를 불러오지 못했습니다.")
             }
             hideProgress()
         }

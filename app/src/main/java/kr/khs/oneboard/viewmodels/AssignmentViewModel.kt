@@ -27,7 +27,7 @@ class AssignmentViewModel @Inject constructor(private val lectureRepository: Lec
             if (response.status == NetworkResult.Status.SUCCESS) {
                 _list.value = response.data!!
             } else {
-                setErrorMessage("과제 목록을 불러오지 못했습니다.")
+                setToastMessage("과제 목록을 불러오지 못했습니다.")
             }
             hideProgress()
         }
@@ -40,7 +40,7 @@ class AssignmentViewModel @Inject constructor(private val lectureRepository: Lec
             if (success.status == NetworkResult.Status.SUCCESS)
                 _list.value = _list.value!!.filter { it != item }
             else
-                setErrorMessage("삭제가 올바르게 되지 않았습니다.")
+                setToastMessage("삭제가 올바르게 되지 않았습니다.")
             hideProgress()
         }
     }

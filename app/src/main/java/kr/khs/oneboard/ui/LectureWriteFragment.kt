@@ -238,10 +238,10 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
             if (binding.writeTitleEditText.text.toString().isEmpty()
                 || binding.writeContentEditText.html == null
             ) {
-                viewModel.setErrorMessage("빈 칸을 전부 채워주세요.")
+                viewModel.setToastMessage("빈 칸을 전부 채워주세요.")
                 return@setOnClickListener
             } else if (binding.writeExposeTimeCheckBox.isChecked.not() && binding.writeExposeTimeTextView.text == "날짜, 시간 선택") {
-                viewModel.setErrorMessage("날짜, 시간을 선택해주세요.")
+                viewModel.setToastMessage("날짜, 시간을 선택해주세요.")
                 return@setOnClickListener
             }
 
@@ -266,10 +266,10 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
                                 .toTimeInMillisWithoutSec() >= binding.writeEndDt.text.toString()
                                 .toTimeInMillisWithoutSec()
                         ) {
-                            viewModel.setErrorMessage("시작 시간이 마감 시간보다 크거나 같을 수 없습니다.")
+                            viewModel.setToastMessage("시작 시간이 마감 시간보다 크거나 같을 수 없습니다.")
                             return@setOnClickListener
                         } else if (binding.writeAssignmentScore.text.toString().isEmpty()) {
-                            viewModel.setErrorMessage("배점을 입력해주세요.")
+                            viewModel.setToastMessage("배점을 입력해주세요.")
                             return@setOnClickListener
                         }
                         AssignmentUpdateRequestDto(
@@ -308,10 +308,10 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
                                 .toTimeInMillisWithoutSec() >= binding.writeEndDt.text.toString()
                                 .toTimeInMillisWithoutSec()
                         ) {
-                            viewModel.setErrorMessage("시작 시간이 마감 시간보다 크거나 같을 수 없습니다.")
+                            viewModel.setToastMessage("시작 시간이 마감 시간보다 크거나 같을 수 없습니다.")
                             return@setOnClickListener
                         } else if (binding.writeAssignmentScore.text.toString().isEmpty()) {
-                            viewModel.setErrorMessage("배점을 입력해주세요.")
+                            viewModel.setToastMessage("배점을 입력해주세요.")
                             return@setOnClickListener
                         }
                         AssignmentUpdateRequestDto(

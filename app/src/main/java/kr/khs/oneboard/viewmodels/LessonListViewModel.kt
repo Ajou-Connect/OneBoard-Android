@@ -27,7 +27,7 @@ class LessonListViewModel @Inject constructor(private val lessonRepository: Less
             if (response.status == NetworkResult.Status.SUCCESS) {
                 _lessonList.value = response.data ?: listOf()
             } else {
-                setErrorMessage(response.message!!)
+                setToastMessage(response.message!!)
             }
             hideProgress()
         }
@@ -41,7 +41,7 @@ class LessonListViewModel @Inject constructor(private val lessonRepository: Less
             if (response.status == NetworkResult.Status.SUCCESS && response.data!!)
                 _lessonList.value = _lessonList.value!!.filter { it.lessonId != lessonId }
             else
-                setErrorMessage(response.message!!)
+                setToastMessage(response.message!!)
 
             hideProgress()
         }

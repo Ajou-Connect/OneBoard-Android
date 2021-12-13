@@ -27,7 +27,7 @@ class NoticeViewModel @Inject constructor(private val lectureRepository: Lecture
             if (response.status == NetworkResult.Status.SUCCESS) {
                 _list.value = response.data!!
             } else {
-                setErrorMessage("공지사항을 불러오지 못했습니다.")
+                setToastMessage("공지사항을 불러오지 못했습니다.")
             }
             hideProgress()
         }
@@ -40,7 +40,7 @@ class NoticeViewModel @Inject constructor(private val lectureRepository: Lecture
             if (success.status == NetworkResult.Status.SUCCESS)
                 _list.value = _list.value!!.filter { it.id != noticeId }
             else
-                setErrorMessage("삭제가 올바르게 되지 않았습니다.")
+                setToastMessage("삭제가 올바르게 되지 않았습니다.")
             hideProgress()
         }
     }

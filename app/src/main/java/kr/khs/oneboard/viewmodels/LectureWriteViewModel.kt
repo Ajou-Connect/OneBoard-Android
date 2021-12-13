@@ -29,7 +29,7 @@ class LectureWriteViewModel @Inject constructor(private val repository: LectureR
         file: MultipartBody.Part? = null
     ) {
         if (contentId == -1) {
-            setErrorMessage("올바르지 않은 접근입니다.")
+            setToastMessage("올바르지 않은 접근입니다.")
             return
         }
 

@@ -55,7 +55,7 @@ class LessonDetailViewModel @Inject constructor(private val repository: LessonRe
                 if (response.data.not())
                     setSessionErrorMessage("아직 수업이 생성되지 않았습니다.")
             } else {
-                setErrorMessage("수업에 입장하지 못했습니다.")
+                setToastMessage("수업에 입장하지 못했습니다.")
             }
             hideProgress()
         }

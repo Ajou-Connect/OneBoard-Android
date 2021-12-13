@@ -36,7 +36,7 @@ class GradeStudentViewModel @Inject constructor(private val repository: LectureR
                 _gradeInfo.value = response.data!!
                 grade.value = _gradeInfo.value!!.result
             } else
-                setErrorMessage("성적 정보를 불러오지 못했습니다.")
+                setToastMessage("성적 정보를 불러오지 못했습니다.")
             hideProgress()
         }
     }

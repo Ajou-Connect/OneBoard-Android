@@ -32,7 +32,7 @@ class GradeProfessorViewModel @Inject constructor(private val lectureRepository:
                 aRatio.value = response.data!!.aRatio.toString()
                 bRatio.value = response.data.bRatio.toString()
             } else {
-                setErrorMessage("학점 비율을 올바르게 가져오지 못했습니다.")
+                setToastMessage("학점 비율을 올바르게 가져오지 못했습니다.")
             }
             hideProgress()
         }
@@ -56,7 +56,7 @@ class GradeProfessorViewModel @Inject constructor(private val lectureRepository:
                 GradeRatio(aRatio.value!!.toInt(), bRatio.value!!.toInt())
             )
 
-            setErrorMessage(
+            setToastMessage(
                 if (response.status == NetworkResult.Status.SUCCESS) {
                     getRatio(lectureId)
                     "저장되었습니다."
@@ -74,7 +74,7 @@ class GradeProfessorViewModel @Inject constructor(private val lectureRepository:
             if (response.status == NetworkResult.Status.SUCCESS) {
                 _gradeList.value = response.data!!
             } else {
-                setErrorMessage("학생 성적 목록을 불러오지 못했습니다.")
+                setToastMessage("학생 성적 목록을 불러오지 못했습니다.")
             }
             hideProgress()
         }

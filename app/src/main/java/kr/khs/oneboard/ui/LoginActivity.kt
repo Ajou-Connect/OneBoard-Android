@@ -59,10 +59,10 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.isError.observe(this) {
+        viewModel.toastMessage.observe(this) {
             if (it != "") {
                 ToastUtil.shortToast(applicationContext, it)
-                viewModel.setErrorMessage()
+                viewModel.setToastMessage()
             }
         }
     }

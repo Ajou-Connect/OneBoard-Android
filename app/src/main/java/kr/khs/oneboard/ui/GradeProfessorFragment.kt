@@ -97,7 +97,7 @@ class GradeProfessorFragment :
                         val bString = dialogBinding.editRatioBRatio.text.toString()
 
                         if (aString.isEmpty() || bString.isEmpty()) {
-                            viewModel.setErrorMessage("새로운 값을 입력해주세요.")
+                            viewModel.setToastMessage("새로운 값을 입력해주세요.")
                             return@setPositiveButton
                         }
 

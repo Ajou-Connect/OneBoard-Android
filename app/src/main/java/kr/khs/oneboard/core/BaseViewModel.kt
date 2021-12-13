@@ -9,9 +9,9 @@ abstract class BaseViewModel : ViewModel() {
     val isLoading: LiveData<Boolean>
         get() = _isLoading
 
-    private val _isError = MutableLiveData("")
-    val isError: LiveData<String>
-        get() = _isError
+    private val _toastMessage = MutableLiveData("")
+    val toastMessage: LiveData<String>
+        get() = _toastMessage
 
     protected fun showProgress() {
         _isLoading.value = true
@@ -21,7 +21,7 @@ abstract class BaseViewModel : ViewModel() {
         _isLoading.value = false
     }
 
-    fun setErrorMessage(msg: String = "") {
-        _isError.value = msg
+    fun setToastMessage(msg: String = "") {
+        _toastMessage.value = msg
     }
 }

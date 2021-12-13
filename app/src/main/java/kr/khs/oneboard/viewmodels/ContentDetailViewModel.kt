@@ -26,7 +26,7 @@ class ContentDetailViewModel @Inject constructor(private val lectureRepository: 
             if (response.status == NetworkResult.Status.SUCCESS)
                 _assignmentList.value = response.data!!
             else
-                setErrorMessage("제출된 과제 목록을 받아오지 못했습니다.")
+                setToastMessage("제출된 과제 목록을 받아오지 못했습니다.")
             hideProgress()
         }
     }
