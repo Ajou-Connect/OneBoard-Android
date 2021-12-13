@@ -146,6 +146,9 @@ class AnalysisFragment : BaseFragment<FragmentAnalysisBinding, AnalysisViewModel
         with(binding.analysisPie) {
             setDate(pieHelperList)
             setOnPieClickListener {
+                if (it <= 0)
+                    return@setOnPieClickListener
+
                 DialogUtil.createDialog(
                     requireContext(),
                     "${pieHelperList[it].title} : ${pieHelperList[it].percentStr}",
