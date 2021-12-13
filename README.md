@@ -48,4 +48,7 @@ This is an android application for `Professor` and `Unversity Student`<br/>
   - Github Actions
 
 ## MadScore
-https://developer.android.com/modern-android-development/scorecard
+![kotlin](https://user-images.githubusercontent.com/59349226/145800977-e0ccc1e7-5ebb-4da7-9d60-7b22710db107.png)
+![jetpack](https://user-images.githubusercontent.com/59349226/145800982-ed96ece2-4fc5-4be6-8584-fa9c3e2dbd2b.png)
+![summary](https://user-images.githubusercontent.com/59349226/145800997-1f226b80-49fe-493c-aeb0-fc52d29a896a.png)
+
