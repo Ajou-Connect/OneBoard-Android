@@ -13,9 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kr.khs.oneboard.adapters.LessonListAdapter
 import kr.khs.oneboard.core.BaseFragment
 import kr.khs.oneboard.databinding.FragmentLessonListBinding
-import kr.khs.oneboard.utils.DialogUtil
-import kr.khs.oneboard.utils.TYPE_STUDENT
-import kr.khs.oneboard.utils.UserInfoUtil
+import kr.khs.oneboard.utils.*
 import kr.khs.oneboard.viewmodels.LessonListViewModel
 
 @AndroidEntryPoint
@@ -109,5 +107,18 @@ class LessonListFragment : BaseFragment<FragmentLessonListBinding, LessonListVie
         }
 
         viewModel.getLessonList(parentViewModel.getLecture().id)
+
+        binding.rvRefreshLayout.setOnRefreshListener {
+            viewModel.getLessonList(parentViewModel.getLecture().id)
+            binding.rvLessonList.scrollToPosition(0)
+
+            binding.rvRefreshLayout.isRefreshing = false
+        }
+    }
+
+    override fun initOnBoarding() {
+        if (getOnBoardingSpf(this.javaClass.simpleName).not()) {
+            createOnBoardingDialog()
+        }
     }
 }

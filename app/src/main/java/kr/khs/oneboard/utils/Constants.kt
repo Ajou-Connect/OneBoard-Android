@@ -2,7 +2,7 @@ package kr.khs.oneboard.utils
 
 const val API_URL = "https://oneboard.connect.o-r.kr:8080/"
 const val API_URL_WITHOUT_SLASH = "https://oneboard.connect.o-r.kr:8080"
-const val SOCKET_API_URL = "http://200.200.5.88:8070/live"
+const val SOCKET_API_URL = "https://oneboard.connect.o-r.kr:8070"
 
 const val SUCCESS = "SUCCESS"
 const val FAIL = "FAIL"

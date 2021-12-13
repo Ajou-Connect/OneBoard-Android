@@ -178,4 +178,14 @@
             android:defaultValue="-1"
             app:argType="integer" />
     </fragment>
+    <fragment
+        android:id="@+id/onBoardingFragment"
+        android:name="kr.khs.oneboard.ui.OnBoardingFragment"
+        android:label="fragment_on_boarding"
+        tools:layout="@layout/fragment_on_boarding" />
+    <fragment
+        android:id="@+id/analysisFragment"
+        android:name="kr.khs.oneboard.ui.AnalysisFragment"
+        android:label="fragment_analysis"
+        tools:layout="@layout/fragment_analysis" />
 </navigation>

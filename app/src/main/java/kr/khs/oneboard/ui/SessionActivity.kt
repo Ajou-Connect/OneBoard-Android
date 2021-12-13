@@ -23,10 +23,13 @@ import kr.khs.oneboard.core.rawdata.RawDataRenderer
 import kr.khs.oneboard.core.zoom.AudioRawDataUtil
 import kr.khs.oneboard.core.zoom.BaseSessionActivity
 import kr.khs.oneboard.core.zoom.NotificationService
+import kr.khs.oneboard.data.request.QuizRequestDto
+import kr.khs.oneboard.databinding.DialogCreateQuizBinding
 import kr.khs.oneboard.databinding.DialogQuizBinding
 import kr.khs.oneboard.databinding.DialogUnderstandingBinding
 import kr.khs.oneboard.utils.*
 import kr.khs.oneboard.viewmodels.SessionViewModel
+import org.json.JSONObject
 import timber.log.Timber
 import us.zoom.sdk.*
 import javax.inject.Inject
@@ -37,6 +40,7 @@ import kotlin.random.Random
 class SessionActivity : BaseSessionActivity(), CoroutineScope {
     companion object {
         const val SOCKET_TEST = "Hello!"
+        const val INIT_Socket = "init"
         const val STUDENT_ATTENDANCE = "attendance request"
         const val PROFESSOR_ATTENDANCE = "attendance response"
         const val STUDENT_UNDERSTANDING = "understanding request"
@@ -62,47 +66,27 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
 
     private val socketConnectListener = Emitter.Listener {
         Timber.tag("Socket").d("Connect Listener!")
-        Timber.tag("Socket").d("$it")
-        socket.emit("Hello!", "Android")
-        launch(coroutineContext) {
-            Timber.tag("Socket").d("Connect Listener!!")
-//            ToastUtil.shortToast(this@SessionActivity, "Socket Connected!!")
+
+        val initObject = JSONObject().apply {
+            put("userType", if (UserInfoUtil.type == TYPE_PROFESSOR) "T" else "S")
+            put("room", sessionName)
         }
+        socket.emit(INIT_Socket, initObject)
     }
 
     private val socketDisconnectListener = Emitter.Listener {
         Timber.tag("Socket").d("Disconnect Listener!")
-        launch(coroutineContext) {
-            Timber.tag("Socket").d("Disconnect Listener!!")
-//            ToastUtil.shortToast(this@SessionActivity, "Socket DisConnected!!")
-        }
-    }
-
-    private val socketTestListener = Emitter.Listener {
-        Timber.tag("Socket").d("Listener!")
-        Timber.tag("Socket").d(it[0] as String)
-
-        launch(coroutineContext) {
-            Timber.tag("Socket").d("Listener!!")
-            DialogUtil.createDialog(
-                context = this@SessionActivity,
-                message = "Test Message",
-                positiveText = "OK",
-                positiveAction = {
-                    ToastUtil.shortToast(this@SessionActivity, "Socket Test Complete!")
-                }
-            )
-        }
     }
 
     private val socketAttendanceRequestListener = Emitter.Listener {
+        Timber.tag("Socket").d("Attendance Request to student")
+
         launch(coroutineContext) {
             MaterialAlertDialogBuilder(this@SessionActivity)
                 .setMessage("출석 체크를 해주세요.")
                 .setCancelable(false)
                 .setPositiveButton("확인") { _, _ ->
-//                    viewModel.postAttendance()
-                    ToastUtil.shortToast(this@SessionActivity, "출석체크가 되었습니다.")
+                    viewModel.postAttendance()
                 }
                 .show()
         }
@@ -115,6 +99,12 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
     }
 
     private val socketUnderstandingRequestListener = Emitter.Listener {
+        Timber.tag("Socket").d("${it[0]}")
+
+        val understandId = JSONObject(it[0].toString())["understandId"]
+
+        viewModel.understandingId = understandId as Int
+
         launch(coroutineContext) {
             val dialogBinding = DialogUnderstandingBinding.inflate(layoutInflater)
 
@@ -124,12 +114,12 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
                 .create()
 
             dialogBinding.dialogUnderstandingO.setOnClickListener {
-//                viewModel.postUnderStanding("O")
+                viewModel.postUnderStandingStudent(sessionName, "O")
                 dialog.dismiss()
             }
 
             dialogBinding.dialogUnderstandingX.setOnClickListener {
-//                viewModel.postUnderStanding("X")
+                viewModel.postUnderStandingStudent(sessionName, "X")
                 dialog.dismiss()
             }
 
@@ -144,6 +134,7 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
     }
 
     private val socketQuizRequestListener = Emitter.Listener {
+        val json = JSONObject(it[0].toString())
         launch(coroutineContext) {
             val dialogBinding = DialogQuizBinding.inflate(layoutInflater)
 
@@ -152,7 +143,7 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
                 .setCancelable(false)
                 .create()
 
-            dialogBinding.dialogQuizTitle.text = "퀴즈!!!"
+            dialogBinding.dialogQuizTitle.text = json["question"] as String
 
             val layoutParams =
                 LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
@@ -162,8 +153,8 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
 
             val radioButtonList = Array(5) {
                 RadioButton(this@SessionActivity).apply {
-                    text = "RadioGroup Button1111111212121212121211111111 ${it * 999}"
-                    id = it + 100
+                    text = json["answer${it + 1}"] as String
+                    id = it + 100 + 1
                     this.layoutParams = layoutParams
                 }
             }
@@ -176,9 +167,9 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
 
                 // 선택되지 않았을 경우
                 if (checkId == 0) {
-                    viewModel.setErrorMessage("정답을 선택해 주세요.")
+                    viewModel.setToastMessage("정답을 선택해 주세요.")
                 } else {
-//                    viewModel.postQuiz(1, checkId - 100)
+                    viewModel.postQuizStudent(json["quizId"] as Int, checkId - 100)
                     dialog.dismiss()
                 }
             }
@@ -199,6 +190,39 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
 
         addSocketListener()
 
+        if (UserInfoUtil.type == TYPE_PROFESSOR)
+            initProfessorView()
+
+        viewModel.professorUnderstandingResponse.observe(this) { understanding ->
+            understanding ?: return@observe
+
+            val understandingString = """
+                이해 O : ${understanding.yes}
+                이해 X : ${understanding.no}
+            """.trimIndent()
+            DialogUtil.createDialog(
+                this,
+                understandingString,
+                positiveText = "확인",
+                positiveAction = { }
+            )
+        }
+
+        viewModel.professorQuizResponse.observe(this) { quiz ->
+            quiz ?: return@observe
+
+            val quizString = """
+                정답자 수 : ${quiz.correctNum}
+                오답자 수 : ${quiz.incorrectNum}
+            """.trimIndent()
+            DialogUtil.createDialog(
+                this,
+                quizString,
+                positiveText = "확인",
+                positiveAction = { }
+            )
+        }
+
         viewModel.isLoading.observe(this) {
             if (it) {
                 DialogUtil.onLoadingDialog(this)
@@ -207,15 +231,16 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
             }
         }
 
-        viewModel.isError.observe(this) {
+        viewModel.toastMessage.observe(this) {
             if (it != "") {
                 ToastUtil.shortToast(this, it)
-                viewModel.setErrorMessage()
+                viewModel.setToastMessage()
             }
         }
 
         viewModel.isLeave.observe(this) {
             if (it) {
+                Timber.tag("SessionLeave").d("$it")
                 sessionLeaveAction()
 
                 super.releaseResource()
@@ -225,6 +250,74 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
         }
     }
 
+    private fun initProfessorView() {
+        binding.requestAttendance.setOnClickListener {
+            viewModel.postAttendance()
+        }
+
+        binding.requestUnderstanding.setOnClickListener {
+            viewModel.postUnderStandingProfessor()
+            binding.responseUnderstanding.visibility = View.VISIBLE
+        }
+
+        binding.responseUnderstanding.setOnClickListener {
+            viewModel.getUnderStandingProfessor()
+        }
+
+        binding.requestQuiz.setOnClickListener {
+            createQuizDialog()
+        }
+
+        binding.responseQuiz.setOnClickListener {
+            viewModel.getQuizProfessor()
+        }
+    }
+
+    private fun createQuizDialog() {
+        val quizBinding = DialogCreateQuizBinding.inflate(layoutInflater)
+
+        val builder = MaterialAlertDialogBuilder(this)
+            .setView(quizBinding.root)
+            .create()
+
+        quizBinding.createQuizButton.setOnClickListener {
+            if (quizBinding.createQuizQuestion.text.toString().isEmpty() ||
+                quizBinding.createQuizAnswer1.text.toString().isEmpty() ||
+                quizBinding.createQuizAnswer2.text.toString().isEmpty() ||
+                quizBinding.createQuizAnswer3.text.toString().isEmpty() ||
+                quizBinding.createQuizAnswer4.text.toString().isEmpty() ||
+                quizBinding.createQuizAnswer5.text.toString().isEmpty() ||
+                quizBinding.createQuizRadioGroup.checkedRadioButtonId == -1
+            ) {
+                viewModel.setToastMessage("공백 없이 모두 입력해주세요.")
+                return@setOnClickListener
+            }
+
+            val requestDto = QuizRequestDto(
+                question = quizBinding.createQuizQuestion.text.toString(),
+                answer1 = quizBinding.createQuizAnswer1.text.toString(),
+                answer2 = quizBinding.createQuizAnswer2.text.toString(),
+                answer3 = quizBinding.createQuizAnswer3.text.toString(),
+                answer4 = quizBinding.createQuizAnswer4.text.toString(),
+                answer5 = quizBinding.createQuizAnswer5.text.toString(),
+                answer = when (quizBinding.createQuizRadioGroup.checkedRadioButtonId) {
+                    R.id.quizRadio1 -> 1
+                    R.id.quizRadio2 -> 2
+                    R.id.quizRadio3 -> 3
+                    R.id.quizRadio4 -> 4
+                    R.id.quizRadio5 -> 5
+                    else -> 0
+                }
+            )
+
+            viewModel.postQuizProfessor(requestDto)
+            binding.responseQuiz.visibility = View.VISIBLE
+            builder.dismiss()
+        }
+
+        builder.show()
+    }
+
     override fun parseIntent() {
         super.parseIntent()
 
@@ -232,7 +325,7 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
             val lectureId = it.getInt("lectureId", 0)
             val lessonId = it.getInt("lessonId", 0)
 
-            viewModel.setId(lectureId, lessonId)
+            viewModel.setId(lectureId, lessonId, sessionName)
         }
     }
 
@@ -241,8 +334,6 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
 
         socket.on(Socket.EVENT_CONNECT, socketConnectListener)
         socket.on(Socket.EVENT_DISCONNECT, socketDisconnectListener)
-
-//        socket.on(SOCKET_TEST, socketTestListener)
 
         if (UserInfoUtil.type == TYPE_PROFESSOR) {
             socket.on(PROFESSOR_ATTENDANCE, socketAttendanceResponseListener)
@@ -365,6 +456,8 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
         }
 
         actionBarBinding.actionBar.visibility = if (show) View.VISIBLE else View.GONE
+        if (UserInfoUtil.type == TYPE_PROFESSOR)
+            binding.sessionProfessor.visibility = if (show) View.VISIBLE else View.GONE
         binding.chatList.visibility = if (show) View.VISIBLE else View.GONE
         Timber.tag("toggleView").d(
             """

@@ -27,6 +27,6 @@ data class Lesson(
 
 data class LessonDefaultInfo(
     val defaultTitle: String?,
-    val defaultDateTime: String?,
+    var defaultDateTime: String?,
     val defaultRoom: String?
 )

@@ -261,4 +261,10 @@ class GradeStudentFragment : BaseFragment<FragmentGradeStudentBinding, GradeStud
             )
         }
     }
+
+    override fun initOnBoarding() {
+        if (getOnBoardingSpf(this.javaClass.simpleName).not()) {
+            createOnBoardingDialog()
+        }
+    }
 }

@@ -25,6 +25,8 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        UserInfoUtil.setOnBoarding(this, true)
+
         initLoginButton()
         initEditTextWatcher()
 
@@ -57,10 +59,10 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.isError.observe(this) {
+        viewModel.toastMessage.observe(this) {
             if (it != "") {
                 ToastUtil.shortToast(applicationContext, it)
-                viewModel.setErrorMessage()
+                viewModel.setToastMessage()
             }
         }
     }

@@ -127,9 +127,11 @@ class MainActivity : AppCompatActivity() {
         binding.navigationView.setNavigationItemSelectedListener { menuItem ->
             Timber.tag("currentDestination").d("${navController.currentDestination}")
             when (menuItem.itemId) {
-                R.id.list_menu_attendance -> {
+                R.id.list_menu_onboarding -> {
+                    navController.navigate(R.id.onBoardingFragment)
                 }
-                R.id.list_menu_grade -> {
+                R.id.lecture_menu_onboarding -> {
+                    navController.navigate(R.id.onBoardingFragment)
                 }
                 R.id.list_menu_lecture -> {
                 }
@@ -169,6 +171,7 @@ class MainActivity : AppCompatActivity() {
                     )
                 }
                 R.id.lecture_menu_understanding -> {
+                    navController.navigate(R.id.analysisFragment)
                 }
                 R.id.lecture_menu_go_list -> {
                     navController.navigate(
@@ -215,5 +218,3 @@ class MainActivity : AppCompatActivity() {
         UserInfoUtil.univ = university
     }
 }
-
-// TODO: 2021/11/19 파일 다운로드 찾아보기

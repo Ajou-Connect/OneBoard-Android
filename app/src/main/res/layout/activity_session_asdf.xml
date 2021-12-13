@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black">
@@ -74,6 +75,74 @@
         android:textSize="@dimen/textsize_13"
         app:layout_constraintStart_toStartOf="@+id/sessionName"
         app:layout_constraintTop_toBottomOf="@+id/sessionName" />
+
+    <LinearLayout
+        android:id="@+id/session_professor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="#A1323232"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@id/text_meeting_user_size"
+        app:layout_constraintTop_toBottomOf="@id/text_meeting_user_size"
+        tools:visibility="visible">
+
+        <Button
+            android:id="@+id/requestAttendance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:background="@color/colorTransparent"
+            android:minHeight="0dp"
+            android:padding="0dp"
+            android:text="출석 체크"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/requestUnderstanding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:background="@color/colorTransparent"
+            android:minHeight="0dp"
+            android:padding="0dp"
+            android:text="이해도 체크"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/responseUnderstanding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorTransparent"
+            android:minHeight="0dp"
+            android:padding="0dp"
+            android:text="최근 이해도 결과"
+            android:textColor="@color/white"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/requestQuiz"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:background="@color/colorTransparent"
+            android:minHeight="0dp"
+            android:padding="0dp"
+            android:text="퀴즈 출제"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/responseQuiz"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorTransparent"
+            android:minHeight="0dp"
+            android:padding="0dp"
+            android:text="최근 퀴즈 결과"
+            android:textColor="@color/white"
+            android:visibility="gone" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/text_end_meeting"

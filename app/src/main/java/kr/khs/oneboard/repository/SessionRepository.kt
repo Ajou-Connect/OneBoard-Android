@@ -1,48 +1,74 @@
 package kr.khs.oneboard.repository
 
-import kr.khs.oneboard.core.UseCase
+import kr.khs.oneboard.core.NetworkResult
+import kr.khs.oneboard.data.Quiz
+import kr.khs.oneboard.data.StudentQuizResponse
+import kr.khs.oneboard.data.Understanding
+import kr.khs.oneboard.data.request.QuizRequestDto
 
 interface SessionRepository {
     suspend fun leaveLesson(
         lectureId: Int,
-        lessonId: Int
-    ): UseCase<Boolean>
+        lessonId: Int,
+        sessionName: String
+    ): NetworkResult<Boolean>
 
     suspend fun postAttendanceProfessor(
         lectureId: Int,
-        lessonId: Int
-    ): UseCase<Boolean>
+        lessonId: Int,
+        sessionName: String
+    ): NetworkResult<Boolean>
 
     suspend fun postAttendanceStudent(
         lectureId: Int,
-        lessonId: Int
-    ): UseCase<Boolean>
+        lessonId: Int,
+        sessionName: String
+    ): NetworkResult<Boolean>
 
-    suspend fun postUnderStanding(
+    suspend fun postUnderStandingProfessor(
         lectureId: Int,
         lessonId: Int,
-        liveId: Int,
-        select: String
-    ): UseCase<Boolean>
+        sessionName: String,
+    ): NetworkResult<Int>
 
-    suspend fun getUnderStanding(
+    suspend fun getUnderStandingProfessor(
         lectureId: Int,
         lessonId: Int,
-        liveId: Int,
         understandingId: Int
-    ): UseCase<Boolean>
+    ): NetworkResult<Understanding>
 
-    suspend fun getQuiz(
+    suspend fun postUnderStandingStudent(
         lectureId: Int,
         lessonId: Int,
-        liveId: Int
-    ): UseCase<Boolean>
+        understandingId: Int,
+        sessionName: String,
+        response: String
+    ): NetworkResult<Boolean>
 
-    suspend fun postQuiz(
+    suspend fun postQuizProfessor(
         lectureId: Int,
         lessonId: Int,
-        liveId: Int,
+        quizRequestDto: QuizRequestDto,
+        sessionName: String
+    ): NetworkResult<Int>
+
+    suspend fun getQuizProfessor(
+        lectureId: Int,
+        lessonId: Int,
+        quizId: Int
+    ): NetworkResult<Quiz>
+
+    suspend fun getQuizStudent(
+        lectureId: Int,
+        lessonId: Int,
+        quizId: Int
+    ): NetworkResult<StudentQuizResponse>
+
+    suspend fun postQuizStudent(
+        lectureId: Int,
+        lessonId: Int,
         quizId: Int,
+        sessionName: String,
         answer: Int
-    ): UseCase<Boolean>
+    ): NetworkResult<Boolean>
 }

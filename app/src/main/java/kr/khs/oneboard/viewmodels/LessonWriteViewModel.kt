@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kr.khs.oneboard.core.BaseViewModel
-import kr.khs.oneboard.core.UseCase
+import kr.khs.oneboard.core.NetworkResult
 import kr.khs.oneboard.data.LessonDefaultInfo
 import kr.khs.oneboard.repository.LessonRepository
 import kr.khs.oneboard.utils.TYPE_FACE_TO_FACE
@@ -57,10 +57,10 @@ class LessonWriteViewModel @Inject constructor(private val lessonRepository: Les
                 videoUrl,
             )
 
-            if (response.status == UseCase.Status.SUCCESS)
+            if (response.status == NetworkResult.Status.SUCCESS)
                 _updateLesson.value = true
             else
-                setErrorMessage("수업이 생성되지 못했습니다.")
+                setToastMessage("수업이 생성되지 못했습니다.")
 
             hideProgress()
         }
@@ -90,10 +90,10 @@ class LessonWriteViewModel @Inject constructor(private val lessonRepository: Les
                 videoUrl,
             )
 
-            if (response.status == UseCase.Status.SUCCESS)
+            if (response.status == NetworkResult.Status.SUCCESS)
                 _updateLesson.value = true
             else
-                setErrorMessage("수업이 생성되지 못했습니다.")
+                setToastMessage("수업이 생성되지 못했습니다.")
 
             hideProgress()
         }
@@ -104,10 +104,10 @@ class LessonWriteViewModel @Inject constructor(private val lessonRepository: Les
             showProgress()
             val response = lessonRepository.getDefaultLessonInfo(lectureId)
 
-            if (response.status == UseCase.Status.SUCCESS) {
+            if (response.status == NetworkResult.Status.SUCCESS) {
                 _defaultInfo.value = response.data!!
             } else {
-                setErrorMessage("기본 수업 정보를 불러오지 못했습니다.")
+                setToastMessage("기본 수업 정보를 불러오지 못했습니다.")
             }
             hideProgress()
         }

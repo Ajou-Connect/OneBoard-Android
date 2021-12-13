@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kr.khs.oneboard.core.BaseViewModel
-import kr.khs.oneboard.core.UseCase
 import kr.khs.oneboard.data.Lesson
 import kr.khs.oneboard.repository.LessonRepository
 import javax.inject.Inject
@@ -28,35 +27,42 @@ class LessonDetailViewModel @Inject constructor(private val repository: LessonRe
 
     fun getLesson() = lesson
 
-    fun createLesson(lectureId: Int, lessonId: Int) {
+//    fun createLesson(lectureId: Int, lessonId: Int) {
+//        viewModelScope.launch {
+//            showProgress()
+//            val response = repository.createLesson(lectureId, lessonId)
+//
+//            if (response.status == NetworkResult.Status.SUCCESS) {
+//                _isCreateLesson.value = response.data!!
+//
+//                if (response.data.not())
+//                    setSessionErrorMessage("다시 시도해주세요.")
+//            } else {
+//                setErrorMessage("수업을 생성하는데 오류가 생겼습니다.")
+//            }
+//            hideProgress()
+//        }
+//    }
+
+    fun enterLesson(lectureId: Int, lessonId: Int, sessionName: String) {
         viewModelScope.launch {
             showProgress()
-            val response = repository.createLesson(lectureId, lessonId)
-
-            if (response.status == UseCase.Status.SUCCESS) {
-                _isCreateLesson.value = response.data!!
-
-                if (response.data.not())
-                    setSessionErrorMessage("다시 시도해주세요.")
-            } else {
-                setErrorMessage("수업을 생성하는데 오류가 생겼습니다.")
-            }
-            hideProgress()
-        }
-    }
-
-    fun enterLesson(lectureId: Int, lessonId: Int) {
-        viewModelScope.launch {
-            showProgress()
-            val response = repository.enterLesson(lectureId, lessonId)
-            if (response.status == UseCase.Status.SUCCESS) {
-                _isCreateLesson.value = response.data!!
-
-                if (response.data.not())
-                    setSessionErrorMessage("아직 수업이 생성되지 않았습니다.")
-            } else {
-                setErrorMessage("수업에 입장하지 못했습니다.")
-            }
+            _isCreateLesson.value = true
+//            val response = repository.enterLesson(lectureId, lessonId, sessionName)
+//            if (response.status == NetworkResult.Status.SUCCESS) {
+//                _isCreateLesson.value = response.data!!
+//
+//                if (response.data.not()) {
+//                    setToastMessage(
+//                        if (UserInfoUtil.type == TYPE_PROFESSOR)
+//                            "종료된 수업은 재입장할 수 없습니다."
+//                        else
+//                            "아직 수업이 생성되지 않았습니다."
+//                    )
+//                }
+//            } else {
+//                setToastMessage("수업에 입장하지 못했습니다.")
+//            }
             hideProgress()
         }
     }

@@ -11,6 +11,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kr.khs.oneboard.R
 import kr.khs.oneboard.core.BaseFragment
 import kr.khs.oneboard.databinding.FragmentLectureDetailBinding
+import kr.khs.oneboard.utils.createOnBoardingDialog
+import kr.khs.oneboard.utils.getOnBoardingSpf
 import kr.khs.oneboard.viewmodels.LectureDetailViewModel
 
 @AndroidEntryPoint
@@ -71,4 +73,9 @@ class LectureDetailFragment : BaseFragment<FragmentLectureDetailBinding, Lecture
         viewModel.setLectureInfo(parentViewModel.getLecture())
     }
 
+    override fun initOnBoarding() {
+        if (getOnBoardingSpf(this.javaClass.simpleName).not()) {
+            createOnBoardingDialog()
+        }
+    }
 }

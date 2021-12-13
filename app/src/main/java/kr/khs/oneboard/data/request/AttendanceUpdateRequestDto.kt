@@ -6,6 +6,6 @@ data class AttendanceUpdateRequestDto(
     data class AttendanceUpdate(
         val studentId: Int,
         val lessonId: Int,
-        val status: Int
+        var status: Int
     )
 }

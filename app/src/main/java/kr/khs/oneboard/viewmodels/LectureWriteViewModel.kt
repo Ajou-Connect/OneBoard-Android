@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kr.khs.oneboard.core.BaseViewModel
-import kr.khs.oneboard.core.UseCase
+import kr.khs.oneboard.core.NetworkResult
 import kr.khs.oneboard.data.request.AssignmentUpdateRequestDto
 import kr.khs.oneboard.data.request.NoticeUpdateRequestDto
 import kr.khs.oneboard.repository.LectureRepository
@@ -29,11 +29,11 @@ class LectureWriteViewModel @Inject constructor(private val repository: LectureR
         file: MultipartBody.Part? = null
     ) {
         if (contentId == -1) {
-            setErrorMessage("올바르지 않은 접근입니다.")
+            setToastMessage("올바르지 않은 접근입니다.")
             return
         }
 
-        var result: UseCase<Boolean>
+        var result: NetworkResult<Boolean>
         viewModelScope.launch {
             result = when (type) {
                 TYPE_NOTICE -> {
@@ -45,7 +45,8 @@ class LectureWriteViewModel @Inject constructor(private val repository: LectureR
                 else -> throw Exception("Unknown Type")
             }
 
-            status.value = if (result.status == UseCase.Status.SUCCESS) result.data!! else false
+            status.value =
+                if (result.status == NetworkResult.Status.SUCCESS) result.data!! else false
         }
     }
 
@@ -56,7 +57,7 @@ class LectureWriteViewModel @Inject constructor(private val repository: LectureR
         assignment: AssignmentUpdateRequestDto? = null,
         file: MultipartBody.Part? = null
     ) {
-        var result: UseCase<Boolean>
+        var result: NetworkResult<Boolean>
         Timber.tag("WriteAssignment").d("file is null : ${file == null}")
         viewModelScope.launch {
             showProgress()
@@ -72,7 +73,8 @@ class LectureWriteViewModel @Inject constructor(private val repository: LectureR
                 else -> throw Exception("Unknown Type")
             }
 
-            status.value = if (result.status == UseCase.Status.SUCCESS) result.data!! else false
+            status.value =
+                if (result.status == NetworkResult.Status.SUCCESS) result.data!! else false
             hideProgress()
         }
     }

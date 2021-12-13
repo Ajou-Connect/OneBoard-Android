@@ -10,6 +10,8 @@ import kr.khs.oneboard.core.BaseFragment
 import kr.khs.oneboard.data.Submit
 import kr.khs.oneboard.databinding.FragmentSubmitDetailBinding
 import kr.khs.oneboard.utils.ToastUtil
+import kr.khs.oneboard.utils.createOnBoardingDialog
+import kr.khs.oneboard.utils.getOnBoardingSpf
 import kr.khs.oneboard.viewmodels.SubmitDetailViewModel
 
 @AndroidEntryPoint
@@ -79,4 +81,9 @@ class SubmitDetailFragment : BaseFragment<FragmentSubmitDetailBinding, SubmitDet
         }
     }
 
+    override fun initOnBoarding() {
+        if (getOnBoardingSpf(this.javaClass.simpleName).not()) {
+            createOnBoardingDialog()
+        }
+    }
 }

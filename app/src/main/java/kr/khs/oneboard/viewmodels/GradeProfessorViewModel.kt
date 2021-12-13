@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kr.khs.oneboard.core.BaseViewModel
-import kr.khs.oneboard.core.UseCase
+import kr.khs.oneboard.core.NetworkResult
 import kr.khs.oneboard.data.GradeRatio
 import kr.khs.oneboard.data.GradeStudent
 import kr.khs.oneboard.repository.LectureRepository
@@ -28,11 +28,11 @@ class GradeProfessorViewModel @Inject constructor(private val lectureRepository:
         viewModelScope.launch {
             showProgress()
             val response = lectureRepository.getGradeRatio(lectureId)
-            if (response.status == UseCase.Status.SUCCESS) {
+            if (response.status == NetworkResult.Status.SUCCESS) {
                 aRatio.value = response.data!!.aRatio.toString()
                 bRatio.value = response.data.bRatio.toString()
             } else {
-                setErrorMessage("학점 비율을 올바르게 가져오지 못했습니다.")
+                setToastMessage("학점 비율을 올바르게 가져오지 못했습니다.")
             }
             hideProgress()
         }
@@ -56,8 +56,8 @@ class GradeProfessorViewModel @Inject constructor(private val lectureRepository:
                 GradeRatio(aRatio.value!!.toInt(), bRatio.value!!.toInt())
             )
 
-            setErrorMessage(
-                if (response.status == UseCase.Status.SUCCESS) {
+            setToastMessage(
+                if (response.status == NetworkResult.Status.SUCCESS) {
                     getRatio(lectureId)
                     "저장되었습니다."
                 } else
@@ -71,10 +71,10 @@ class GradeProfessorViewModel @Inject constructor(private val lectureRepository:
         viewModelScope.launch {
             showProgress()
             val response = lectureRepository.getStudentGradeList(lectureId)
-            if (response.status == UseCase.Status.SUCCESS) {
+            if (response.status == NetworkResult.Status.SUCCESS) {
                 _gradeList.value = response.data!!
             } else {
-                setErrorMessage("학생 성적 목록을 불러오지 못했습니다.")
+                setToastMessage("학생 성적 목록을 불러오지 못했습니다.")
             }
             hideProgress()
         }

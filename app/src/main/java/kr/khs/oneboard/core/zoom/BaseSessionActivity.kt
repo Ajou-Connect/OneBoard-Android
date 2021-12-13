@@ -772,6 +772,10 @@ abstract class BaseSessionActivity : AppCompatActivity(), ZoomVideoSDKDelegate,
         updateSessionInfo()
         updateFpsOrientation()
         actionBarBinding.actionBar.visibility = View.VISIBLE
+
+        if (UserInfoUtil.type == TYPE_PROFESSOR)
+            binding.sessionProfessor.visibility = View.VISIBLE
+
         if (zoom.shareHelper.isSharingOut)
             zoom.shareHelper.stopShare()
 

@@ -121,6 +121,17 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding, NoticeViewModel>() {
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))
         }
+
+        binding.rvRefreshLayout.setOnRefreshListener {
+            viewModel.getList(parentViewModel.getLecture().id)
+
+            binding.rvRefreshLayout.isRefreshing = false
+        }
     }
 
+    override fun initOnBoarding() {
+        if (getOnBoardingSpf(this.javaClass.simpleName).not()) {
+            createOnBoardingDialog()
+        }
+    }
 }

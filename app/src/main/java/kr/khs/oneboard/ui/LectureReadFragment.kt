@@ -139,4 +139,6 @@ class LectureReadFragment : BaseFragment<FragmentLectureReadBinding, LectureRead
             viewModel.getAssignmentSubmitInfo(parentViewModel.getLecture().id, item.id)
         }
     }
+
+    override fun initOnBoarding() {}
 }

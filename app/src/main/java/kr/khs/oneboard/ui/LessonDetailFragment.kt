@@ -108,19 +108,11 @@ class LessonDetailFragment : BaseFragment<FragmentLessonDetailBinding, LessonDet
                 TYPE_FACE_TO_FACE -> {
                 }
                 TYPE_NON_FACE_TO_FACE -> {
-                    if (UserInfoUtil.type == TYPE_PROFESSOR) {
-                        Timber.tag("SessionInfo").d("type professor")
-                        viewModel.createLesson(
-                            parentViewModel.getLecture().id,
-                            viewModel.getLesson().lessonId
-                        )
-                    } else {
-                        Timber.tag("SessionInfo").d("type student")
-                        viewModel.enterLesson(
-                            parentViewModel.getLecture().id,
-                            viewModel.getLesson().lessonId
-                        )
-                    }
+                    viewModel.enterLesson(
+                        parentViewModel.getLecture().id,
+                        viewModel.getLesson().lessonId,
+                        viewModel.getLesson().session!!
+                    )
                 }
             }
         }
@@ -384,5 +376,11 @@ class LessonDetailFragment : BaseFragment<FragmentLessonDetailBinding, LessonDet
 
     override fun onShareAudioRawDataReceived(p0: ZoomVideoSDKAudioRawData?) {
         Timber.tag("ZoomListener").d("onShareAudioRawDataReceived()")
+    }
+
+    override fun initOnBoarding() {
+        if (getOnBoardingSpf(this.javaClass.simpleName).not()) {
+            createOnBoardingDialog()
+        }
     }
 }

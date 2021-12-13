@@ -16,7 +16,9 @@ import kr.khs.oneboard.adapters.SubmitListAdapter
 import kr.khs.oneboard.core.BaseFragment
 import kr.khs.oneboard.data.Assignment
 import kr.khs.oneboard.databinding.FragmentContentDetailBinding
+import kr.khs.oneboard.utils.createOnBoardingDialog
 import kr.khs.oneboard.utils.getFileUrl
+import kr.khs.oneboard.utils.getOnBoardingSpf
 import kr.khs.oneboard.viewmodels.ContentDetailViewModel
 
 @AndroidEntryPoint
@@ -100,5 +102,11 @@ class ContentDetailFragment : BaseFragment<FragmentContentDetailBinding, Content
         }
 
         viewModel.getSubmitList(parentViewModel.getLecture().id, assignment.id)
+    }
+
+    override fun initOnBoarding() {
+        if (getOnBoardingSpf(this.javaClass.simpleName).not()) {
+            createOnBoardingDialog()
+        }
     }
 }

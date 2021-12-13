@@ -6,9 +6,9 @@ import kr.khs.oneboard.data.api.Response
 import kr.khs.oneboard.data.request.AttendanceUpdateRequestDto
 import kr.khs.oneboard.data.request.GradeUpdateRequestDto
 import kr.khs.oneboard.data.request.NoticeUpdateRequestDto
+import kr.khs.oneboard.data.request.QuizRequestDto
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import org.json.JSONObject
 import retrofit2.http.*
 
 interface ApiService {
@@ -179,76 +179,93 @@ interface ApiService {
     suspend fun getLessonAnalysis(
         @Path("lectureId") lectureId: Int,
         @Path("lessonId") lessonId: Int
-    )
+    ): Response<AnalysisResponseDto>
 
-    // TODO: 2021/12/03 비대면 수업 생성
-    @GET("lecture/{lectureId}/lesson/{lessonId}/live/open")
-    suspend fun openLesson(
-        @Path("lectureId") lectureId: Int,
-        @Path("lessonId") lessonId: Int
-    ): BasicResponseImpl
-
-    // TODO: 2021/12/03 비대면 수업 입장
     @GET("lecture/{lectureId}/lesson/{lessonId}/live/entrance")
     suspend fun enterLesson(
         @Path("lectureId") lectureId: Int,
-        @Path("lessonId") lessonId: Int
+        @Path("lessonId") lessonId: Int,
+        @Query("session") sessionName: String
     ): BasicResponseImpl
 
-    // TODO: 2021/12/03 비대면 수업 종료
-    @GET("lecture/{lectureId}/lesson/{lessonId}/live/clos")
+    @GET("lecture/{lectureId}/lesson/{lessonId}/live/exit")
     suspend fun leaveLesson(
         @Path("lectureId") lectureId: Int,
-        @Path("lessonId") lessonId: Int
+        @Path("lessonId") lessonId: Int,
+        @Query("session") sessionName: String
     ): BasicResponseImpl
 
-    // TODO: 2021/12/03 출석 체크 요청 - 교수
     @GET("lecture/{lectureId}/lesson/{lessonId}/live/attendance/professor")
     suspend fun postAttendanceProfessor(
         @Path("lectureId") lectureId: Int,
-        @Path("lessonId") lessonId: Int
+        @Path("lessonId") lessonId: Int,
+        @Query("session") sessionName: String
     ): BasicResponseImpl
 
-    // TODO: 2021/12/03 출석 체크 요청 - 교수
-    @POST("lecture/{lectureId}/lesson/{lessonId}/live/attendance/student")
+    @GET("lecture/{lectureId}/lesson/{lessonId}/live/attendance/student")
     suspend fun postAttendanceStudent(
         @Path("lectureId") lectureId: Int,
-        @Path("lessonId") lessonId: Int
+        @Path("lessonId") lessonId: Int,
+        @Query("session") sessionName: String
     ): BasicResponseImpl
 
     // TODO: 2021/12/03 이해도 평가 요청
-    @POST("lecture/{lectureId}/lesson/{lessonId}/live/{liveId}/understanding/professor")
-    suspend fun postUnderStanding(
+    @GET("lecture/{lectureId}/lesson/{lessonId}/live/understanding/professor")
+    suspend fun professorPostUnderstanding(
         @Path("lectureId") lectureId: Int,
         @Path("lessonId") lessonId: Int,
-        @Path("liveId") liveId: Int,
-        @Body body: JSONObject
-    ): BasicResponseImpl
+        @Query("session") sessionName: String
+    ): Response<UnderstandingIdWrapper>
 
     // TODO: 2021/12/03 이해도 평가 결과 확인
-    @GET("lecture/{lectureId}/lesson/{lessonId}/live/{liveId}/understanding/{understandingId}/professor")
-    suspend fun getUnderStanding(
+    @GET("lecture/{lectureId}/lesson/{lessonId}/live/understanding/{understandingId}/professor")
+    suspend fun professorGetUnderStanding(
         @Path("lectureId") lectureId: Int,
         @Path("lessonId") lessonId: Int,
-        @Path("liveId") liveId: Int,
         @Path("understandingId") underStandingId: Int
+    ): Response<Understanding>
+
+    // TODO: 2021/12/09 이해도 평가 요청 응답 - 학생
+    @POST("lecture/{lectureId}/lesson/{lessonId}/live/understanding/{understandId}/student")
+    suspend fun studentPostUnderStanding(
+        @Path("lectureId") lectureId: Int,
+        @Path("lessonId") lessonId: Int,
+        @Path("understandId") underStandingId: Int,
+        @Query("session") sessionName: String,
+        @Body body: StudentResponseWrapper
     ): BasicResponseImpl
+
+    // TODO: 2021/12/12 교수 - 퀴즈 요청
+    @POST("lecture/{lectureId}/lesson/{lessonId}/live/quiz/professor")
+    suspend fun postQuizProfessor(
+        @Path("lectureId") lectureId: Int,
+        @Path("lessonId") lessonId: Int,
+        @Body body: QuizRequestDto,
+        @Query("session") sessionName: String,
+    ): Response<QuizIdWrapper>
+
+    @GET("lecture/{lectureId}/lesson/{lessonId}/live/quiz/{quizId}/professor")
+    suspend fun getQuizProfessor(
+        @Path("lectureId") lectureId: Int,
+        @Path("lessonId") lessonId: Int,
+        @Path("quizId") quizId: Int
+    ): Response<Quiz>
 
     // TODO: 2021/12/03 퀴즈 요청 확인
     @GET("lecture/{lectureId}/lesson/{lessonId}/live/{liveId}/quiz/student")
-    suspend fun getQuiz(
+    suspend fun getQuizStudent(
         @Path("lectureId") lectureId: Int,
         @Path("lessonId") lessonId: Int,
-        @Path("liveId") liveId: Int,
-    ): BasicResponseImpl
+        @Path("quizId") quizId: Int
+    ): Response<StudentQuizResponse>
 
     // TODO: 2021/12/03 퀴즈 요청 응답
-    @POST("lecture/{lectureId}/lesson/{lessonId}/live/{liveId}/quiz/{quizId}/student")
-    suspend fun postQuiz(
+    @POST("lecture/{lectureId}/lesson/{lessonId}/live/quiz/{quizId}/student")
+    suspend fun postQuizStudent(
         @Path("lectureId") lectureId: Int,
         @Path("lessonId") lessonId: Int,
-        @Path("liveId") liveId: Int,
         @Path("quizId") quizId: Int,
-        @Body body: JSONObject
+        @Query("session") sessionName: String,
+        @Body body: StudentResponseWrapper
     ): BasicResponseImpl
 }

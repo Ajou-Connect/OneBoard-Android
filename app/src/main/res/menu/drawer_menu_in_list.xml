@@ -4,11 +4,8 @@
         android:id="@+id/list_menu_lecture"
         android:title="과목" />
     <item
-        android:id="@+id/list_menu_attendance"
-        android:title="출석" />
-    <item
-        android:id="@+id/list_menu_grade"
-        android:title="성적" />
+        android:id="@+id/list_menu_onboarding"
+        android:title="OneBoard 소개" />
     <item
         android:id="@+id/list_menu_logout"
         android:title="로그아웃" />

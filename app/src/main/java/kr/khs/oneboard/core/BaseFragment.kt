@@ -29,6 +29,7 @@ abstract class BaseFragment<T : ViewBinding, VM : BaseViewModel> : Fragment() {
         _binding = getFragmentViewBinding(inflater, container)
 
         init()
+        initOnBoarding()
 
         return binding.root
     }
@@ -44,10 +45,10 @@ abstract class BaseFragment<T : ViewBinding, VM : BaseViewModel> : Fragment() {
             }
         }
 
-        viewModel.isError.observe(viewLifecycleOwner) {
+        viewModel.toastMessage.observe(viewLifecycleOwner) {
             if (it != "") {
                 ToastUtil.shortToast(requireContext(), it)
-                viewModel.setErrorMessage()
+                viewModel.setToastMessage()
             }
         }
     }
@@ -73,4 +74,6 @@ abstract class BaseFragment<T : ViewBinding, VM : BaseViewModel> : Fragment() {
             positiveAction = { requireActivity().onBackPressed() }
         )
     }
+
+    abstract fun initOnBoarding()
 }

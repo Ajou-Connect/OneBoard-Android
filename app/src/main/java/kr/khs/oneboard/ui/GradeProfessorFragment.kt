@@ -15,6 +15,8 @@ import kr.khs.oneboard.databinding.DialogEditRatioBinding
 import kr.khs.oneboard.databinding.FragmentGradeProfessorBinding
 import kr.khs.oneboard.utils.TYPE_STUDENT
 import kr.khs.oneboard.utils.UserInfoUtil
+import kr.khs.oneboard.utils.createOnBoardingDialog
+import kr.khs.oneboard.utils.getOnBoardingSpf
 import kr.khs.oneboard.viewmodels.GradeProfessorViewModel
 import timber.log.Timber
 
@@ -95,7 +97,7 @@ class GradeProfessorFragment :
                         val bString = dialogBinding.editRatioBRatio.text.toString()
 
                         if (aString.isEmpty() || bString.isEmpty()) {
-                            viewModel.setErrorMessage("새로운 값을 입력해주세요.")
+                            viewModel.setToastMessage("새로운 값을 입력해주세요.")
                             return@setPositiveButton
                         }
 
@@ -152,5 +154,11 @@ class GradeProfessorFragment :
         }
 
         viewModel.getRatio(parentViewModel.getLecture().id)
+    }
+
+    override fun initOnBoarding() {
+        if (getOnBoardingSpf(this.javaClass.simpleName).not()) {
+            createOnBoardingDialog()
+        }
     }
 }

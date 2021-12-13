@@ -69,5 +69,8 @@ class LectureListFragment : BaseFragment<FragmentLectureListBinding, LectureList
         requireActivity().title = "OneBoard"
         initLectureListRecyclerView()
         inflateMenu(false)
+        initOnBoarding()
     }
+
+    override fun initOnBoarding() {}
 }

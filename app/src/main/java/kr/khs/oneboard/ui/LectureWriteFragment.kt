@@ -21,7 +21,9 @@ import kr.khs.oneboard.data.request.AssignmentUpdateRequestDto
 import kr.khs.oneboard.data.request.NoticeUpdateRequestDto
 import kr.khs.oneboard.databinding.FragmentLectureWriteBinding
 import kr.khs.oneboard.extensions.toDateTime
+import kr.khs.oneboard.extensions.toDateTimeWithoutSec
 import kr.khs.oneboard.extensions.toTimeInMillis
+import kr.khs.oneboard.extensions.toTimeInMillisWithoutSec
 import kr.khs.oneboard.utils.*
 import kr.khs.oneboard.viewmodels.LectureWriteViewModel
 import okhttp3.MultipartBody
@@ -204,7 +206,7 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
                         AM_PM: String
                     ) {
                         (textview as TextView).text = String.format(
-                            "%04d-%02d-%02d %02d:%02d:00",
+                            "%04d-%02d-%02d %02d:%02d",
                             year,
                             monthNumber + 1,
                             day,
@@ -236,10 +238,10 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
             if (binding.writeTitleEditText.text.toString().isEmpty()
                 || binding.writeContentEditText.html == null
             ) {
-                viewModel.setErrorMessage("빈 칸을 전부 채워주세요.")
+                viewModel.setToastMessage("빈 칸을 전부 채워주세요.")
                 return@setOnClickListener
             } else if (binding.writeExposeTimeCheckBox.isChecked.not() && binding.writeExposeTimeTextView.text == "날짜, 시간 선택") {
-                viewModel.setErrorMessage("날짜, 시간을 선택해주세요.")
+                viewModel.setToastMessage("날짜, 시간을 선택해주세요.")
                 return@setOnClickListener
             }
 
@@ -261,21 +263,21 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
                         null,
                     if (type == TYPE_ASSIGNMENT) {
                         if (binding.writeStartDt.text.toString()
-                                .toTimeInMillis() >= binding.writeEndDt.text.toString()
-                                .toTimeInMillis()
+                                .toTimeInMillisWithoutSec() >= binding.writeEndDt.text.toString()
+                                .toTimeInMillisWithoutSec()
                         ) {
-                            viewModel.setErrorMessage("시작 시간이 마감 시간보다 크거나 같을 수 없습니다.")
+                            viewModel.setToastMessage("시작 시간이 마감 시간보다 크거나 같을 수 없습니다.")
                             return@setOnClickListener
                         } else if (binding.writeAssignmentScore.text.toString().isEmpty()) {
-                            viewModel.setErrorMessage("배점을 입력해주세요.")
+                            viewModel.setToastMessage("배점을 입력해주세요.")
                             return@setOnClickListener
                         }
                         AssignmentUpdateRequestDto(
                             binding.writeTitleEditText.text.toString(),
                             binding.writeContentEditText.html,
                             "",
-                            binding.writeStartDt.text.toString(),
-                            binding.writeEndDt.text.toString(),
+                            binding.writeStartDt.text.toString() + ":00",
+                            binding.writeEndDt.text.toString() + ":00",
                             if (binding.writeExposeTimeCheckBox.isChecked)
                                 System.currentTimeMillis().toDateTime()
                             else
@@ -303,21 +305,21 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
                         null,
                     if (type == TYPE_ASSIGNMENT) {
                         if (binding.writeStartDt.text.toString()
-                                .toTimeInMillis() >= binding.writeEndDt.text.toString()
-                                .toTimeInMillis()
+                                .toTimeInMillisWithoutSec() >= binding.writeEndDt.text.toString()
+                                .toTimeInMillisWithoutSec()
                         ) {
-                            viewModel.setErrorMessage("시작 시간이 마감 시간보다 크거나 같을 수 없습니다.")
+                            viewModel.setToastMessage("시작 시간이 마감 시간보다 크거나 같을 수 없습니다.")
                             return@setOnClickListener
                         } else if (binding.writeAssignmentScore.text.toString().isEmpty()) {
-                            viewModel.setErrorMessage("배점을 입력해주세요.")
+                            viewModel.setToastMessage("배점을 입력해주세요.")
                             return@setOnClickListener
                         }
                         AssignmentUpdateRequestDto(
                             binding.writeTitleEditText.text.toString(),
                             binding.writeContentEditText.html,
                             "",
-                            binding.writeStartDt.text.toString(),
-                            binding.writeEndDt.text.toString(),
+                            binding.writeStartDt.text.toString() + ":00",
+                            binding.writeEndDt.text.toString() + ":00",
                             if (binding.writeExposeTimeCheckBox.isChecked)
                                 System.currentTimeMillis().toDateTime()
                             else
@@ -355,8 +357,8 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
             }
             TYPE_ASSIGNMENT -> {
                 binding.writeStartEndDT.visibility = View.VISIBLE
-                binding.writeStartDt.text = System.currentTimeMillis().toDateTime()
-                binding.writeEndDt.text = System.currentTimeMillis().toDateTime()
+                binding.writeStartDt.text = System.currentTimeMillis().toDateTimeWithoutSec()
+                binding.writeEndDt.text = System.currentTimeMillis().toDateTimeWithoutSec()
 
                 binding.writeStartDt.setOnClickListener { textview ->
                     CustomDateTimePicker(
@@ -382,13 +384,12 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
                                 AM_PM: String
                             ) {
                                 (textview as TextView).text = String.format(
-                                    "%04d-%02d-%02d %02d:%02d:%02d",
+                                    "%04d-%02d-%02d %02d:%02d",
                                     year,
                                     monthNumber + 1,
                                     day,
                                     hour24,
-                                    min,
-                                    sec
+                                    min
                                 )
                             }
                         }).apply {
@@ -423,13 +424,12 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
                                 AM_PM: String
                             ) {
                                 (textview as TextView).text = String.format(
-                                    "%04d-%02d-%02d %02d:%02d:%02d",
+                                    "%04d-%02d-%02d %02d:%02d",
                                     year,
                                     monthNumber + 1,
                                     day,
                                     hour24,
-                                    min,
-                                    sec
+                                    min
                                 )
                             }
                         }).apply {
@@ -441,6 +441,12 @@ class LectureWriteFragment : BaseFragment<FragmentLectureWriteBinding, LectureWr
                     }.showDialog()
                 }
             }
+        }
+    }
+
+    override fun initOnBoarding() {
+        if (getOnBoardingSpf(this.javaClass.simpleName).not()) {
+            createOnBoardingDialog(type)
         }
     }
 }

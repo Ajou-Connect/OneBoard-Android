@@ -1,10 +1,10 @@
 package kr.khs.oneboard.repository
 
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import kr.khs.oneboard.api.ApiService
-import kr.khs.oneboard.core.UseCase
+import kr.khs.oneboard.core.NetworkResult
+import kr.khs.oneboard.data.AnalysisResponseDto
 import kr.khs.oneboard.data.Lesson
 import kr.khs.oneboard.data.LessonDefaultInfo
 import kr.khs.oneboard.utils.SUCCESS
@@ -16,14 +16,14 @@ import javax.inject.Named
 
 class LessonRepositoryImpl @Inject constructor(@Named("withJWT") val apiService: ApiService) :
     LessonRepository {
-    override suspend fun getLessonList(id: Int): UseCase<List<Lesson>> {
-        val returnValue: UseCase<List<Lesson>>
+    override suspend fun getLessonList(id: Int): NetworkResult<List<Lesson>> {
+        val returnValue: NetworkResult<List<Lesson>>
         try {
             withContext(Dispatchers.IO) {
                 val response = apiService.getLessonList(id)
 
                 if (response.result == SUCCESS)
-                    returnValue = UseCase.success(
+                    returnValue = NetworkResult.success(
                         response.data.map { lesson ->
                             lesson.apply {
                                 date = date.substring(0, date.length - 3)
@@ -34,25 +34,25 @@ class LessonRepositoryImpl @Inject constructor(@Named("withJWT") val apiService:
                     throw Exception()
             }
         } catch (e: Exception) {
-            return UseCase.error("Error")
+            return NetworkResult.error("Error")
         }
 
         return returnValue
     }
 
-    override suspend fun getLesson(lectureId: Int, lessonId: Int): UseCase<Lesson> {
-        val returnValue: UseCase<Lesson>
+    override suspend fun getLesson(lectureId: Int, lessonId: Int): NetworkResult<Lesson> {
+        val returnValue: NetworkResult<Lesson>
 
         try {
             withContext(Dispatchers.IO) {
                 val response = apiService.getLesson(lectureId, lessonId)
                 if (response.result == SUCCESS)
-                    returnValue = UseCase.success(response.data)
+                    returnValue = NetworkResult.success(response.data)
                 else
                     throw Exception()
             }
         } catch (e: Exception) {
-            return UseCase.error("Error")
+            return NetworkResult.error("Error")
         }
 
         return returnValue
@@ -67,8 +67,8 @@ class LessonRepositoryImpl @Inject constructor(@Named("withJWT") val apiService:
         room: String?,
         meetingId: String?,
         videoUrl: String?
-    ): UseCase<Boolean> {
-        val returnValue: UseCase<Boolean>
+    ): NetworkResult<Boolean> {
+        val returnValue: NetworkResult<Boolean>
 
         try {
             withContext(Dispatchers.IO) {
@@ -86,7 +86,7 @@ class LessonRepositoryImpl @Inject constructor(@Named("withJWT") val apiService:
                     map["videoUrl"] = videoUrl.toPlainRequestBody()
                 }
 
-                returnValue = UseCase.success(
+                returnValue = NetworkResult.success(
                     apiService.postLesson(
                         lectureId,
                         note,
@@ -95,7 +95,7 @@ class LessonRepositoryImpl @Inject constructor(@Named("withJWT") val apiService:
                 )
             }
         } catch (e: Exception) {
-            return UseCase.error("Error")
+            return NetworkResult.error("Error")
         }
 
         return returnValue
@@ -111,8 +111,8 @@ class LessonRepositoryImpl @Inject constructor(@Named("withJWT") val apiService:
         room: String?,
         meetingId: String?,
         videoUrl: String?
-    ): UseCase<Boolean> {
-        val returnValue: UseCase<Boolean>
+    ): NetworkResult<Boolean> {
+        val returnValue: NetworkResult<Boolean>
 
         try {
             withContext(Dispatchers.IO) {
@@ -130,7 +130,7 @@ class LessonRepositoryImpl @Inject constructor(@Named("withJWT") val apiService:
                     map["videoUrl"] = videoUrl.toPlainRequestBody()
                 }
 
-                returnValue = UseCase.success(
+                returnValue = NetworkResult.success(
                     apiService.putLesson(
                         lectureId,
                         lessonId,
@@ -140,77 +140,88 @@ class LessonRepositoryImpl @Inject constructor(@Named("withJWT") val apiService:
                 )
             }
         } catch (e: Exception) {
-            return UseCase.error("Error")
+            return NetworkResult.error("Error")
         }
 
         return returnValue
     }
 
-    override suspend fun deleteLesson(lectureId: Int, lessonId: Int): UseCase<Boolean> {
-        val returnValue: UseCase<Boolean>
+    override suspend fun deleteLesson(lectureId: Int, lessonId: Int): NetworkResult<Boolean> {
+        val returnValue: NetworkResult<Boolean>
 
         try {
             withContext(Dispatchers.IO) {
-                returnValue = UseCase.success(
+                returnValue = NetworkResult.success(
                     apiService.deleteLesson(lectureId, lessonId).result == SUCCESS
                 )
             }
         } catch (e: Exception) {
-            return UseCase.error("Error")
+            return NetworkResult.error("Error")
         }
 
         return returnValue
     }
 
-    override suspend fun getDefaultLessonInfo(lectureId: Int): UseCase<LessonDefaultInfo> {
-        val returnValue: UseCase<LessonDefaultInfo>
+    override suspend fun getDefaultLessonInfo(lectureId: Int): NetworkResult<LessonDefaultInfo> {
+        val returnValue: NetworkResult<LessonDefaultInfo>
 
         try {
             withContext(Dispatchers.IO) {
-                returnValue = UseCase.success(
-                    apiService.getDefaultLessonInfo(lectureId).data
+                returnValue = NetworkResult.success(
+                    apiService.getDefaultLessonInfo(lectureId).data.apply {
+                        defaultDateTime?.let {
+                            defaultDateTime = it.substring(0, it.length - 3)
+                        }
+                    }
                 )
             }
         } catch (e: Exception) {
-            return UseCase.error("Error")
+            return NetworkResult.error("Error")
         }
 
         return returnValue
     }
 
-    override suspend fun createLesson(lectureId: Int, lessonId: Int): UseCase<Boolean> {
-        var returnValue: UseCase<Boolean>
-        delay(1000)
-        returnValue = UseCase.success(true)
-//        try {
-//            withContext(Dispatchers.IO) {
-//                val response = apiService.openLesson(lectureId, lessonId)
-//                returnValue = UseCase.success(response.result == SUCCESS)
-//            }
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//            returnValue = UseCase.error("Error!")
-//        }
+    override suspend fun enterLesson(
+        lectureId: Int,
+        lessonId: Int,
+        sessionName: String
+    ): NetworkResult<Boolean> {
+        var returnValue: NetworkResult<Boolean>
+
+        try {
+            withContext(Dispatchers.IO) {
+                val response = apiService.enterLesson(lectureId, lessonId, sessionName)
+                returnValue = NetworkResult.success(response.result == SUCCESS)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            returnValue = NetworkResult.error("Error!")
+        }
 
         return returnValue
     }
 
-    override suspend fun enterLesson(lectureId: Int, lessonId: Int): UseCase<Boolean> {
-        var returnValue: UseCase<Boolean>
-        delay(1000)
-        returnValue = UseCase.success(true)
+    override suspend fun getAnalysis(
+        lectureId: Int,
+        lessonId: Int
+    ): NetworkResult<AnalysisResponseDto> {
+        var returnValue: NetworkResult<AnalysisResponseDto>
 
-//        try {
-//            withContext(Dispatchers.IO) {
-//                val response = apiService.enterLesson(lectureId, lessonId)
-//                returnValue = UseCase.success(response.result == SUCCESS)
-//            }
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//            returnValue = UseCase.error("Error!")
-//        }
+        try {
+            withContext(Dispatchers.IO) {
+                val response = apiService.getLessonAnalysis(lectureId, lessonId)
+
+                returnValue = if (response.result == SUCCESS)
+                    NetworkResult.success(response.data)
+                else
+                    NetworkResult.error("No Data")
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            returnValue = NetworkResult.error("Error")
+        }
 
         return returnValue
     }
-
 }

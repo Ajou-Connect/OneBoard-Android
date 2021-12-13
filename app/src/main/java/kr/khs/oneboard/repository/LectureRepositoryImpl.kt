@@ -4,7 +4,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 import kr.khs.oneboard.api.ApiService
-import kr.khs.oneboard.core.UseCase
+import kr.khs.oneboard.core.NetworkResult
 import kr.khs.oneboard.data.*
 import kr.khs.oneboard.data.api.Response
 import kr.khs.oneboard.data.request.AssignmentUpdateRequestDto
@@ -22,8 +22,8 @@ import javax.inject.Named
 class LectureRepositoryImpl @Inject constructor(
     @Named("withJWT") private val apiService: ApiService
 ) : LectureRepository {
-    override suspend fun getDetailLecture(lectureId: Int): UseCase<Triple<Notice?, Lesson?, Assignment?>> {
-        val returnValue: UseCase<Triple<Notice?, Lesson?, Assignment?>>
+    override suspend fun getDetailLecture(lectureId: Int): NetworkResult<Triple<Notice?, Lesson?, Assignment?>> {
+        val returnValue: NetworkResult<Triple<Notice?, Lesson?, Assignment?>>
         try {
             withContext(Dispatchers.IO) {
                 val notice = async {
@@ -49,16 +49,22 @@ class LectureRepositoryImpl @Inject constructor(
                 }
 
                 returnValue =
-                    UseCase.success(Triple(notice.await(), lesson.await(), assignment.await()))
+                    NetworkResult.success(
+                        Triple(
+                            notice.await(),
+                            lesson.await(),
+                            assignment.await()
+                        )
+                    )
             }
         } catch (e: Exception) {
-            return UseCase.error("Error")
+            return NetworkResult.error("Error")
         }
 
         return returnValue
     }
 
-    override suspend fun getNoticeList(lectureId: Int): UseCase<List<Notice>> {
+    override suspend fun getNoticeList(lectureId: Int): NetworkResult<List<Notice>> {
         val response: Response<List<Notice>>
         try {
             withContext(Dispatchers.IO) {
@@ -66,10 +72,10 @@ class LectureRepositoryImpl @Inject constructor(
             }
         } catch (e: Exception) {
             Timber.e(e)
-            return UseCase.error("Error")
+            return NetworkResult.error("Error")
         }
 
-        return UseCase.success(
+        return NetworkResult.success(
             response.data.map { notice ->
                 notice.apply {
                     exposeDt = exposeDt.substring(0, exposeDt.length - 3)
@@ -81,19 +87,19 @@ class LectureRepositoryImpl @Inject constructor(
     override suspend fun postNotice(
         lectureId: Int,
         notice: NoticeUpdateRequestDto
-    ): UseCase<Boolean> {
-        var returnValue: UseCase<Boolean>
+    ): NetworkResult<Boolean> {
+        var returnValue: NetworkResult<Boolean>
         try {
             withContext(Dispatchers.IO) {
                 val response = apiService.postNotice(lectureId, notice)
                 returnValue = if (response.result == SUCCESS)
-                    UseCase.success(true)
+                    NetworkResult.success(true)
                 else
-                    UseCase.success(false)
+                    NetworkResult.success(false)
             }
         } catch (e: Exception) {
             Timber.e(e)
-            returnValue = UseCase.error("Error")
+            returnValue = NetworkResult.error("Error")
         }
 
         return returnValue
@@ -103,18 +109,18 @@ class LectureRepositoryImpl @Inject constructor(
         lectureId: Int,
         noticeId: Int,
         notice: NoticeUpdateRequestDto
-    ): UseCase<Boolean> {
-        var returnValue: UseCase<Boolean>
+    ): NetworkResult<Boolean> {
+        var returnValue: NetworkResult<Boolean>
         try {
             withContext(Dispatchers.IO) {
                 val response = apiService.putNotice(lectureId, noticeId, notice)
                 returnValue = if (response.result == SUCCESS)
-                    UseCase.success(true)
+                    NetworkResult.success(true)
                 else
-                    UseCase.success(false)
+                    NetworkResult.success(false)
             }
         } catch (e: Exception) {
-            returnValue = UseCase.error("Error")
+            returnValue = NetworkResult.error("Error")
         }
 
         return returnValue
@@ -123,35 +129,35 @@ class LectureRepositoryImpl @Inject constructor(
     override suspend fun deleteNotice(
         lectureId: Int,
         noticeId: Int
-    ): UseCase<Boolean> {
-        var returnValue: UseCase<Boolean>
+    ): NetworkResult<Boolean> {
+        var returnValue: NetworkResult<Boolean>
         try {
             withContext(Dispatchers.IO) {
                 val response = apiService.deleteNotice(lectureId, noticeId)
                 returnValue = if (response.result == SUCCESS)
-                    UseCase.success(true)
+                    NetworkResult.success(true)
                 else
-                    UseCase.success(false)
+                    NetworkResult.success(false)
             }
         } catch (e: Exception) {
-            returnValue = UseCase.error("Error")
+            returnValue = NetworkResult.error("Error")
         }
 
         return returnValue
     }
 
 
-    override suspend fun getAssignmentList(lectureId: Int): UseCase<List<Assignment>> {
+    override suspend fun getAssignmentList(lectureId: Int): NetworkResult<List<Assignment>> {
         val response: Response<List<Assignment>>
         try {
             withContext(Dispatchers.IO) {
                 response = apiService.getAssignmentList(lectureId)
             }
         } catch (e: Exception) {
-            return UseCase.error("Error")
+            return NetworkResult.error("Error")
         }
         return if (response.result == SUCCESS)
-            UseCase.success(
+            NetworkResult.success(
                 response.data.map { assignment ->
                     assignment.apply {
                         startDt = startDt.substring(0, startDt.length - 3)
@@ -159,15 +165,15 @@ class LectureRepositoryImpl @Inject constructor(
                     }
                 }
             ) else
-            UseCase.error("Error")
+            NetworkResult.error("Error")
     }
 
     override suspend fun postAssignment(
         lectureId: Int,
         assignment: AssignmentUpdateRequestDto,
         file: MultipartBody.Part?
-    ): UseCase<Boolean> {
-        var returnValue: UseCase<Boolean>
+    ): NetworkResult<Boolean> {
+        var returnValue: NetworkResult<Boolean>
         try {
             withContext(Dispatchers.IO) {
                 val map = HashMap<String, RequestBody>()
@@ -181,13 +187,13 @@ class LectureRepositoryImpl @Inject constructor(
                 val response = apiService.postAssignment(lectureId, file, map)
 
                 returnValue = if (response.result == SUCCESS)
-                    UseCase.success(true)
+                    NetworkResult.success(true)
                 else
-                    UseCase.success(false)
+                    NetworkResult.success(false)
             }
         } catch (e: Exception) {
             Timber.e(e)
-            returnValue = UseCase.error("Error")
+            returnValue = NetworkResult.error("Error")
         }
 
         return returnValue
@@ -198,8 +204,8 @@ class LectureRepositoryImpl @Inject constructor(
         assignmentId: Int,
         assignment: AssignmentUpdateRequestDto,
         file: MultipartBody.Part?
-    ): UseCase<Boolean> {
-        var returnValue: UseCase<Boolean>
+    ): NetworkResult<Boolean> {
+        var returnValue: NetworkResult<Boolean>
         try {
             withContext(Dispatchers.IO) {
                 val map = HashMap<String, RequestBody>()
@@ -212,29 +218,32 @@ class LectureRepositoryImpl @Inject constructor(
 
                 val response = apiService.putAssignment(lectureId, assignmentId, file, map)
                 returnValue = if (response.result == SUCCESS)
-                    UseCase.success(true)
+                    NetworkResult.success(true)
                 else
-                    UseCase.success(false)
+                    NetworkResult.success(false)
             }
         } catch (e: Exception) {
-            returnValue = UseCase.error("Error")
+            returnValue = NetworkResult.error("Error")
         }
 
         return returnValue
     }
 
-    override suspend fun deleteAssignment(lectureId: Int, assignmentId: Int): UseCase<Boolean> {
-        var returnValue: UseCase<Boolean>
+    override suspend fun deleteAssignment(
+        lectureId: Int,
+        assignmentId: Int
+    ): NetworkResult<Boolean> {
+        var returnValue: NetworkResult<Boolean>
         try {
             withContext(Dispatchers.IO) {
                 val response = apiService.deleteAssignment(lectureId, assignmentId)
                 returnValue = if (response.result == SUCCESS)
-                    UseCase.success(true)
+                    NetworkResult.success(true)
                 else
-                    UseCase.success(false)
+                    NetworkResult.success(false)
             }
         } catch (e: Exception) {
-            returnValue = UseCase.error("Error")
+            returnValue = NetworkResult.error("Error")
         }
 
         return returnValue
@@ -243,19 +252,19 @@ class LectureRepositoryImpl @Inject constructor(
     override suspend fun getMyAssignmentSubmitInfo(
         lectureId: Int,
         assignmentId: Int
-    ): UseCase<Submit> {
-        val returnValue: UseCase<Submit>
+    ): NetworkResult<Submit> {
+        val returnValue: NetworkResult<Submit>
         try {
             withContext(Dispatchers.IO) {
                 val response = apiService.getMyAssignmentSubmitInfo(lectureId, assignmentId)
                 returnValue = if (response.result == SUCCESS) {
-                    UseCase.success(response.data)
+                    NetworkResult.success(response.data)
                 } else {
-                    UseCase.error("Error")
+                    NetworkResult.error("Error")
                 }
             }
         } catch (e: Exception) {
-            return UseCase.error("Error")
+            return NetworkResult.error("Error")
         }
 
         return returnValue
@@ -264,37 +273,37 @@ class LectureRepositoryImpl @Inject constructor(
     override suspend fun getSubmitAssignmentList(
         lectureId: Int,
         assignmentId: Int
-    ): UseCase<List<Submit>> {
-        val returnValue: UseCase<List<Submit>>
+    ): NetworkResult<List<Submit>> {
+        val returnValue: NetworkResult<List<Submit>>
 
         try {
             withContext(Dispatchers.IO) {
                 val response = apiService.getSubmitAssignmentList(lectureId, assignmentId)
                 if (response.result == SUCCESS)
-                    returnValue = UseCase.success(response.data)
+                    returnValue = NetworkResult.success(response.data)
                 else
                     throw Exception()
             }
         } catch (e: Exception) {
-            return UseCase.error("Error")
+            return NetworkResult.error("Error")
         }
 
         return returnValue
     }
 
-    override suspend fun getAttendanceList(lectureId: Int): UseCase<List<AttendanceStudent>> {
-        var returnValue: UseCase<List<AttendanceStudent>>
+    override suspend fun getAttendanceList(lectureId: Int): NetworkResult<List<AttendanceStudent>> {
+        var returnValue: NetworkResult<List<AttendanceStudent>>
 
         try {
             withContext(Dispatchers.IO) {
                 val response = apiService.getAttendanceList(lectureId)
                 returnValue = if (response.result == SUCCESS)
-                    UseCase.success(response.data)
+                    NetworkResult.success(response.data)
                 else
-                    UseCase.success(listOf())
+                    NetworkResult.success(listOf())
             }
         } catch (e: Exception) {
-            returnValue = UseCase.error("Error")
+            returnValue = NetworkResult.error("Error")
         }
 
         return returnValue
@@ -303,71 +312,74 @@ class LectureRepositoryImpl @Inject constructor(
     override suspend fun postAttendanceList(
         lectureId: Int,
         dto: AttendanceUpdateRequestDto
-    ): UseCase<Boolean> {
-        var returnValue: UseCase<Boolean>
+    ): NetworkResult<Boolean> {
+        var returnValue: NetworkResult<Boolean>
 
         try {
             withContext(Dispatchers.IO) {
                 val response = apiService.putAttendance(lectureId, dto)
-                returnValue = UseCase.success(response.result == SUCCESS)
+                returnValue = NetworkResult.success(response.result == SUCCESS)
             }
         } catch (e: Exception) {
-            returnValue = UseCase.error("Error")
+            returnValue = NetworkResult.error("Error")
         }
 
         return returnValue
     }
 
-    override suspend fun getMyAttendance(lectureId: Int): UseCase<AttendanceStudent> {
-        var returnValue: UseCase<AttendanceStudent>
+    override suspend fun getMyAttendance(lectureId: Int): NetworkResult<AttendanceStudent> {
+        var returnValue: NetworkResult<AttendanceStudent>
 
         try {
             withContext(Dispatchers.IO) {
                 val response = apiService.getMyAttendanceList(lectureId)
                 returnValue = if (response.result == SUCCESS)
-                    UseCase.success(response.data)
+                    NetworkResult.success(response.data)
                 else
-                    UseCase.error("No Data")
+                    NetworkResult.error("No Data")
             }
         } catch (e: Exception) {
-            returnValue = UseCase.error("Error")
+            returnValue = NetworkResult.error("Error")
         }
 
         return returnValue
     }
 
-    override suspend fun getStudentOwnGrade(lectureId: Int): UseCase<GradeStudent> {
-        var returnValue: UseCase<GradeStudent>
+    override suspend fun getStudentOwnGrade(lectureId: Int): NetworkResult<GradeStudent> {
+        var returnValue: NetworkResult<GradeStudent>
 
         try {
             withContext(Dispatchers.IO) {
                 val response = apiService.getStudentOwnGrade(lectureId)
                 returnValue = if (response.result == SUCCESS)
-                    UseCase.success(response.data)
+                    NetworkResult.success(response.data)
                 else
                     throw Exception()
             }
         } catch (e: Exception) {
-            returnValue = UseCase.error("Error")
+            returnValue = NetworkResult.error("Error")
         }
 
         return returnValue
     }
 
-    override suspend fun getStudentGrade(lectureId: Int, studentId: Int): UseCase<GradeStudent> {
-        var returnValue: UseCase<GradeStudent>
+    override suspend fun getStudentGrade(
+        lectureId: Int,
+        studentId: Int
+    ): NetworkResult<GradeStudent> {
+        var returnValue: NetworkResult<GradeStudent>
 
         try {
             withContext(Dispatchers.IO) {
                 val response = apiService.getStudentGrade(lectureId, studentId)
 
                 returnValue = if (response.result == SUCCESS)
-                    UseCase.success(response.data)
+                    NetworkResult.success(response.data)
                 else
                     throw Exception()
             }
         } catch (e: Exception) {
-            returnValue = UseCase.error("Error")
+            returnValue = NetworkResult.error("Error")
         }
 
         return returnValue
@@ -377,77 +389,80 @@ class LectureRepositoryImpl @Inject constructor(
         lectureId: Int,
         studentId: Int,
         grade: String
-    ): UseCase<Boolean> {
-        var returnValue: UseCase<Boolean>
+    ): NetworkResult<Boolean> {
+        var returnValue: NetworkResult<Boolean>
         try {
             withContext(Dispatchers.IO) {
                 val response = apiService.postStudentGrade(
                     lectureId, studentId, GradeUpdateRequestDto(grade)
                 )
                 returnValue = if (response.result == SUCCESS)
-                    UseCase.success(true)
+                    NetworkResult.success(true)
                 else
                     throw Exception()
             }
         } catch (e: Exception) {
-            returnValue = UseCase.error("Error")
+            returnValue = NetworkResult.error("Error")
         }
 
         return returnValue
     }
 
-    override suspend fun getStudentGradeList(lectureId: Int): UseCase<List<GradeStudent>> {
-        var returnValue: UseCase<List<GradeStudent>>
+    override suspend fun getStudentGradeList(lectureId: Int): NetworkResult<List<GradeStudent>> {
+        var returnValue: NetworkResult<List<GradeStudent>>
 
         try {
             withContext(Dispatchers.IO) {
                 val response = apiService.getGradeList(lectureId)
 
                 returnValue = if (response.result == SUCCESS)
-                    UseCase.success(response.data)
+                    NetworkResult.success(response.data)
                 else
                     throw Exception()
             }
         } catch (e: Exception) {
-            returnValue = UseCase.error("Error")
+            returnValue = NetworkResult.error("Error")
         }
 
         return returnValue
     }
 
-    override suspend fun getGradeRatio(lectureId: Int): UseCase<GradeRatio> {
-        var returnValue: UseCase<GradeRatio>
+    override suspend fun getGradeRatio(lectureId: Int): NetworkResult<GradeRatio> {
+        var returnValue: NetworkResult<GradeRatio>
 
         try {
             withContext(Dispatchers.IO) {
                 val response = apiService.getGradeRatio(lectureId)
 
                 returnValue = if (response.result == SUCCESS)
-                    UseCase.success(response.data)
+                    NetworkResult.success(response.data)
                 else
                     throw Exception()
             }
         } catch (e: Exception) {
-            returnValue = UseCase.error("Error")
+            returnValue = NetworkResult.error("Error")
         }
 
         return returnValue
     }
 
-    override suspend fun postGradeRatio(lectureId: Int, gradeRatio: GradeRatio): UseCase<Boolean> {
-        var returnValue: UseCase<Boolean>
+    override suspend fun postGradeRatio(
+        lectureId: Int,
+        gradeRatio: GradeRatio
+    ): NetworkResult<Boolean> {
+        var returnValue: NetworkResult<Boolean>
 
         try {
             withContext(Dispatchers.IO) {
                 val response = apiService.postGradeRatio(lectureId, gradeRatio)
 
                 returnValue = if (response.result == SUCCESS)
-                    UseCase.success(true)
+                    NetworkResult.success(true)
                 else
                     throw Exception()
             }
         } catch (e: Exception) {
-            returnValue = UseCase.error("Error")
+            returnValue = NetworkResult.error("Error")
         }
 
         return returnValue

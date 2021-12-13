@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kr.khs.oneboard.core.BaseViewModel
-import kr.khs.oneboard.core.UseCase
+import kr.khs.oneboard.core.NetworkResult
 import kr.khs.oneboard.data.Submit
 import kr.khs.oneboard.repository.LectureRepository
 import javax.inject.Inject
@@ -21,7 +21,7 @@ class LectureReadViewModel @Inject constructor(private val repository: LectureRe
         viewModelScope.launch {
             showProgress()
             val response = repository.getMyAssignmentSubmitInfo(lectureId, assignmentId)
-            if (response.status == UseCase.Status.SUCCESS) {
+            if (response.status == NetworkResult.Status.SUCCESS) {
                 isSubmit.value = true
                 assignmentData.value = response.data!!
             } else {

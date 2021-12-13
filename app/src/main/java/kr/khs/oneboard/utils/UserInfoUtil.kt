@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 object UserInfoUtil {
     private const val SPF_NAME = "OneBoard"
     private const val USER_TOKEN = "UserToken"
+    private const val ON_BOARDING = "OnBoarding"
 
     var email: String = ""
         get() {
@@ -50,4 +51,11 @@ object UserInfoUtil {
 
     fun getToken(context: Context) = getSPF(context).getString(USER_TOKEN, "") ?: ""
 
+    fun getOnBoarding(context: Context) = getSPF(context).getBoolean(ON_BOARDING, false)
+
+    fun setOnBoarding(context: Context, isReset: Boolean = false) {
+        val editor = getSPF(context).edit()
+        editor.putBoolean(ON_BOARDING, isReset.not())
+        editor.apply()
+    }
 }

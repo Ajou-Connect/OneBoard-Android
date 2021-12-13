@@ -3,7 +3,7 @@ package kr.khs.oneboard.repository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kr.khs.oneboard.api.ApiService
-import kr.khs.oneboard.core.UseCase
+import kr.khs.oneboard.core.NetworkResult
 import kr.khs.oneboard.data.LoginBody
 import kr.khs.oneboard.data.LoginResponse
 import kr.khs.oneboard.data.api.BasicResponse
@@ -18,7 +18,7 @@ import javax.inject.Named
 class BasicRepositoryImpl @Inject constructor(
     @Named("withoutJWT") private val apiService: ApiService
 ) : BasicRepository {
-    override suspend fun loginCheck(token: String): UseCase<Boolean> {
+    override suspend fun loginCheck(token: String): NetworkResult<Boolean> {
         val response: BasicResponse
         withContext(Dispatchers.IO) {
             response = try {
@@ -29,12 +29,12 @@ class BasicRepositoryImpl @Inject constructor(
             }
         }
         return if (response.result == SUCCESS)
-            UseCase.success(true)
+            NetworkResult.success(true)
         else
-            UseCase.error("Invalidate Token")
+            NetworkResult.error("Invalidate Token")
     }
 
-    override suspend fun healthCheck(): UseCase<Boolean> {
+    override suspend fun healthCheck(): NetworkResult<Boolean> {
         val response: Response<Boolean>
         try {
             withContext(Dispatchers.IO) {
@@ -43,13 +43,13 @@ class BasicRepositoryImpl @Inject constructor(
             }
         } catch (e: Exception) {
             Timber.e(e)
-            return UseCase.error("")
+            return NetworkResult.error("")
         }
 
-        return UseCase.success(response.data)
+        return NetworkResult.success(response.data)
     }
 
-    override suspend fun login(body: LoginBody): UseCase<Response<LoginResponse>> {
+    override suspend fun login(body: LoginBody): NetworkResult<Response<LoginResponse>> {
         val response: Response<LoginResponse>
         try {
             withContext(Dispatchers.IO) {
@@ -57,8 +57,8 @@ class BasicRepositoryImpl @Inject constructor(
             }
         } catch (e: Exception) {
             Timber.e(e)
-            return UseCase.error("Invalidate email or password")
+            return NetworkResult.error("Invalidate email or password")
         }
-        return UseCase.success(response)
+        return NetworkResult.success(response)
     }
 }
