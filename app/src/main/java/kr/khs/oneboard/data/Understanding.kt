@@ -29,6 +29,6 @@ data class UnderstandingIdWrapper(
     val understandId: Int
 )
 
-data class UnderstandingStudentResponseWrapper(
+data class StudentResponseWrapper(
     val response: Int
 )

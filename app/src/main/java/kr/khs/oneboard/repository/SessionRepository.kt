@@ -28,6 +28,7 @@ interface SessionRepository {
     suspend fun postUnderStandingProfessor(
         lectureId: Int,
         lessonId: Int,
+        sessionName: String,
     ): NetworkResult<Int>
 
     suspend fun getUnderStandingProfessor(
@@ -47,7 +48,8 @@ interface SessionRepository {
     suspend fun postQuizProfessor(
         lectureId: Int,
         lessonId: Int,
-        quizRequestDto: QuizRequestDto
+        quizRequestDto: QuizRequestDto,
+        sessionName: String
     ): NetworkResult<Int>
 
     suspend fun getQuizProfessor(
@@ -66,6 +68,7 @@ interface SessionRepository {
         lectureId: Int,
         lessonId: Int,
         quizId: Int,
+        sessionName: String,
         answer: Int
     ): NetworkResult<Boolean>
 }

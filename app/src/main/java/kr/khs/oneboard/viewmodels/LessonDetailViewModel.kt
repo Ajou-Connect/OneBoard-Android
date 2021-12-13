@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kr.khs.oneboard.core.BaseViewModel
-import kr.khs.oneboard.core.NetworkResult
 import kr.khs.oneboard.data.Lesson
 import kr.khs.oneboard.repository.LessonRepository
 import javax.inject.Inject
@@ -48,15 +47,22 @@ class LessonDetailViewModel @Inject constructor(private val repository: LessonRe
     fun enterLesson(lectureId: Int, lessonId: Int, sessionName: String) {
         viewModelScope.launch {
             showProgress()
-            val response = repository.enterLesson(lectureId, lessonId, sessionName)
-            if (response.status == NetworkResult.Status.SUCCESS) {
-                _isCreateLesson.value = response.data!!
-
-                if (response.data.not())
-                    setSessionErrorMessage("아직 수업이 생성되지 않았습니다.")
-            } else {
-                setToastMessage("수업에 입장하지 못했습니다.")
-            }
+            _isCreateLesson.value = true
+//            val response = repository.enterLesson(lectureId, lessonId, sessionName)
+//            if (response.status == NetworkResult.Status.SUCCESS) {
+//                _isCreateLesson.value = response.data!!
+//
+//                if (response.data.not()) {
+//                    setToastMessage(
+//                        if (UserInfoUtil.type == TYPE_PROFESSOR)
+//                            "종료된 수업은 재입장할 수 없습니다."
+//                        else
+//                            "아직 수업이 생성되지 않았습니다."
+//                    )
+//                }
+//            } else {
+//                setToastMessage("수업에 입장하지 못했습니다.")
+//            }
             hideProgress()
         }
     }

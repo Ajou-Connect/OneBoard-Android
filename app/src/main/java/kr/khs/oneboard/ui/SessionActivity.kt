@@ -134,8 +134,7 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
     }
 
     private val socketQuizRequestListener = Emitter.Listener {
-        for (any in it)
-            Timber.tag("Socket").d("$any")
+        val json = JSONObject(it[0].toString())
         launch(coroutineContext) {
             val dialogBinding = DialogQuizBinding.inflate(layoutInflater)
 
@@ -144,7 +143,7 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
                 .setCancelable(false)
                 .create()
 
-            dialogBinding.dialogQuizTitle.text = "퀴즈!!!"
+            dialogBinding.dialogQuizTitle.text = json["question"] as String
 
             val layoutParams =
                 LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
@@ -154,8 +153,8 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
 
             val radioButtonList = Array(5) {
                 RadioButton(this@SessionActivity).apply {
-                    text = "RadioGroup Button1111111212121212121211111111 ${it * 999}"
-                    id = it + 100
+                    text = json["answer${it + 1}"] as String
+                    id = it + 100 + 1
                     this.layoutParams = layoutParams
                 }
             }
@@ -170,7 +169,7 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
                 if (checkId == 0) {
                     viewModel.setToastMessage("정답을 선택해 주세요.")
                 } else {
-//                    viewModel.postQuizStudent(quizId, checkId - 100)
+                    viewModel.postQuizStudent(json["quizId"] as Int, checkId - 100)
                     dialog.dismiss()
                 }
             }
@@ -193,6 +192,21 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
 
         if (UserInfoUtil.type == TYPE_PROFESSOR)
             initProfessorView()
+
+        viewModel.professorUnderstandingResponse.observe(this) { understanding ->
+            understanding ?: return@observe
+
+            val understandingString = """
+                이해 O : ${understanding.yes}
+                이해 X : ${understanding.no}
+            """.trimIndent()
+            DialogUtil.createDialog(
+                this,
+                understandingString,
+                positiveText = "확인",
+                positiveAction = { }
+            )
+        }
 
         viewModel.professorQuizResponse.observe(this) { quiz ->
             quiz ?: return@observe
@@ -243,6 +257,11 @@ class SessionActivity : BaseSessionActivity(), CoroutineScope {
 
         binding.requestUnderstanding.setOnClickListener {
             viewModel.postUnderStandingProfessor()
+            binding.responseUnderstanding.visibility = View.VISIBLE
+        }
+
+        binding.responseUnderstanding.setOnClickListener {
+            viewModel.getUnderStandingProfessor()
         }
 
         binding.requestQuiz.setOnClickListener {

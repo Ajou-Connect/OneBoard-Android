@@ -9,6 +9,7 @@ import kr.khs.oneboard.core.BaseViewModel
 import kr.khs.oneboard.core.NetworkResult
 import kr.khs.oneboard.data.Quiz
 import kr.khs.oneboard.data.StudentQuizResponse
+import kr.khs.oneboard.data.Understanding
 import kr.khs.oneboard.data.request.QuizRequestDto
 import kr.khs.oneboard.repository.SessionRepository
 import kr.khs.oneboard.utils.TYPE_PROFESSOR
@@ -34,6 +35,7 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
 
     val studentQuizResponse = MutableLiveData<StudentQuizResponse>()
 
+    val professorUnderstandingResponse = MutableLiveData<Understanding>()
     val professorQuizResponse = MutableLiveData<Quiz>()
 
     fun postAttendance() {
@@ -66,9 +68,7 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
                 repository.getUnderStandingProfessor(lectureId, lessonId, understandingId)
 
             if (response.status == NetworkResult.Status.SUCCESS) {
-                val data = response.data!!
-
-                // TODO: 2021/12/04 데이터 처리
+                professorUnderstandingResponse.value = response.data!!
             } else {
                 setToastMessage("이해도 평가 정보를 가져오지 못했습니다.")
             }
@@ -79,9 +79,10 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
     fun postUnderStandingProfessor() {
         viewModelScope.launch {
             showProgress()
-            val response = repository.postUnderStandingProfessor(lectureId, lessonId)
+            val response = repository.postUnderStandingProfessor(lectureId, lessonId, sessionName)
 
             if (response.status == NetworkResult.Status.SUCCESS) {
+                understandingId = response.data!!
                 setToastMessage("전송 완료")
             } else {
                 setToastMessage("이해도 평가 중 오류가 발생했습니다.")
@@ -95,7 +96,13 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
         viewModelScope.launch {
             showProgress()
             val response =
-                repository.postUnderStandingStudent(lectureId, lessonId, understandingId, sessionName, select)
+                repository.postUnderStandingStudent(
+                    lectureId,
+                    lessonId,
+                    understandingId,
+                    sessionName,
+                    select
+                )
 
             if (response.status == NetworkResult.Status.SUCCESS) {
                 setToastMessage("전송 완료")
@@ -110,7 +117,8 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
     fun postQuizProfessor(quizRequestDto: QuizRequestDto) {
         viewModelScope.launch {
             showProgress()
-            val response = repository.postQuizProfessor(lectureId, lessonId, quizRequestDto)
+            val response =
+                repository.postQuizProfessor(lectureId, lessonId, quizRequestDto, sessionName)
 
             if (response.status == NetworkResult.Status.SUCCESS)
                 latestQuizId = response.data!!
@@ -124,13 +132,15 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
     fun getQuizProfessor() {
         viewModelScope.launch {
             showProgress()
-            val response = repository.getQuizProfessor(lectureId, lessonId, latestQuizId)
+            val response =
+                repository.getQuizProfessor(lectureId, lessonId, latestQuizId)
 
             if (response.status == NetworkResult.Status.SUCCESS) {
                 professorQuizResponse.value = response.data!!
             } else {
                 setToastMessage("퀴즈 정보를 가져오지 못했습니다.")
             }
+            hideProgress()
         }
     }
 
@@ -152,7 +162,8 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
     fun postQuizStudent(quizId: Int, answer: Int) {
         viewModelScope.launch {
             showProgress()
-            val response = repository.postQuizStudent(lectureId, lessonId, quizId, answer)
+            val response =
+                repository.postQuizStudent(lectureId, lessonId, quizId, sessionName, answer)
 
             if (response.status == NetworkResult.Status.SUCCESS) {
                 setToastMessage(
@@ -172,13 +183,13 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
     fun leaveSession() {
         viewModelScope.launch {
             showProgress()
-            val response = repository.leaveLesson(lectureId, lessonId, sessionName)
-
-            if (response.status == NetworkResult.Status.SUCCESS && response.data!!) {
-                _isLeave.value = true
-            } else {
-                setToastMessage("다시 시도해주세요.")
-            }
+//            val response = repository.leaveLesson(lectureId, lessonId, sessionName)
+//
+//            if (response.status == NetworkResult.Status.SUCCESS && response.data!!) {
+            _isLeave.value = true
+//            } else {
+//                setToastMessage("다시 시도해주세요.")
+//            }
             hideProgress()
         }
     }

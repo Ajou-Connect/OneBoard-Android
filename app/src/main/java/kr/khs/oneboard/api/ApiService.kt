@@ -9,7 +9,6 @@ import kr.khs.oneboard.data.request.NoticeUpdateRequestDto
 import kr.khs.oneboard.data.request.QuizRequestDto
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import org.json.JSONObject
 import retrofit2.http.*
 
 interface ApiService {
@@ -214,7 +213,8 @@ interface ApiService {
     @GET("lecture/{lectureId}/lesson/{lessonId}/live/understanding/professor")
     suspend fun professorPostUnderstanding(
         @Path("lectureId") lectureId: Int,
-        @Path("lessonId") lessonId: Int
+        @Path("lessonId") lessonId: Int,
+        @Query("session") sessionName: String
     ): Response<UnderstandingIdWrapper>
 
     // TODO: 2021/12/03 이해도 평가 결과 확인
@@ -232,7 +232,7 @@ interface ApiService {
         @Path("lessonId") lessonId: Int,
         @Path("understandId") underStandingId: Int,
         @Query("session") sessionName: String,
-        @Body body: UnderstandingStudentResponseWrapper
+        @Body body: StudentResponseWrapper
     ): BasicResponseImpl
 
     // TODO: 2021/12/12 교수 - 퀴즈 요청
@@ -240,7 +240,8 @@ interface ApiService {
     suspend fun postQuizProfessor(
         @Path("lectureId") lectureId: Int,
         @Path("lessonId") lessonId: Int,
-        @Body body: QuizRequestDto
+        @Body body: QuizRequestDto,
+        @Query("session") sessionName: String,
     ): Response<QuizIdWrapper>
 
     @GET("lecture/{lectureId}/lesson/{lessonId}/live/quiz/{quizId}/professor")
@@ -264,6 +265,7 @@ interface ApiService {
         @Path("lectureId") lectureId: Int,
         @Path("lessonId") lessonId: Int,
         @Path("quizId") quizId: Int,
-        @Body body: JSONObject
+        @Query("session") sessionName: String,
+        @Body body: StudentResponseWrapper
     ): BasicResponseImpl
 }
