@@ -35,7 +35,8 @@ jobs:
 
       - name: Generate local.propertices
         run: |
-          echo ${{ secrets.ZOOM_SDK }} > ./local.properties
+          echo ${{ secrets.ZOOM_SDK_KEY }} > ./local.properties
+          echo ${{ secrets.ZOOM_SDK_SECRET }} > ./local.properties
           cat ./local.properties
 
       - name: Build Release APK
