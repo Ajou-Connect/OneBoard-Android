@@ -20,22 +20,27 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
-      
+
       - name: Set up JDK 11
         uses: actions/setup-java@v1
         with:
           java-version: 11
-          
+
       - name: Get current date
         id: date
         run: echo "::set-output name=date::$(date + '%Y-%m-%d')"
-        
+
       - name: Change Mode Executable gradlew
         run: chmod +x ./gradlew
 
       - name: Clean Gradle
         run: bash ./gradlew clean
-        
+
+      - name: Generate local.propertices
+        run: |
+          echo ${{ secrets.ZOOM_SDK }} > ./local.properties
+          cat ./local.properties
+
       - name: Build Release APK
         run: bash ./gradlew assembleRelease --stacktrace
 
@@ -56,7 +61,7 @@ jobs:
         with:
           name: app-release-unsigned.apk
           path: app/build/outputs/apk/release/app-release-unsigned.apk
-      
+
       - name: action-slack
         uses: 8398a7/action-slack@v3.8.0
         with:
@@ -64,4 +69,4 @@ jobs:
           fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
           author_name: 안드로이드 빌드 알림
         env:
-           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
