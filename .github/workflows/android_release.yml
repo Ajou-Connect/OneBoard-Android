@@ -33,9 +33,6 @@ jobs:
       - name: Change Mode Executable gradlew
         run: chmod +x ./gradlew
 
-      - name: Clean Gradle
-        run: bash ./gradlew clean
-
       - name: Generate local.propertices
         run: |
           echo ${{ secrets.ZOOM_SDK }} > ./local.properties
