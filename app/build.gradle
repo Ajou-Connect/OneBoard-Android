@@ -7,6 +7,9 @@ plugins {
     id 'kotlin-parcelize'
 }
 
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
 android {
     compileSdkVersion 31
     buildToolsVersion "30.0.2"
@@ -19,6 +22,9 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "SDK_KEY", properties['sdkKey']
+        buildConfigField "String", "SDK_SECRET", properties['sdkSecret']
     }
 
     buildTypes {

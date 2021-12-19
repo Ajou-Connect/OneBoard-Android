@@ -3,6 +3,7 @@ package kr.khs.oneboard.utils
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.security.Keys
+import kr.khs.oneboard.BuildConfig
 import timber.log.Timber
 
 private const val EXPIRED_TIME = (3600 * 4)
@@ -21,14 +22,14 @@ fun createJWT(sessionName: String, userName: String): String {
     val payloads = HashMap<String, Any>().apply {
         putAll(
             arrayOf(
-                "app_key" to sdkKey, "version" to 1, "user_identity" to userName,
+                "app_key" to BuildConfig.SDK_KEY, "version" to 1, "user_identity" to userName,
                 "iat" to iat, "exp" to exp, "tpc" to sessionName
             )
         )
     }
     Timber.tag("JWT").d("payloads : $payloads")
 
-    val key = Keys.hmacShaKeyFor(sdkSecret.toByteArray())
+    val key = Keys.hmacShaKeyFor(BuildConfig.SDK_SECRET.toByteArray())
     val jwt = Jwts.builder()
         .setHeader(headers)
         .setClaims(payloads)
