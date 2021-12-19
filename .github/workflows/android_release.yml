@@ -35,9 +35,8 @@ jobs:
 
       - name: Generate local.propertices
         run: |
-          pwd
-          echo ${{ secrets.ZOOM_SDK_KEY }} > /home/runner/work/OneBoard-Android/OneBoard-Android/local.properties
-          echo ${{ secrets.ZOOM_SDK_SECRET }} >> /home/runner/work/OneBoard-Android/OneBoard-Android/local.properties
+          echo ${{ secrets.ZOOM_SDK_KEY }} > ./local.properties
+          echo ${{ secrets.ZOOM_SDK_SECRET }} >> ./local.properties
           cat ./local.properties
 
       - name: Build Release APK
